@@ -4,8 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-
-
+using UnityEngine.UIElements;
 
 public class BlockController : MonoBehaviour
 {
@@ -59,7 +58,7 @@ public class BlockController : MonoBehaviour
 
             if (AllBlockCheck() && BlockFullcheck())
             {
-                AllBlockAction();
+               // AllBlockAction();
 
             }
 
@@ -146,7 +145,7 @@ public class BlockController : MonoBehaviour
 
 
 
-        YThreeMatchCheck(X, Y, animalType); 
+        YThreeMatchCheck(X, Y, animalType);
         //touchManager.StartCoroutine(touchManager.DelaySetIsClickLock());
 
         return (XThreeMatchCheck(X, Y, animalType) ||
@@ -174,7 +173,7 @@ public class BlockController : MonoBehaviour
         }
 
         XThreeMatchAction(X, Y, animalType);
-        YThreeMatchAction(X, Y, animalType);
+       // YThreeMatchAction(X, Y, animalType);
         for (int i = 0; i < blockYSize; i++)
         {
             StartCoroutine(CharacterDown());
@@ -252,73 +251,111 @@ public class BlockController : MonoBehaviour
     {
         Character_Base[] characters;
         characters = new Character_Base[4];
+        int[] animalTypes;
+        animalTypes = new int[4];
 
         if (X + 2 < blockXSize)
         {
-            characters[0] = blocks[Y][X + 1].GetComponentInChildren<Character_Base>();
-            characters[1] = blocks[Y][X + 2].GetComponentInChildren<Character_Base>();
-            if (characters[0] != null && characters[1] != null)
-            {
-                if ((animalType == characters[0].AnimalType) && animalType == characters[1].AnimalType)
-                {
-                    for (int i = 0; i < 3; i++)
-                    {
-
-                        CharacterDestroyAndAnimation(X + i, Y);
-                    }
-
-                    for (int i = 0; i < 2; i++)
-                    {
-
-                        characters[i] = null;
-                    }
-
-                }
-            }
+            characters[3] = blocks[Y][X + 2].GetComponentInChildren<Character_Base>();
+            animalTypes[3] = characters[3].AnimalType;
         }
-
-        if (X + 1 < blockXSize && X - 1 >= 0)
+        if (X + 1 < blockXSize)
         {
-            characters[0] = blocks[Y][X - 1].GetComponentInChildren<Character_Base>();
-            characters[1] = blocks[Y][X + 1].GetComponentInChildren<Character_Base>();
-            if (characters[0] != null && characters[1] != null)
-            {
-                if ((animalType == characters[0].AnimalType) && animalType == characters[1].AnimalType)
-                {
-                    for (int i = 0; i < 3; i++)
-                    {
-                        CharacterDestroyAndAnimation(X + i - 1, Y);
-                    }
-                    for (int i = 0; i < 2; i++)
-                    {
-                        characters[i] = null;
-                    }
-
-                }
-            }
+            characters[2] = blocks[Y][X + 1].GetComponentInChildren<Character_Base>();
+            animalTypes[2] = characters[2].AnimalType;
         }
-
-
         if (X - 2 >= 0)
         {
-            characters[0] = blocks[Y][X - 1].GetComponentInChildren<Character_Base>();
-            characters[1] = blocks[Y][X - 2].GetComponentInChildren<Character_Base>();
-            if (characters[0] != null && characters[1] != null)
+            characters[0] = blocks[Y][X - 2].GetComponentInChildren<Character_Base>();
+            animalTypes[0] = characters[0].AnimalType;
+        }
+        if (X - 1 >= 0)
+        {
+            characters[1] = blocks[Y][X - 1].GetComponentInChildren<Character_Base>();
+            animalTypes[1] = characters[1].AnimalType;
+        }
+
+        if (animalTypes[2] == animalType) // □□|■■|□
+        {
+            if (animalTypes[3] == animalType) // □□|■■■|
             {
-                if ((animalType == characters[0].AnimalType) && animalType == characters[1].AnimalType)
+                if (animalTypes[1] == animalType) // □|■■■■|
                 {
-                    for (int i = 0; i < 3; i++)
+                    if (animalTypes[0] == animalType) //  |■■■■■|
                     {
-                        CharacterDestroyAndAnimation(X + i -2, Y);
+                        for (int i = -2; i <=2; i++)
+                        {
+                            CharacterDestroyAndAnimation(X+i, Y);
+                        }
+                        
                     }
-                    for (int i = 0; i < 2; i++)
+                    else //  |□■■■■|
                     {
-                        characters[i] = null;
+                        for (int i = -1; i <= 2; i++)
+                        {
+                            CharacterDestroyAndAnimation(X + i, Y);
+                        }
                     }
+                }
+                else // |□□■■■|
+                {
+                    for (int i = 0; i <= 2; i++)
+                    {
+                        CharacterDestroyAndAnimation(X + i, Y);
+                    }
+                }
+            }
+            else // □□|■■□|
+            {
+                if (animalTypes[1] == animalType) // □|■■■□|
+                {
+                    if (animalTypes[0]==animalType) // |■■■■□|
+                    {
+                        for (int i = -2; i <= 1; i++)
+                        {
+                            CharacterDestroyAndAnimation(X + i, Y);
+                        }
+                    }
+                    else // |□■■■□|
+                    {
+                        for (int i = -1; i <= 1; i++)
+                        {
+                            CharacterDestroyAndAnimation(X + i, Y);
+                        }
+                    } 
+                }
+                else // |□□■■□| 
+                {
 
                 }
             }
         }
+        else // □□|■□□|
+        {
+            if (animalTypes[1] == animalType) // □|■■□□|
+            {
+                if (animalTypes[0]==animalType) // |■■■□□|
+                {
+                    for (int i = -2; i <= 0; i++)
+                    {
+                        CharacterDestroyAndAnimation(X+i, Y);
+                    }
+                }
+                else  // |□■■□□|
+                {
+
+                }
+            }
+            else // |□□■□□|
+            {
+
+            }
+        }
+
+
+        
+
+
         return;
     }
 
@@ -402,7 +439,7 @@ public class BlockController : MonoBehaviour
 
                     for (int i = 0; i < 3; i++)
                     {
-                        CharacterDestroyAndAnimation(X , Y+i);
+                        CharacterDestroyAndAnimation(X, Y + i);
                     }
                     for (int i = 0; i < 2; i++)
                     {
@@ -416,7 +453,7 @@ public class BlockController : MonoBehaviour
 
         if (Y + 1 < blockYSize && Y - 1 >= 0)
         {
-            characters[0] = blocks[Y - 1][X].GetComponentInChildren<Character_Base>(); 
+            characters[0] = blocks[Y - 1][X].GetComponentInChildren<Character_Base>();
             characters[1] = blocks[Y + 1][X].GetComponentInChildren<Character_Base>();
             if (characters[0] != null && characters[1] != null)
             {
@@ -424,7 +461,7 @@ public class BlockController : MonoBehaviour
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        CharacterDestroyAndAnimation(X, Y+i-1);
+                        CharacterDestroyAndAnimation(X, Y + i - 1);
                     }
                     for (int i = 0; i < 2; i++)
                     {
@@ -445,7 +482,7 @@ public class BlockController : MonoBehaviour
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        CharacterDestroyAndAnimation(X, Y + i -2);
+                        CharacterDestroyAndAnimation(X, Y + i - 2);
                     }
                     for (int i = 0; i < 2; i++)
                     {
@@ -480,9 +517,17 @@ public class BlockController : MonoBehaviour
 
     void CharacterDestroyAndAnimation(int X, int Y)
     {
+        if (X < 0 || Y < 0)
+        {
+            return;
+        }
+        if (X >= blockXSize || Y >= blockYSize)
+        {
+            return;
+        }
         Block block = blocks[Y][X].transform.GetComponent<Block>();
         block.PangAnimationActive();
-        
+
     }
 
 
