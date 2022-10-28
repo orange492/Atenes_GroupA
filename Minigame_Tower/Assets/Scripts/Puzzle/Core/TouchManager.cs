@@ -10,13 +10,13 @@ public class TouchManager : MonoBehaviour
     Vector2 onClickPosition;
     Vector2 offClickPosition;
     Vector2 dragDir;
-    GameObject touchedObject;
-    GameObject targetObject;
-    BlockController blockController;
-    int touchedIndexX;
-    int touchedIndexY;
-    int targetIndexX;
-    int targetIndexY;
+   protected GameObject touchedObject;
+   protected GameObject targetObject;
+   protected BlockController blockController;
+  protected  int touchedIndexX;
+   protected int touchedIndexY;
+    protected int targetIndexX;
+    protected int targetIndexY;
     bool isMoving = false;
     bool isClickLock = false;
 
@@ -110,7 +110,7 @@ public class TouchManager : MonoBehaviour
                 if (touchedIndexX > 0 && !isMoving)
                 {
                     targetIndexX -= 1;
-                    MoveCharacter("Right", "ULeftp");
+                    MoveCharacter("Right", "Left");
                 }
                 else
                 {
@@ -176,7 +176,7 @@ public class TouchManager : MonoBehaviour
         touchedCharacter.AnimationActive(touchedAnim);
     }
 
-    public void ChildChange()
+    public virtual void ChildChange()
     {
 
         if (touchedObject == null || targetObject == null || touchedObject == targetObject)

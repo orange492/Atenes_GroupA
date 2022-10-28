@@ -251,7 +251,7 @@ public class BlockController : MonoBehaviour
         animalTypes = new int[4];
         for (int i = 0; i < 4; i++)
         {
-            animalTypes[0] = -1;
+            animalTypes[i] = -1;
         }
 
 
