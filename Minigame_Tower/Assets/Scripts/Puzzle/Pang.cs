@@ -19,7 +19,7 @@ public class Pang : MonoBehaviour
         block = transform.GetComponentInParent<Block>();
     }
 
-    public void DestroyCharacter()
+    public void DestroyCharacterInBlock()
     {
         block.DestroyCharacter();
     }

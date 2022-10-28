@@ -58,7 +58,7 @@ public class BlockController : MonoBehaviour
 
             if (AllBlockCheck() && BlockFullcheck())
             {
-               // AllBlockAction();
+                // AllBlockAction();
 
             }
 
@@ -173,12 +173,8 @@ public class BlockController : MonoBehaviour
         }
 
         XThreeMatchAction(X, Y, animalType);
-       // YThreeMatchAction(X, Y, animalType);
-        for (int i = 0; i < blockYSize; i++)
-        {
-            StartCoroutine(CharacterDown());
+        // YThreeMatchAction(X, Y, animalType);
 
-        }
         return;
 
     }
@@ -253,26 +249,35 @@ public class BlockController : MonoBehaviour
         characters = new Character_Base[4];
         int[] animalTypes;
         animalTypes = new int[4];
+        for (int i = 0; i < 4; i++)
+        {
+            animalTypes[0] = -1;
+        }
+
 
         if (X + 2 < blockXSize)
         {
             characters[3] = blocks[Y][X + 2].GetComponentInChildren<Character_Base>();
-            animalTypes[3] = characters[3].AnimalType;
+            if (characters[3] != null)
+                animalTypes[3] = characters[3].AnimalType;
         }
         if (X + 1 < blockXSize)
         {
             characters[2] = blocks[Y][X + 1].GetComponentInChildren<Character_Base>();
-            animalTypes[2] = characters[2].AnimalType;
+            if (characters[2] != null)
+                animalTypes[2] = characters[2].AnimalType;
         }
         if (X - 2 >= 0)
         {
             characters[0] = blocks[Y][X - 2].GetComponentInChildren<Character_Base>();
-            animalTypes[0] = characters[0].AnimalType;
+            if (characters[0] != null)
+                animalTypes[0] = characters[0].AnimalType;
         }
         if (X - 1 >= 0)
         {
             characters[1] = blocks[Y][X - 1].GetComponentInChildren<Character_Base>();
-            animalTypes[1] = characters[1].AnimalType;
+            if (characters[1] != null)
+                animalTypes[1] = characters[1].AnimalType;
         }
 
         if (animalTypes[2] == animalType) // □□|■■|□
@@ -283,11 +288,11 @@ public class BlockController : MonoBehaviour
                 {
                     if (animalTypes[0] == animalType) //  |■■■■■|
                     {
-                        for (int i = -2; i <=2; i++)
+                        for (int i = -2; i <= 2; i++)
                         {
-                            CharacterDestroyAndAnimation(X+i, Y);
+                            CharacterDestroyAndAnimation(X + i, Y);
                         }
-                        
+
                     }
                     else //  |□■■■■|
                     {
@@ -309,7 +314,7 @@ public class BlockController : MonoBehaviour
             {
                 if (animalTypes[1] == animalType) // □|■■■□|
                 {
-                    if (animalTypes[0]==animalType) // |■■■■□|
+                    if (animalTypes[0] == animalType) // |■■■■□|
                     {
                         for (int i = -2; i <= 1; i++)
                         {
@@ -322,7 +327,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
-                    } 
+                    }
                 }
                 else // |□□■■□| 
                 {
@@ -334,11 +339,11 @@ public class BlockController : MonoBehaviour
         {
             if (animalTypes[1] == animalType) // □|■■□□|
             {
-                if (animalTypes[0]==animalType) // |■■■□□|
+                if (animalTypes[0] == animalType) // |■■■□□|
                 {
                     for (int i = -2; i <= 0; i++)
                     {
-                        CharacterDestroyAndAnimation(X+i, Y);
+                        CharacterDestroyAndAnimation(X + i, Y);
                     }
                 }
                 else  // |□■■□□|
@@ -353,7 +358,7 @@ public class BlockController : MonoBehaviour
         }
 
 
-        
+
 
 
         return;
@@ -500,7 +505,7 @@ public class BlockController : MonoBehaviour
     public IEnumerator CharacterDown()
     {
 
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
         for (int i = 0; i < blockXSize; i++)
         {
             for (int j = 0; j < blockYSize - 1; j++)
@@ -517,16 +522,16 @@ public class BlockController : MonoBehaviour
 
     void CharacterDestroyAndAnimation(int X, int Y)
     {
-        if (X < 0 || Y < 0)
-        {
-            return;
-        }
-        if (X >= blockXSize || Y >= blockYSize)
-        {
-            return;
-        }
-        Block block = blocks[Y][X].transform.GetComponent<Block>();
-        block.PangAnimationActive();
+        //if (X < 0 || Y < 0)
+        //{
+        //    return;
+        //}
+        //if (X >= blockXSize || Y >= blockYSize)
+        //{
+        //    return;
+        //}
+        blocks[Y][X].transform.GetComponent<Block>().PangAnimationActive();
+
 
     }
 

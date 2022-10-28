@@ -89,7 +89,7 @@ public class Block : MonoBehaviour
         if (transform.childCount != 1)
         {
             Destroy(transform.GetChild(1).gameObject);
-            
+            blockController.StartCoroutine(blockController.CharacterDown());
         }
 
     }
