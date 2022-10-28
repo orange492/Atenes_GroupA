@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
+using System;
 using System.Diagnostics;
 
 public class JUMP : MonoBehaviour
@@ -10,6 +10,7 @@ public class JUMP : MonoBehaviour
     [SerializeField] private LayerMask platformLayerMask;
     BoxCollider2D boxCollider2D;
 
+    string recentCollisionObjectName = "Ground"; // 새로 추가된 내용
     private void Awake()
     {
         boxCollider2D = GetComponent<BoxCollider2D>();
@@ -19,7 +20,7 @@ public class JUMP : MonoBehaviour
         IsGrounded();
         if (Input.GetMouseButtonDown(0) == true)
         {
-            if (IsGrounded() == true)
+            if (IsGrounded())
             {
                 GetComponent<Rigidbody2D>().AddForce(new Vector2(0, JumpPower));
             }
@@ -28,19 +29,37 @@ public class JUMP : MonoBehaviour
 
     public bool IsGrounded()
     {
-        float extraHeight = .1f;
-        RaycastHit2D raycastHit = Physics2D.Raycast(boxCollider2D.bounds.center, Vector2.down, boxCollider2D.bounds.extents.y + extraHeight, platformLayerMask);
-        //RaycastHit 검사, 검사 시작 위치: boxCollider2D center, 검사 방향: Down
+        float extraHeight = 0.1f;
+        RaycastHit2D raycastHit =
+                       Physics2D.Raycast(
+                                boxCollider2D.bounds.center,
+                                Vector2.down,
+                                boxCollider2D.bounds.extents.y + extraHeight,
+                                platformLayerMask);
+
         Color rayColor;
         if (raycastHit.collider != null)
         {
+            // 새로 추가된 내용
+            if (raycastHit.collider.name != "Ground" &&
+                raycastHit.collider.name != recentCollisionObjectName)
+            {
+                FindObjectOfType<ScoreText>().AddPoint();
+                recentCollisionObjectName = raycastHit.collider.name;
+            }
+
             rayColor = Color.green;
         }
         else
         {
             rayColor = Color.red;
         }
-        UnityEngine.Debug.DrawRay(boxCollider2D.bounds.center, Vector2.down * (boxCollider2D.bounds.extents.y + extraHeight), rayColor);
+
+        UnityEngine.Debug.DrawRay(
+                         boxCollider2D.bounds.center,
+                         Vector2.down * (boxCollider2D.bounds.extents.y + extraHeight),
+                         rayColor);
+
         UnityEngine.Debug.Log(raycastHit.collider);
 
         if (raycastHit.collider != null)
@@ -52,5 +71,4 @@ public class JUMP : MonoBehaviour
             return false;
         }
     }
-
 }

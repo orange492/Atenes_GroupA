@@ -53,4 +53,11 @@ public class PlatformGroup : MonoBehaviour
         }
         return deactivate;
     }
+    public void SetName(string name) // 추가된 내용
+    {
+        foreach (Platform platform in platforms)
+        {
+            platform.gameObject.name = name;
+        }
+    }
 }
