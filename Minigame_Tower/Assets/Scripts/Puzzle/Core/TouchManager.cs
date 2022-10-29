@@ -93,7 +93,7 @@ public class TouchManager : MonoBehaviour
             else if (singedAngle >= 45 && singedAngle < 135)
             {
                 Debug.Log("상");
-                if (touchedIndexY! > 0 && !isMoving)
+                if (touchedIndexY >blockController.invisibleBlockYSize && !isMoving)
                 {
                     targetIndexY -= 1;
                     MoveCharacter("Down", "Up");

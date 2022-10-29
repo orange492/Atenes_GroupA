@@ -11,8 +11,8 @@ public class Character_Base : MonoBehaviour
     int animalType;
     Animator anim;
     UnityEngine.Vector3 targetDir;
-
-
+    Transform characterImage;
+    float moveSpeed = 20.0f;
 
 
 
@@ -44,11 +44,12 @@ public class Character_Base : MonoBehaviour
 
     private void Awake()
     {
-        spriteRenderer = transform.GetComponent<SpriteRenderer>();
+        characterImage = transform.GetChild(0);
+        spriteRenderer = characterImage.GetComponent<SpriteRenderer>();
 
 
 
-        anim = GetComponent<Animator>();
+        anim = characterImage.GetComponent<Animator>();
 
     }
 
@@ -59,6 +60,8 @@ public class Character_Base : MonoBehaviour
     }
     private void Update()
     {
+      
+            transform.localPosition = UnityEngine.Vector3.MoveTowards(transform.localPosition, UnityEngine.Vector3.zero, Time.deltaTime * moveSpeed);
 
 
     }
