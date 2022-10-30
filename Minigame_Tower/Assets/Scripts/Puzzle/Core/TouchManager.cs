@@ -41,6 +41,14 @@ public class TouchManager : MonoBehaviour
         inputActions.Touch.Enable();
         inputActions.Touch.Touch.performed += OnClick;
         inputActions.Touch.Touch.canceled += OffClick;
+        inputActions.Touch.Test.performed += Test4;
+    }
+
+    private void Test4(InputAction.CallbackContext obj)
+    {
+        blockController.EmptyBlockCheck();
+        blockController.CharaterDownPlay();
+        blockController.ResetList();
     }
 
     private void OnDisable()

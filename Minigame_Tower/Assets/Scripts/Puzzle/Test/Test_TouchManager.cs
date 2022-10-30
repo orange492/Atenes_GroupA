@@ -28,4 +28,6 @@ public class Test_TouchManager : TouchManager
             blockController.ThreeMatchAction(targetIndexX, targetIndexY);
     
     }
+
+    
 }

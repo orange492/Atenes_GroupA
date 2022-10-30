@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -24,8 +25,11 @@ public class BlockController : MonoBehaviour
     private float TimeLeft = 0.5f;
     private float nextTime = 0.0f;
 
-    List<int> emptyX;
-    List<int> emptyY;
+    List<int>[] emptyBlocks;
+    /// <summary>
+    /// 0번이 X 1번이 Y
+    /// </summary>
+  
 
     public int DownY => downY;
     public int DownX => downX;
@@ -45,6 +49,12 @@ public class BlockController : MonoBehaviour
         {
             blocksComponents[i] = new Block[blockXSize];
         }
+        emptyBlocks = new List<int>[6];
+        for (int i = 0; i < emptyBlocks.Length; i++)
+        {
+            emptyBlocks[i] = new List<int>();
+        }
+      
     }
     private void Start()
     {
@@ -334,7 +344,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
-                        StartCoroutine(CharacterDownX(X-2, Y, 5));
+                     //   StartCoroutine(CharacterDownX(X-2, Y, 5));
                     }
                     else //  |□■■■■|
                     {
@@ -342,7 +352,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
-                        StartCoroutine(CharacterDownX(X - 1, Y, 4));
+                    //    StartCoroutine(CharacterDownX(X - 1, Y, 4));
                     }
                 }
                 else // |□□■■■|
@@ -351,7 +361,7 @@ public class BlockController : MonoBehaviour
                     {
                         CharacterDestroyAndAnimation(X + i, Y);
                     }
-                    StartCoroutine(CharacterDownX(X, Y, 3));
+               //     StartCoroutine(CharacterDownX(X, Y, 3));
                 }
             }
             else // □□|■■□|
@@ -364,7 +374,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
-                        StartCoroutine(CharacterDownX(X - 2, Y, 4));
+                    //   StartCoroutine(CharacterDownX(X - 2, Y, 4));
                     }
                     else // |□■■■□|
                     {
@@ -372,7 +382,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
-                        StartCoroutine(CharacterDownX(X - 1, Y, 3));
+                        //StartCoroutine(CharacterDownX(X - 1, Y, 3));
                     }
                 }
                 else // |□□■■□| 
@@ -391,7 +401,7 @@ public class BlockController : MonoBehaviour
                     {
                         CharacterDestroyAndAnimation(X + i, Y);
                     }
-                    StartCoroutine(CharacterDownX(X - 2, Y, 3));
+                    //StartCoroutine(CharacterDownX(X - 2, Y, 3));
                 }
                 else  // |□■■□□|
                 {
@@ -524,10 +534,10 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
                         }
-                        downSizeIndex = 5;
-                        downX = X;
-                        downY = Y + 2;
-                        StartCoroutine(CharacterDownY(X, Y+2, 5));
+                        //downSizeIndex = 5;
+                        //downX = X;
+                        //downY = Y + 2;
+                        //StartCoroutine(CharacterDownY(X, Y+2, 5));
 
 
                     }
@@ -539,11 +549,11 @@ public class BlockController : MonoBehaviour
          
                         
                         }
-                        downSizeIndex = 4;
+                        //downSizeIndex = 4;
 
-                        downX = X;
-                        downY = Y + 2; 
-                        StartCoroutine(CharacterDownY(X, Y+2, 4));
+                        //downX = X;
+                        //downY = Y + 2; 
+                        //StartCoroutine(CharacterDownY(X, Y+2, 4));
                     }
                 }
                 else // |□□■■■|
@@ -552,10 +562,10 @@ public class BlockController : MonoBehaviour
                     {
                         CharacterDestroyAndAnimation(X, Y + i);
                     }
-                    downSizeIndex = 3;
-                    downX = X;
-                    downY = Y+2;
-                    StartCoroutine(CharacterDownY(X, Y+2, 3));
+                    //downSizeIndex = 3;
+                    //downX = X;
+                    //downY = Y+2;
+                    //StartCoroutine(CharacterDownY(X, Y+2, 3));
                 }
             }
             else // □□|■■□|
@@ -568,10 +578,10 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
                         }
-                        downSizeIndex = 4;
-                        downX = X;
-                        downY = Y + 1;
-                        StartCoroutine(CharacterDownY(X, Y+1, 4));
+                        //downSizeIndex = 4;
+                        //downX = X;
+                        //downY = Y + 1;
+                        //StartCoroutine(CharacterDownY(X, Y+1, 4));
                     }
                     else // |□■■■□|
                     {
@@ -579,10 +589,10 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
                         }
-                        downSizeIndex = 3;
-                        downX = X;
-                        downY = Y + 1; 
-                        StartCoroutine(CharacterDownY(X, Y+1, 3));
+                        //downSizeIndex = 3;
+                        //downX = X;
+                        //downY = Y + 1; 
+                        //StartCoroutine(CharacterDownY(X, Y+1, 3));
                     }
                 }
                 else // |□□■■□| 
@@ -601,10 +611,10 @@ public class BlockController : MonoBehaviour
                     {
                         CharacterDestroyAndAnimation(X, Y + i);
                     }
-                    downSizeIndex = 3;
-                    downX = X;
-                    downY = Y;
-                    StartCoroutine(CharacterDownY(X, Y, 3));
+                    //downSizeIndex = 3;
+                    //downX = X;
+                    //downY = Y;
+                    //StartCoroutine(CharacterDownY(X, Y, 3));
                 }
                 else  // |□■■□□|
                 {
@@ -635,6 +645,17 @@ public class BlockController : MonoBehaviour
         //downSizeIndex = 0;
         //downX = 0;
         //downY = 0;
+    }
+
+    public void CharaterDownPlay()
+    {
+        for (int i = 0; i < blockXSize; i++)
+        {
+            if (emptyBlocks[i].Count!=0)
+            StartCoroutine(CharacterDownY(i, emptyBlocks[i].Max(), emptyBlocks[i].Count));
+        }
+       
+
     }
     public IEnumerator CharacterDownX(int X, int Y, int emptyXSize)
     {
@@ -672,6 +693,30 @@ public class BlockController : MonoBehaviour
         blocksComponents[Y][X].PangAnimationActive();
 
 
+    }
+
+    public void EmptyBlockCheck()
+    {
+        for (int i = 0; i < blockXSize; i++)
+        {
+            for (int j = invisibleBlockYSize; j <blockYSize ; j++)
+            {
+                if (blocks[j][i].transform.childCount == 1)
+                {
+                    emptyBlocks[i].Add(j);
+                }
+            }
+
+        }
+    }
+
+    public void ResetList()
+    {
+        for (int i = 0; i < blockXSize; i++)
+        {
+            emptyBlocks[i].Clear();
+        }
+       
     }
 
 
