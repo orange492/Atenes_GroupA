@@ -27,6 +27,7 @@ public class PangAnimationState : StateMachineBehaviour
         blockController.EmptyBlockCheck();
         blockController.CharaterDownPlay();
         blockController.ResetList();
+        //blockController.Mode = BlockController.GameMode.CHECKMODE;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

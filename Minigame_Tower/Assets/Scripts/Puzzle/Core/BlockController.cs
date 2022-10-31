@@ -19,15 +19,26 @@ public class BlockController : MonoBehaviour
     public int blockXSize = 6;
     public int blockYSize = 9 * 2;
     public int invisibleBlockYSize = 9;
-  
+    float timeLeft = 0.0f;
+    float nextTime = 2.0f;
 
     List<int>[] emptyBlocks;
 
-    enum GameMode
+  public enum GameMode
     {
-
+        CHECKMODE,
+        STOPCHECKMODE
     }
-
+   public GameMode mode = GameMode.CHECKMODE;
+    public GameMode Mode
+    {
+        get => mode;
+        set
+        {
+            mode = value;
+        }
+    } 
+ 
 
 
     private void Awake()
@@ -68,9 +79,9 @@ public class BlockController : MonoBehaviour
         }
 
 
-    
-            AllBlockAction();
-      
+
+
+
 
 
     }
@@ -79,7 +90,7 @@ public class BlockController : MonoBehaviour
     {
         //if (Time.time > nextTime)
         //{
-        //    nextTime = Time.time + TimeLeft;
+        //    nextTime = Time.time + timeLeft;
 
 
         //    if (AllBlockCheck() && BlockFullcheck())
@@ -154,6 +165,7 @@ public class BlockController : MonoBehaviour
 
             }
         }
+      //  Mode = GameMode.CHECKMODE;
         return false;
     }
 
@@ -163,7 +175,7 @@ public class BlockController : MonoBehaviour
         {
             for (int j = invisibleBlockYSize; j < blockYSize; j++)
             {
-                ThreeMatchAction(i,j );
+                ThreeMatchAction(i, j);
 
             }
         }
@@ -172,7 +184,7 @@ public class BlockController : MonoBehaviour
     public bool ThreeMatchCheck(int X, int Y)
     {
 
-        int animalType = -1;
+        int animalType = -2;
         Character_Base character_Base = blocks[Y][X].transform.GetComponentInChildren<Character_Base>();
         if (character_Base != null)
         {
@@ -185,7 +197,7 @@ public class BlockController : MonoBehaviour
 
 
         YThreeMatchCheck(X, Y, animalType);
-       
+
 
         return (XThreeMatchCheck(X, Y, animalType) ||
 
@@ -204,6 +216,11 @@ public class BlockController : MonoBehaviour
     public void ThreeMatchAction(int X, int Y)
     {
 
+        //if (Mode == GameMode.STOPCHECKMODE)
+        //{
+        //    return;
+        //}
+        //Mode = GameMode.STOPCHECKMODE;
         int animalType = -1;
         Character_Base character_Base = blocks[Y][X].transform.GetComponentInChildren<Character_Base>();
         if (character_Base != null)
