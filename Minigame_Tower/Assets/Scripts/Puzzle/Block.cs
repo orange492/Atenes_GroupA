@@ -69,7 +69,7 @@ public class Block : MonoBehaviour
     }
 
 
-    void MakeCharacter()
+    public void MakeCharacter()
     {
         GameObject obj = Instantiate(characterPrefab, transform.position, transform.rotation, transform);
 

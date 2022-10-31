@@ -16,24 +16,17 @@ public class BlockController : MonoBehaviour
     TouchManager touchManager;
 
 
-    int downSizeIndex = 0;
-    int downY = -1;
-    int downX = -1;
     public int blockXSize = 6;
     public int blockYSize = 9 * 2;
     public int invisibleBlockYSize = 9;
-    private float TimeLeft = 0.5f;
-    private float nextTime = 0.0f;
-
-    List<int>[] emptyBlocks;
-    /// <summary>
-    /// 0번이 X 1번이 Y
-    /// </summary>
   
 
-    public int DownY => downY;
-    public int DownX => downX;
-    public int DownSize => downSizeIndex;
+    List<int>[] emptyBlocks;
+
+    enum GameMode
+    {
+
+    }
 
 
 
@@ -44,32 +37,27 @@ public class BlockController : MonoBehaviour
         {
             blocks[i] = new GameObject[blockXSize];
         }
+
         blocksComponents = new Block[blockYSize][];
         for (int i = 0; i < blockYSize; i++)
         {
             blocksComponents[i] = new Block[blockXSize];
         }
+
         emptyBlocks = new List<int>[6];
         for (int i = 0; i < emptyBlocks.Length; i++)
         {
             emptyBlocks[i] = new List<int>();
         }
-      
+
     }
     private void Start()
     {
-        BlockCharacterCreate(blockXSize, blockYSize);
+        BlockCreate(blockXSize, blockYSize);
         MoveBlock(blockYSize, invisibleBlockYSize);
 
         touchManager = FindObjectOfType<TouchManager>();
-        //for (int i = 0; i < blockXSize; i++)
-        //{
-        //    for (int j = 0; j < blockYSize; j++)
-        //    {
-        //        ThreeMatchCheck(i, j);
 
-        //    }
-        //}
         for (int i = 0; i < blockYSize; i++)
         {
             for (int j = 0; j < blockXSize; j++)
@@ -80,10 +68,9 @@ public class BlockController : MonoBehaviour
         }
 
 
-        if (AllBlockCheck())
-        {
+    
             AllBlockAction();
-        }
+      
 
 
     }
@@ -137,7 +124,7 @@ public class BlockController : MonoBehaviour
     }
 
 
-    void BlockCharacterCreate(int X, int Y)
+    void BlockCreate(int X, int Y)
     {
         for (int j = 0; j < Y; j++)
         {
@@ -174,9 +161,9 @@ public class BlockController : MonoBehaviour
     {
         for (int i = 0; i < blockXSize; i++)
         {
-            for (int j = 0; j < blockYSize; j++)
+            for (int j = invisibleBlockYSize; j < blockYSize; j++)
             {
-                ThreeMatchAction(i, j);
+                ThreeMatchAction(i,j );
 
             }
         }
@@ -198,7 +185,7 @@ public class BlockController : MonoBehaviour
 
 
         YThreeMatchCheck(X, Y, animalType);
-        //touchManager.StartCoroutine(touchManager.DelaySetIsClickLock());
+       
 
         return (XThreeMatchCheck(X, Y, animalType) ||
 
@@ -344,7 +331,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
-                     //   StartCoroutine(CharacterDownX(X-2, Y, 5));
+                        //   StartCoroutine(CharacterDownX(X-2, Y, 5));
                     }
                     else //  |□■■■■|
                     {
@@ -352,7 +339,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
-                    //    StartCoroutine(CharacterDownX(X - 1, Y, 4));
+                        //    StartCoroutine(CharacterDownX(X - 1, Y, 4));
                     }
                 }
                 else // |□□■■■|
@@ -361,7 +348,7 @@ public class BlockController : MonoBehaviour
                     {
                         CharacterDestroyAndAnimation(X + i, Y);
                     }
-               //     StartCoroutine(CharacterDownX(X, Y, 3));
+                    //     StartCoroutine(CharacterDownX(X, Y, 3));
                 }
             }
             else // □□|■■□|
@@ -374,7 +361,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
-                    //   StartCoroutine(CharacterDownX(X - 2, Y, 4));
+                        //   StartCoroutine(CharacterDownX(X - 2, Y, 4));
                     }
                     else // |□■■■□|
                     {
@@ -534,6 +521,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
                         }
+
                         //downSizeIndex = 5;
                         //downX = X;
                         //downY = Y + 2;
@@ -546,8 +534,8 @@ public class BlockController : MonoBehaviour
                         for (int i = -1; i <= 2; i++)
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
-         
-                        
+
+
                         }
                         //downSizeIndex = 4;
 
@@ -630,16 +618,16 @@ public class BlockController : MonoBehaviour
 
         return;
     }
-    public IEnumerator CharacterDownY(int X, int lowY, int downSize)
+    public void CharacterDown(int X, int lowY, int downSize)
     {
 
-        yield return new WaitForSeconds(0.7f);
+
         for (int i = lowY; i >= invisibleBlockYSize; i--)
         {
             if (blocks[i - downSize][X].transform.childCount == 2 && blocks[i][X].transform.childCount == 1)
             {
                 blocks[i - downSize][X].transform.GetChild(1).transform.parent = blocks[i][X].transform;
-                blocks[i][X].transform.GetChild(1).localPosition = Vector3.up*downSize*1.25f;
+                blocks[i][X].transform.GetChild(1).localPosition = Vector3.up * downSize * 1.25f;
             }
         }
         //downSizeIndex = 0;
@@ -651,45 +639,25 @@ public class BlockController : MonoBehaviour
     {
         for (int i = 0; i < blockXSize; i++)
         {
-            if (emptyBlocks[i].Count!=0)
-            StartCoroutine(CharacterDownY(i, emptyBlocks[i].Max(), emptyBlocks[i].Count));
+            if (emptyBlocks[i].Count != 0)
+                CharacterDown(i, emptyBlocks[i].Max(), emptyBlocks[i].Count);
         }
-       
 
-    }
-    public IEnumerator CharacterDownX(int X, int Y, int emptyXSize)
-    {
 
-        yield return new WaitForSeconds(0.7f);
-        for (int j = X; j < X+emptyXSize; j++)
-        {
-
-        for (int i = Y; i >= invisibleBlockYSize; i--)
-        {
-            if (blocks[i - 1][j].transform.childCount == 2 && blocks[i][j].transform.childCount == 1)
-            {
-                blocks[i - 1][j].transform.GetChild(1).transform.parent = blocks[i][j].transform;
-                blocks[i][j].transform.GetChild(1).localPosition = Vector3.up*1.25f;
-            }
-        }
-        }
-        //downSizeIndex = 0;
-        //downX = 0;
-        //downY = 0;
     }
 
 
 
     void CharacterDestroyAndAnimation(int X, int Y)
     {
-        //if (X < 0 || Y < 0)
-        //{
-        //    return;
-        //}
-        //if (X >= blockXSize || Y >= blockYSize)
-        //{
-        //    return;
-        //}
+        if (X < 0 || Y < 0)
+        {
+            return;
+        }
+        if (X >= blockXSize || Y >= blockYSize)
+        {
+            return;
+        }
         blocksComponents[Y][X].PangAnimationActive();
 
 
@@ -699,7 +667,7 @@ public class BlockController : MonoBehaviour
     {
         for (int i = 0; i < blockXSize; i++)
         {
-            for (int j = invisibleBlockYSize; j <blockYSize ; j++)
+            for (int j = invisibleBlockYSize; j < blockYSize; j++)
             {
                 if (blocks[j][i].transform.childCount == 1)
                 {
@@ -716,7 +684,7 @@ public class BlockController : MonoBehaviour
         {
             emptyBlocks[i].Clear();
         }
-       
+
     }
 
 
