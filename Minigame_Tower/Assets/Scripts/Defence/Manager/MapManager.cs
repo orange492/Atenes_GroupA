@@ -9,6 +9,8 @@ public class MapManager : MonoBehaviour
     GameObject tilePref;
     [SerializeField]
     GameObject unitPref;
+    [SerializeField]
+    Sprite[] spr;
     int[] size = new int[2];
     public int unitCnt { get; set; }
 
@@ -56,7 +58,8 @@ public class MapManager : MonoBehaviour
                 break;
         }
         Unit unit = this.transform.GetChild(index).GetChild(0).gameObject.GetComponent<Unit>();
-        unit.Init(Random.Range(0, 5), 1); //수정예정!
+        int temp = Random.Range(0, 5);
+        unit.Init(temp,spr[temp], 1);
         unitCnt++;
     }
 }
