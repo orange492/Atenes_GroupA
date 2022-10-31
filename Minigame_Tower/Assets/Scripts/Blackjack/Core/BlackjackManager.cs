@@ -23,7 +23,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
 
     //  플레이어와 딜러 스크립트에 접근하는 것
     public PlayerScript playerScript; // 플레이어 스크립트 적용시키기
-    public PlayerScript dealerScript; // 딜러 스크립트 적용 시키기
+    public PlayerScript2 dealerScript; // 딜러 스크립트 적용 시키기
 
     // 업데이트 할때마다 보이는 텍스트 만들기
     public TextMeshProUGUI scoreText; // 플레이어 점수 스코어 , 21을 생각하고
@@ -57,7 +57,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
         betBtn.onClick.AddListener(() => BetClicked()); //  스크립트에 온클릭 리스너 추가 ,배팅 개념
     }
 
-    private void DealClicked() // 딜클릭에 대해서 설명, 온클릭 버튼 누르면 작동되는 함수
+    private void DealClicked() // 초기화 함수 -> 최종 승패 여기서 결정한다.
     {
         // 한라운드를 리샛하고 텍스트를 숨기고 새 덱으로 셔플한다.
         playerScript.ResetHand(); // 플레이어 의 핸드를 리셋
@@ -82,8 +82,19 @@ public class BlackjackManager : Singletons<BlackjackManager>
         //  기본 배팅금액 등등 설정
         pot = 20;
         betsText.text = "얼마걸까: $" + pot.ToString();
-        playerScript.AdjustMoney(-20);
+        //playerScript.AdjustMoney(-20);
         cashText.text = "$" + playerScript.GetMoney().ToString();
+        cashText2.text = "$" + dealerScript.GetMoney().ToString();
+        if(playerScript.money <= 0)   // 최종적으로 이길때 출력됨
+        {
+            Debug.Log("완전히 패배했습니다.");
+
+        }
+        else if(dealerScript.money <=0)  // 최종적으로 졋을때 출력됨
+        {
+            Debug.Log("최종 승리했습니다");
+
+        }
 
     }
 
@@ -120,7 +131,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
     /// <summary>
     /// 승패 판정하는 조건
     /// </summary>
-    void RoundOver()
+    void RoundOver() // pot 걸은것도 다 승리하면 가져갈 수 있도록 변경 필요!!
     {
         // 논리형으로 승패 나눌 수 있도록 변수 생성
         bool playerBust = playerScript.handValue > 21; // 플레이어가 진다
@@ -142,12 +153,15 @@ public class BlackjackManager : Singletons<BlackjackManager>
         else if (playerBust || (!dealerBust && dealerScript.handValue > playerScript.handValue))
         {
             mainText.text = "너가 졌어";
+            playerScript.AdjustMoney2(100); // 내가 돈 100원 빼기
+            dealerScript.AdjustMoney(100); // 딜러가 돈 100가져가기
         }
         // 딜러만만 21넘고 딜러는 안넘었을때 또는 플레이어가 버스트 상태이며 딜러의 손패점수가 플레이어보다 높을때
         else if (dealerBust || playerScript.handValue > dealerScript.handValue)
         {
             mainText.text = "나의 승리";
-            playerScript.AdjustMoney(pot);
+            playerScript.AdjustMoney(100); // 내가 돈 100가져오기
+            dealerScript.AdjustMoney2(100); // 딜러 돈 100빼기
         }
         //둘다 값이 동일할때
         else if (playerScript.handValue == dealerScript.handValue)
@@ -158,10 +172,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
         else
         {
             roundOver = false;
-            if (playerLose)  // 확실한 패배 조건 출력되기 해주기...
-            {
-                mainText.text = "GAME OVER...";
-            }
+          
         }
         //다음턴 시작되면 리셋 되는 요소들
         if (roundOver)
@@ -173,6 +184,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
             dealerScoreText.gameObject.SetActive(true);
             hideCard.GetComponent<Renderer>().enabled = false;
             cashText.text = "$" + playerScript.GetMoney().ToString();
+            cashText2.text = "$" + dealerScript.GetMoney().ToString(); // 딜러금액도 판정해주기
             standClicks = 0;
         }
     }
@@ -180,7 +192,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
     // 돈 베팅 버튼 누르면 진행되는 함수
     void BetClicked()
     {
-        Text newBet = betBtn.GetComponentInChildren(typeof(Text)) as Text; // Text로 취급한다...
+        TextMeshProUGUI newBet = betBtn.GetComponentInChildren(typeof(TextMeshProUGUI)) as TextMeshProUGUI; // Text로 취급한다...
         int intBet = int.Parse(newBet.text.ToString().Remove(0, 1));
         playerScript.AdjustMoney(-intBet);
         cashText.text = "$" + playerScript.GetMoney().ToString();
