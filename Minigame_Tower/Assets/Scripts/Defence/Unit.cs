@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    [SerializeField]
+    GameObject pBullet;
     SpriteRenderer spr;
     GameObject[] stars = new GameObject[5];
     public int type { get; set; }
     public int star { get; set; }
-    int level;
-    float dmg;
+    float timer;
 
     // Start is called before the first frame update
     void Awake()
     {
+        timer = 0;
         spr = this.GetComponent<SpriteRenderer>();
         Transform starTr = this.transform.GetChild(0);
         for (int i = 0; i < 5; i++)
@@ -26,42 +28,24 @@ public class Unit : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-
+        timer += Time.deltaTime;
+        if(timer > 3 - star * 0.5)
+        {
+            Shoot();
+            timer = 0;
+        }
+        
     }
 
-    public void Init(int _type, int _star)
+    public void Init(int _type, Sprite spr,int _star)
     {
         this.gameObject.SetActive(true);
         type = _type;
         star = _star;
+        this.GetComponent<SpriteRenderer>().sprite = spr;
         PrintUnit();
-        if (_type == 0)
-        {
-            Color color = Color.blue;
-            spr.color = color;
-        }
-        if (_type==1)
-        {
-            Color color = Color.red;
-            spr.color = color;
-        }
-        else if (_type == 2)
-        {
-            Color color = Color.green;
-            spr.color = color;
-        }
-        else if (_type == 3)
-        {
-            Color color = Color.yellow;
-            spr.color = color;
-        }
-        else if (_type == 4)
-        {
-            Color color = Color.black;
-            spr.color = color;
-        }
     }
 
     void PrintUnit()
@@ -100,9 +84,9 @@ public class Unit : MonoBehaviour
         }
     }
 
-    public void Show()
+    void Shoot()
     {
-       
+        DefenceManager.Instance.Shoot(this.transform, type);
     }
 
 }
