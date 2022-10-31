@@ -41,6 +41,14 @@ public class TouchManager : MonoBehaviour
         inputActions.Touch.Enable();
         inputActions.Touch.Touch.performed += OnClick;
         inputActions.Touch.Touch.canceled += OffClick;
+        inputActions.Touch.Test.performed += Test4;
+    }
+
+    private void Test4(InputAction.CallbackContext obj)
+    {
+        blockController.EmptyBlockCheck();
+        blockController.CharaterDownPlay();
+        blockController.ResetList();
     }
 
     private void OnDisable()
@@ -93,7 +101,7 @@ public class TouchManager : MonoBehaviour
             else if (singedAngle >= 45 && singedAngle < 135)
             {
                 Debug.Log("상");
-                if (touchedIndexY! > 0 && !isMoving)
+                if (touchedIndexY >blockController.invisibleBlockYSize && !isMoving)
                 {
                     targetIndexY -= 1;
                     MoveCharacter("Down", "Up");

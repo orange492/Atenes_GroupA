@@ -21,9 +21,13 @@ public class Test_TouchManager : TouchManager
         touchedObject.transform.GetChild(1).transform.parent = transform;
         targetObject.transform.GetChild(1).transform.parent = touchedObject.transform;
         transform.GetChild(0).transform.parent = targetObject.transform;
-       
-            blockController.ThreeMatchAction(touchedIndexX, touchedIndexY);
+        targetObject.transform.GetChild(1).localPosition= Vector3.zero;
+        touchedObject.transform.GetChild(1).localPosition = Vector3.zero;
+
+        blockController.ThreeMatchAction(touchedIndexX, touchedIndexY);
             blockController.ThreeMatchAction(targetIndexX, targetIndexY);
     
     }
+
+    
 }

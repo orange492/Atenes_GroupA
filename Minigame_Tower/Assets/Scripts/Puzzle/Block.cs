@@ -58,13 +58,13 @@ public class Block : MonoBehaviour
     private void Update()
     {
         
-        if (transform.childCount == 1 && indexY == 0)
+        if (transform.childCount == 1 && indexY <blockController.invisibleBlockYSize)
         {
 
             MakeCharacter();
-            blockController.StartCoroutine(blockController.CharacterDown());
 
         }
+        
 
     }
 
@@ -89,7 +89,7 @@ public class Block : MonoBehaviour
         if (transform.childCount != 1)
         {
             Destroy(transform.GetChild(1).gameObject);
-            blockController.StartCoroutine(blockController.CharacterDown());
+         
         }
 
     }

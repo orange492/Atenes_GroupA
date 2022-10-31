@@ -35,6 +35,15 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Test"",
+                    ""type"": ""Button"",
+                    ""id"": ""09c3c89d-6ef4-4a5e-a570-09f6d13591e0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -46,6 +55,39 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Touch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4c43983d-ef45-4f02-9ccb-b6ac00a21910"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Test"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b616a8dd-fcac-45d2-948c-6421a2ca5408"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Test"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5da06918-4a27-4d2e-9bb4-3d95f3f3bddf"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Test"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -85,6 +127,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         // Touch
         m_Touch = asset.FindActionMap("Touch", throwIfNotFound: true);
         m_Touch_Touch = m_Touch.FindAction("Touch", throwIfNotFound: true);
+        m_Touch_Test = m_Touch.FindAction("Test", throwIfNotFound: true);
         // Defence
         m_Defence = asset.FindActionMap("Defence", throwIfNotFound: true);
         m_Defence_Click = m_Defence.FindAction("Click", throwIfNotFound: true);
@@ -148,11 +191,13 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Touch;
     private ITouchActions m_TouchActionsCallbackInterface;
     private readonly InputAction m_Touch_Touch;
+    private readonly InputAction m_Touch_Test;
     public struct TouchActions
     {
         private @InputActions m_Wrapper;
         public TouchActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Touch => m_Wrapper.m_Touch_Touch;
+        public InputAction @Test => m_Wrapper.m_Touch_Test;
         public InputActionMap Get() { return m_Wrapper.m_Touch; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -165,6 +210,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Touch.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouch;
                 @Touch.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouch;
                 @Touch.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnTouch;
+                @Test.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnTest;
+                @Test.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnTest;
+                @Test.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnTest;
             }
             m_Wrapper.m_TouchActionsCallbackInterface = instance;
             if (instance != null)
@@ -172,6 +220,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Touch.started += instance.OnTouch;
                 @Touch.performed += instance.OnTouch;
                 @Touch.canceled += instance.OnTouch;
+                @Test.started += instance.OnTest;
+                @Test.performed += instance.OnTest;
+                @Test.canceled += instance.OnTest;
             }
         }
     }
@@ -212,6 +263,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     public interface ITouchActions
     {
         void OnTouch(InputAction.CallbackContext context);
+        void OnTest(InputAction.CallbackContext context);
     }
     public interface IDefenceActions
     {

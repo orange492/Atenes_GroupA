@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BlackjackManager : Singletons<BlackjackManager>
 {
@@ -16,7 +17,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
 
 
 
-
+   
 
     private int standClicks = 0; // 처음 스킵하는 버튼 횟수는 0으로 초기화
 
@@ -25,18 +26,18 @@ public class BlackjackManager : Singletons<BlackjackManager>
     public PlayerScript dealerScript; // 딜러 스크립트 적용 시키기
 
     // 업데이트 할때마다 보이는 텍스트 만들기
-    public Text scoreText; // 플레이어 점수 스코어 , 21을 생각하고
-    public Text dealerScoreText; // 딜러 점수 스코어 ,21을 생각하고
-    public Text betsText; // 배팅 거는 숫자 표시, 얼마 걸지
-    public Text cashText; // 얼마 남아 있는지... HP 개념
-    public Text mainText; // 승패 판정할때 뜨는 텍스트
-    public Text standBtnText; // 콜 얼마걸지 배팅하는데 나오는 텍스트
+    public TextMeshProUGUI scoreText; // 플레이어 점수 스코어 , 21을 생각하고
+    public TextMeshProUGUI dealerScoreText; // 딜러 점수 스코어 ,21을 생각하고
+    public TextMeshProUGUI betsText; // 배팅 거는 숫자 표시, 얼마 걸지
+    public TextMeshProUGUI cashText; // 얼마 남아 있는지... HP 개념
+    public TextMeshProUGUI mainText; // 승패 판정할때 뜨는 텍스트
+    public TextMeshProUGUI standBtnText; // 콜 얼마걸지 배팅하는데 나오는 텍스트
 
 
     //적 스테이터스 개념... -> 추후 보이도록 변경필요함!
-    public Text scoreText2; // 플레이어 점수 스코어 , 21을 생각하고
-    public Text betsText2; // 배팅 거는 숫자 표시, 얼마 걸지
-    public Text cashText2; // 얼마 남아 있는지... HP 개념
+    public TextMeshProUGUI scoreText2; // 플레이어 점수 스코어 , 21을 생각하고
+    public TextMeshProUGUI betsText2; // 배팅 거는 숫자 표시, 얼마 걸지
+    public TextMeshProUGUI cashText2; // 얼마 남아 있는지... HP 개념
 
 
 

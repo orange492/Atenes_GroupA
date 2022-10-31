@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,12 +12,28 @@ public class BlockController : MonoBehaviour
     public GameObject blockPrefab;
     public Transform blockPostionDefault;
     public GameObject[][] blocks;
+    Block[][] blocksComponents;
     TouchManager touchManager;
 
+
+    int downSizeIndex = 0;
+    int downY = -1;
+    int downX = -1;
     public int blockXSize = 6;
-    public int blockYSize = 9;
+    public int blockYSize = 9 * 2;
+    public int invisibleBlockYSize = 9;
     private float TimeLeft = 0.5f;
     private float nextTime = 0.0f;
+
+    List<int>[] emptyBlocks;
+    /// <summary>
+    /// 0번이 X 1번이 Y
+    /// </summary>
+  
+
+    public int DownY => downY;
+    public int DownX => downX;
+    public int DownSize => downSizeIndex;
 
 
 
@@ -27,10 +44,22 @@ public class BlockController : MonoBehaviour
         {
             blocks[i] = new GameObject[blockXSize];
         }
+        blocksComponents = new Block[blockYSize][];
+        for (int i = 0; i < blockYSize; i++)
+        {
+            blocksComponents[i] = new Block[blockXSize];
+        }
+        emptyBlocks = new List<int>[6];
+        for (int i = 0; i < emptyBlocks.Length; i++)
+        {
+            emptyBlocks[i] = new List<int>();
+        }
+      
     }
     private void Start()
     {
         BlockCharacterCreate(blockXSize, blockYSize);
+        MoveBlock(blockYSize, invisibleBlockYSize);
 
         touchManager = FindObjectOfType<TouchManager>();
         //for (int i = 0; i < blockXSize; i++)
@@ -41,6 +70,16 @@ public class BlockController : MonoBehaviour
 
         //    }
         //}
+        for (int i = 0; i < blockYSize; i++)
+        {
+            for (int j = 0; j < blockXSize; j++)
+            {
+                blocksComponents[i][j] = blocks[i][j].GetComponent<Block>();
+            }
+
+        }
+
+
         if (AllBlockCheck())
         {
             AllBlockAction();
@@ -51,20 +90,20 @@ public class BlockController : MonoBehaviour
 
     private void Update()
     {
-        if (Time.time > nextTime)
-        {
-            nextTime = Time.time + TimeLeft;
+        //if (Time.time > nextTime)
+        //{
+        //    nextTime = Time.time + TimeLeft;
 
 
-            if (AllBlockCheck() && BlockFullcheck())
-            {
-                // AllBlockAction();
+        //    if (AllBlockCheck() && BlockFullcheck())
+        //    {
+        //        AllBlockAction();
 
-            }
+        //    }
 
 
 
-        }
+        //}
 
     }
 
@@ -82,6 +121,19 @@ public class BlockController : MonoBehaviour
             }
         }
         return true;
+    }
+
+
+    void MoveBlock(int X, int Y)
+    {
+        for (int i = 0; i < blockXSize; i++)
+        {
+            for (int j = 0; j < invisibleBlockYSize; j++)
+            {
+                blocks[j][i].transform.position += Vector3.up * 10;
+            }
+        }
+
     }
 
 
@@ -173,7 +225,7 @@ public class BlockController : MonoBehaviour
         }
 
         XThreeMatchAction(X, Y, animalType);
-        // YThreeMatchAction(X, Y, animalType);
+        YThreeMatchAction(X, Y, animalType);
 
         return;
 
@@ -292,7 +344,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
-
+                     //   StartCoroutine(CharacterDownX(X-2, Y, 5));
                     }
                     else //  |□■■■■|
                     {
@@ -300,6 +352,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
+                    //    StartCoroutine(CharacterDownX(X - 1, Y, 4));
                     }
                 }
                 else // |□□■■■|
@@ -308,6 +361,7 @@ public class BlockController : MonoBehaviour
                     {
                         CharacterDestroyAndAnimation(X + i, Y);
                     }
+               //     StartCoroutine(CharacterDownX(X, Y, 3));
                 }
             }
             else // □□|■■□|
@@ -320,6 +374,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
+                    //   StartCoroutine(CharacterDownX(X - 2, Y, 4));
                     }
                     else // |□■■■□|
                     {
@@ -327,6 +382,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
+                        //StartCoroutine(CharacterDownX(X - 1, Y, 3));
                     }
                 }
                 else // |□□■■□| 
@@ -345,6 +401,7 @@ public class BlockController : MonoBehaviour
                     {
                         CharacterDestroyAndAnimation(X + i, Y);
                     }
+                    //StartCoroutine(CharacterDownX(X - 2, Y, 3));
                 }
                 else  // |□■■□□|
                 {
@@ -387,7 +444,7 @@ public class BlockController : MonoBehaviour
             }
         }
 
-        if (Y + 1 < blockYSize && Y - 1 >= 0)
+        if (Y + 1 < blockYSize && Y - 1 >= invisibleBlockYSize)
         {
             characters[0] = blocks[Y - 1][X].GetComponentInChildren<Character_Base>();
             characters[1] = blocks[Y + 1][X].GetComponentInChildren<Character_Base>();
@@ -405,7 +462,7 @@ public class BlockController : MonoBehaviour
 
             }
         }
-        if (Y - 2 >= 0)
+        if (Y - 2 >= invisibleBlockYSize)
         {
             characters[0] = blocks[Y - 1][X].GetComponentInChildren<Character_Base>();
             characters[1] = blocks[Y - 2][X].GetComponentInChildren<Character_Base>();
@@ -431,94 +488,197 @@ public class BlockController : MonoBehaviour
     public void YThreeMatchAction(int X, int Y, int animalType)
     {
         Character_Base[] characters;
-        characters = new Character_Base[2];
+        characters = new Character_Base[4];
+        int[] animalTypes;
+        animalTypes = new int[4];
+        for (int i = 0; i < 4; i++)
+        {
+            animalTypes[i] = -1;
+        }
+
 
         if (Y + 2 < blockYSize)
         {
-            characters[0] = blocks[Y + 1][X].GetComponentInChildren<Character_Base>();
-            characters[1] = blocks[Y + 2][X].GetComponentInChildren<Character_Base>();
-            if (characters[0] != null && characters[1] != null)
-            {
-                if ((animalType == characters[0].AnimalType) && animalType == characters[1].AnimalType)
-                {
+            characters[3] = blocks[Y + 2][X].GetComponentInChildren<Character_Base>();
+            if (characters[3] != null)
+                animalTypes[3] = characters[3].AnimalType;
+        }
+        if (Y + 1 < blockYSize)
+        {
+            characters[2] = blocks[Y + 1][X].GetComponentInChildren<Character_Base>();
+            if (characters[2] != null)
+                animalTypes[2] = characters[2].AnimalType;
+        }
+        if (Y - 2 >= invisibleBlockYSize)
+        {
+            characters[0] = blocks[Y - 2][X].GetComponentInChildren<Character_Base>();
+            if (characters[0] != null)
+                animalTypes[0] = characters[0].AnimalType;
+        }
+        if (Y - 1 >= invisibleBlockYSize)
+        {
+            characters[1] = blocks[Y - 1][X].GetComponentInChildren<Character_Base>();
+            if (characters[1] != null)
+                animalTypes[1] = characters[1].AnimalType;
+        }
 
-                    for (int i = 0; i < 3; i++)
+        if (animalTypes[2] == animalType) // □□|■■|□
+        {
+            if (animalTypes[3] == animalType) // □□|■■■|
+            {
+                if (animalTypes[1] == animalType) // □|■■■■|
+                {
+                    if (animalTypes[0] == animalType) //  |■■■■■|
+                    {
+                        for (int i = -2; i <= 2; i++)
+                        {
+                            CharacterDestroyAndAnimation(X, Y + i);
+                        }
+                        //downSizeIndex = 5;
+                        //downX = X;
+                        //downY = Y + 2;
+                        //StartCoroutine(CharacterDownY(X, Y+2, 5));
+
+
+                    }
+                    else //  |□■■■■|
+                    {
+                        for (int i = -1; i <= 2; i++)
+                        {
+                            CharacterDestroyAndAnimation(X, Y + i);
+         
+                        
+                        }
+                        //downSizeIndex = 4;
+
+                        //downX = X;
+                        //downY = Y + 2; 
+                        //StartCoroutine(CharacterDownY(X, Y+2, 4));
+                    }
+                }
+                else // |□□■■■|
+                {
+                    for (int i = 0; i <= 2; i++)
                     {
                         CharacterDestroyAndAnimation(X, Y + i);
                     }
-                    for (int i = 0; i < 2; i++)
-                    {
-                        characters[i] = null;
-                    }
-
-
+                    //downSizeIndex = 3;
+                    //downX = X;
+                    //downY = Y+2;
+                    //StartCoroutine(CharacterDownY(X, Y+2, 3));
                 }
             }
-        }
-
-        if (Y + 1 < blockYSize && Y - 1 >= 0)
-        {
-            characters[0] = blocks[Y - 1][X].GetComponentInChildren<Character_Base>();
-            characters[1] = blocks[Y + 1][X].GetComponentInChildren<Character_Base>();
-            if (characters[0] != null && characters[1] != null)
+            else // □□|■■□|
             {
-                if ((animalType == characters[0].AnimalType) && animalType == characters[1].AnimalType)
+                if (animalTypes[1] == animalType) // □|■■■□|
                 {
-                    for (int i = 0; i < 3; i++)
+                    if (animalTypes[0] == animalType) // |■■■■□|
                     {
-                        CharacterDestroyAndAnimation(X, Y + i - 1);
+                        for (int i = -2; i <= 1; i++)
+                        {
+                            CharacterDestroyAndAnimation(X, Y + i);
+                        }
+                        //downSizeIndex = 4;
+                        //downX = X;
+                        //downY = Y + 1;
+                        //StartCoroutine(CharacterDownY(X, Y+1, 4));
                     }
-                    for (int i = 0; i < 2; i++)
+                    else // |□■■■□|
                     {
-                        characters[i] = null;
+                        for (int i = -1; i <= 1; i++)
+                        {
+                            CharacterDestroyAndAnimation(X, Y + i);
+                        }
+                        //downSizeIndex = 3;
+                        //downX = X;
+                        //downY = Y + 1; 
+                        //StartCoroutine(CharacterDownY(X, Y+1, 3));
                     }
-
+                }
+                else // |□□■■□| 
+                {
 
                 }
             }
         }
-        if (Y - 2 >= 0)
+        else // □□|■□□|
         {
-            characters[0] = blocks[Y - 1][X].GetComponentInChildren<Character_Base>();
-            characters[1] = blocks[Y - 2][X].GetComponentInChildren<Character_Base>();
-            if (characters[0] != null && characters[1] != null)
+            if (animalTypes[1] == animalType) // □|■■□□|
             {
-                if ((animalType == characters[0].AnimalType) && animalType == characters[1].AnimalType)
+                if (animalTypes[0] == animalType) // |■■■□□|
                 {
-                    for (int i = 0; i < 3; i++)
+                    for (int i = -2; i <= 0; i++)
                     {
-                        CharacterDestroyAndAnimation(X, Y + i - 2);
+                        CharacterDestroyAndAnimation(X, Y + i);
                     }
-                    for (int i = 0; i < 2; i++)
-                    {
-                        characters[i] = null;
-                    }
-
+                    //downSizeIndex = 3;
+                    //downX = X;
+                    //downY = Y;
+                    //StartCoroutine(CharacterDownY(X, Y, 3));
+                }
+                else  // |□■■□□|
+                {
 
                 }
             }
+            else // |□□■□□|
+            {
 
-
+            }
         }
+
+
         return;
     }
-    public IEnumerator CharacterDown()
+    public IEnumerator CharacterDownY(int X, int lowY, int downSize)
     {
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.7f);
+        for (int i = lowY; i >= invisibleBlockYSize; i--)
+        {
+            if (blocks[i - downSize][X].transform.childCount == 2 && blocks[i][X].transform.childCount == 1)
+            {
+                blocks[i - downSize][X].transform.GetChild(1).transform.parent = blocks[i][X].transform;
+                blocks[i][X].transform.GetChild(1).localPosition = Vector3.up*downSize*1.25f;
+            }
+        }
+        //downSizeIndex = 0;
+        //downX = 0;
+        //downY = 0;
+    }
+
+    public void CharaterDownPlay()
+    {
         for (int i = 0; i < blockXSize; i++)
         {
-            for (int j = 0; j < blockYSize - 1; j++)
-            {
-                if (blocks[j][i].transform.childCount == 2 && blocks[j + 1][i].transform.childCount == 1)
-                {
-                    blocks[j][i].transform.GetChild(1).transform.parent = blocks[j + 1][i].transform;
-                }
-            }
-
+            if (emptyBlocks[i].Count!=0)
+            StartCoroutine(CharacterDownY(i, emptyBlocks[i].Max(), emptyBlocks[i].Count));
         }
+       
 
     }
+    public IEnumerator CharacterDownX(int X, int Y, int emptyXSize)
+    {
+
+        yield return new WaitForSeconds(0.7f);
+        for (int j = X; j < X+emptyXSize; j++)
+        {
+
+        for (int i = Y; i >= invisibleBlockYSize; i--)
+        {
+            if (blocks[i - 1][j].transform.childCount == 2 && blocks[i][j].transform.childCount == 1)
+            {
+                blocks[i - 1][j].transform.GetChild(1).transform.parent = blocks[i][j].transform;
+                blocks[i][j].transform.GetChild(1).localPosition = Vector3.up*1.25f;
+            }
+        }
+        }
+        //downSizeIndex = 0;
+        //downX = 0;
+        //downY = 0;
+    }
+
+
 
     void CharacterDestroyAndAnimation(int X, int Y)
     {
@@ -530,9 +690,33 @@ public class BlockController : MonoBehaviour
         //{
         //    return;
         //}
-        blocks[Y][X].transform.GetComponent<Block>().PangAnimationActive();
+        blocksComponents[Y][X].PangAnimationActive();
 
 
+    }
+
+    public void EmptyBlockCheck()
+    {
+        for (int i = 0; i < blockXSize; i++)
+        {
+            for (int j = invisibleBlockYSize; j <blockYSize ; j++)
+            {
+                if (blocks[j][i].transform.childCount == 1)
+                {
+                    emptyBlocks[i].Add(j);
+                }
+            }
+
+        }
+    }
+
+    public void ResetList()
+    {
+        for (int i = 0; i < blockXSize; i++)
+        {
+            emptyBlocks[i].Clear();
+        }
+       
     }
 
 
