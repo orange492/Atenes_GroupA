@@ -189,7 +189,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
         }
     }
 
-    // 돈 베팅 버튼 누르면 진행되는 함수
+    // 돈 베팅 버튼 누르면 진행되는 함수 -> 여기서 배팅 건거 자기만 다 먹을 수있도록 일단 만들기... 아직 컴퓨터 논리 로직은 완성안되었으니깐!!
     void BetClicked()
     {
         TextMeshProUGUI newBet = betBtn.GetComponentInChildren(typeof(TextMeshProUGUI)) as TextMeshProUGUI; // Text로 취급한다...
