@@ -42,7 +42,7 @@ public class Bullet : MonoBehaviour
         }
         transform.Translate(5f * (target.position - transform.position) * Time.deltaTime);
     }
-
+     
     public void Init(int _type, int _damage)
     {
         type = _type;
