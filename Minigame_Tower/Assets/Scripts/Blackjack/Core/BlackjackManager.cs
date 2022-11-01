@@ -82,6 +82,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
         //  기본 배팅금액 등등 설정
         pot = 20;
         betsText.text = "얼마걸까: $" + pot.ToString();
+        
         //playerScript.AdjustMoney(-20);
         cashText.text = "$" + playerScript.GetMoney().ToString();
         cashText2.text = "$" + dealerScript.GetMoney().ToString();
@@ -148,6 +149,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
         {
             mainText.text = "무승부 입니다(버스트)";
             playerScript.AdjustMoney(pot / 2);
+            dealerScript.AdjustMoney(pot / 2); // 딜러도 동일하게 받기
         }
         // 플레이어만 21넘고 딜러는 안넘었을때 또는 딜러가 버스트 상태이며 딜러의 손패점수가 플레이어보다 높을때
         else if (playerBust || (!dealerBust && dealerScript.handValue > playerScript.handValue))
@@ -155,6 +157,10 @@ public class BlackjackManager : Singletons<BlackjackManager>
             mainText.text = "너가 졌어";
             playerScript.AdjustMoney2(100); // 내가 돈 100원 빼기
             dealerScript.AdjustMoney(100); // 딜러가 돈 100가져가기
+            if (pot > 0)
+            {
+                playerScript.AdjustMoney(-pot); // 패배시 걸었던 pot 감소
+            }
         }
         // 딜러만만 21넘고 딜러는 안넘었을때 또는 플레이어가 버스트 상태이며 딜러의 손패점수가 플레이어보다 높을때
         else if (dealerBust || playerScript.handValue > dealerScript.handValue)
@@ -162,12 +168,17 @@ public class BlackjackManager : Singletons<BlackjackManager>
             mainText.text = "나의 승리";
             playerScript.AdjustMoney(100); // 내가 돈 100가져오기
             dealerScript.AdjustMoney2(100); // 딜러 돈 100빼기
+            if (pot > 0) 
+            {
+                playerScript.AdjustMoney(pot); // 승리시 걸었던 pot 증가
+            }
         }
         //둘다 값이 동일할때
         else if (playerScript.handValue == dealerScript.handValue)
         {
             mainText.text = "무승부 입니다!(값동일)";
             playerScript.AdjustMoney(pot / 2);
+            dealerScript.AdjustMoney(pot / 2); // 딜러도 동일하게 받기
         }
         else
         {
@@ -186,10 +197,11 @@ public class BlackjackManager : Singletons<BlackjackManager>
             cashText.text = "$" + playerScript.GetMoney().ToString();
             cashText2.text = "$" + dealerScript.GetMoney().ToString(); // 딜러금액도 판정해주기
             standClicks = 0;
+            pot = 0; // 배팅금액 0원으로 초기화
         }
     }
 
-    // 돈 베팅 버튼 누르면 진행되는 함수
+    // 돈 베팅 버튼 누르면 진행되는 함수 -> 여기서 배팅 건거 자기만 다 먹을 수있도록 일단 만들기... 아직 컴퓨터 논리 로직은 완성안되었으니깐!!
     void BetClicked()
     {
         TextMeshProUGUI newBet = betBtn.GetComponentInChildren(typeof(TextMeshProUGUI)) as TextMeshProUGUI; // Text로 취급한다...
