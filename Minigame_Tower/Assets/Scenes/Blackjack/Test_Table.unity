@@ -1005,7 +1005,7 @@ MonoBehaviour:
   cardScript: {fileID: 53230704}
   deckScript: {fileID: 1997009795}
   handValue: 0
-  money: 100
+  money: 500
   hand:
   - {fileID: 53230700}
   - {fileID: 1376159847}
