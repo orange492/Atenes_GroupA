@@ -9,7 +9,9 @@ public class DamageText : MonoBehaviour
 
     [SerializeField]
     TextMeshPro txt;
-    float Timer = 0;
+    Transform tr;
+    float y;
+    float Timer;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +22,8 @@ public class DamageText : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.Translate(0.5f *Time.deltaTime * transform.up);
+        y += 0.5f * Time.deltaTime;
+        transform.position = new Vector2(tr.position.x, tr.position.y + y);
         Timer += Time.deltaTime;
         if (Timer > DELETE_TIME)
         {
@@ -31,6 +34,7 @@ public class DamageText : MonoBehaviour
     void OnEnable()
     {
         Timer = 0;
+        y = 0;
     }
 
     void OnDisable()
@@ -38,8 +42,9 @@ public class DamageText : MonoBehaviour
         ObjectPooler.ReturnToPool(gameObject);
     }
 
-    public void Init(int dmg)
+    public void Init(Transform _tr, int dmg)
     {
+        tr = _tr;
         txt.text = dmg.ToString();
     }
 }
