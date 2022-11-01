@@ -19,8 +19,7 @@ public class BlockController : MonoBehaviour
     public int blockXSize = 6;
     public int blockYSize = 9 * 2;
     public int invisibleBlockYSize = 9;
-    float timeLeft = 0.0f;
-    float nextTime = 2.0f;
+    bool isStart = true;
 
     List<int>[] emptyBlocks;
 
@@ -78,30 +77,19 @@ public class BlockController : MonoBehaviour
 
         }
 
-
-
-
-
-
+    
+        AllBlockAction();
 
     }
 
     private void Update()
     {
-        //if (Time.time > nextTime)
+        //if (isStart)
         //{
-        //    nextTime = Time.time + timeLeft;
-
-
-        //    if (AllBlockCheck() && BlockFullcheck())
-        //    {
-        //        AllBlockAction();
-
-        //    }
-
-
-
+        //    AllBlockAction();
+        //    isStart = false;
         //}
+      
 
     }
 
@@ -169,8 +157,9 @@ public class BlockController : MonoBehaviour
         return false;
     }
 
-    void AllBlockAction()
+    public void AllBlockAction()
     {
+       
         for (int i = 0; i < blockXSize; i++)
         {
             for (int j = invisibleBlockYSize; j < blockYSize; j++)
@@ -221,12 +210,14 @@ public class BlockController : MonoBehaviour
         //    return;
         //}
         //Mode = GameMode.STOPCHECKMODE;
-        int animalType = -1;
+        
         Character_Base character_Base = blocks[Y][X].transform.GetComponentInChildren<Character_Base>();
-        if (character_Base != null)
+        if (character_Base == null)
         {
-            animalType = character_Base.AnimalType;
+            return;
         }
+        int animalType;
+        animalType = character_Base.AnimalType;
 
         XThreeMatchAction(X, Y, animalType);
         YThreeMatchAction(X, Y, animalType);
@@ -335,7 +326,7 @@ public class BlockController : MonoBehaviour
             if (characters[1] != null)
                 animalTypes[1] = characters[1].AnimalType;
         }
-
+        
         if (animalTypes[2] == animalType) // □□|■■|□
         {
             if (animalTypes[3] == animalType) // □□|■■■|
@@ -647,6 +638,7 @@ public class BlockController : MonoBehaviour
                 blocks[i][X].transform.GetChild(1).localPosition = Vector3.up * downSize * 1.25f;
             }
         }
+       
         //downSizeIndex = 0;
         //downX = 0;
         //downY = 0;
@@ -657,7 +649,17 @@ public class BlockController : MonoBehaviour
         for (int i = 0; i < blockXSize; i++)
         {
             if (emptyBlocks[i].Count != 0)
+            {
+                for (int j = 0; j < emptyBlocks[i].Count-1; j++)
+                {
+                   if(emptyBlocks[i][j] - emptyBlocks[i][j+1] != -1)
+                    {
+                        CharacterDown(i, emptyBlocks[i].Max(), emptyBlocks[i].Count);
+                    }
+                }
                 CharacterDown(i, emptyBlocks[i].Max(), emptyBlocks[i].Count);
+            }
+                
         }
 
 
