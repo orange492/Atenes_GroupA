@@ -46,9 +46,13 @@ public class TouchManager : MonoBehaviour
 
     private void Test4(InputAction.CallbackContext obj)
     {
-        blockController.EmptyBlockCheck();
-        blockController.CharaterDownPlay();
-        blockController.ResetList();
+        Debug.Log("Hello");
+
+        GameObject temp = null;
+
+        temp.name = "Test";
+
+        Debug.Log("World");
     }
 
     private void OnDisable()

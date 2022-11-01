@@ -27,6 +27,7 @@ public class PangAnimationState : StateMachineBehaviour
         blockController.EmptyBlockCheck();
         blockController.CharaterDownPlay();
         blockController.ResetList();
+         blockController.AllBlockAction();
         //blockController.Mode = BlockController.GameMode.CHECKMODE;
     }
 
