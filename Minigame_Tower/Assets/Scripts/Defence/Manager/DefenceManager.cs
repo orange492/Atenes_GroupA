@@ -152,7 +152,13 @@ public class DefenceManager : Singleton<DefenceManager>
         {
             return;
         }
-        ObjectPooler.SpawnFromPool<Bullet>("Bullet", tr.position).Init(type, level[type] * 10);
+        int damage = level[type] * 10;
+        enemySpnr.enemy[frontEnemy].Hp -= damage;
+        ObjectPooler.SpawnFromPool<Bullet>("Bullet", tr.position).Init(type, damage);
+        if (enemySpnr.enemy[frontEnemy].Hp <= 0)
+        {
+            frontEnemy++;
+        }
     }
 
     public Enemy Target()

@@ -17,8 +17,7 @@ public class MapManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        size[0] = DataManager.Instance.mapSize[0];
-        size[1] = DataManager.Instance.mapSize[1];
+       
     }
 
     // Update is called once per frame
@@ -29,6 +28,8 @@ public class MapManager : MonoBehaviour
 
     public void InitMap()
     {
+        size[0] = DataManager.Instance.mapSize[0];
+        size[1] = DataManager.Instance.mapSize[1];
         this.transform.Translate(new Vector3(-1, -1, 0));
         tile = new GameObject[size[0], size[1]];
         for (int i = 0; i < size[0]; i++)

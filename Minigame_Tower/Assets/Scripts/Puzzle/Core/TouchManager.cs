@@ -46,9 +46,7 @@ public class TouchManager : MonoBehaviour
 
     private void Test4(InputAction.CallbackContext obj)
     {
-        blockController.EmptyBlockCheck();
-        blockController.CharaterDownPlay();
-        blockController.ResetList();
+   
     }
 
     private void OnDisable()

@@ -9,9 +9,9 @@ public class Enemy : MonoBehaviour
     TextMeshPro tHp;
 
     Transform[] tr;
-    public int num { get; set; }
     int dir = 0;
     int hp;
+    int showHp;
     int gold;
 
 
@@ -30,9 +30,8 @@ public class Enemy : MonoBehaviour
             else
             {
                 hp = 0;
-                DestroyEnemy(true);
+                
             }
-            Damage();
         }
     }
 
@@ -71,14 +70,20 @@ public class Enemy : MonoBehaviour
         dir = 0;
         tr = _tr;
         hp = _hp;
+        showHp = _hp;
         gold = _gold;
-        Damage();
+        Damage(0);
         return this;
     }
 
-    public void Damage()
+    public void Damage(int num)
     {
-        tHp.text = hp.ToString();
+        showHp += num;
+        if(showHp <= 0)
+        {
+            DestroyEnemy(true);
+        }
+        tHp.text = showHp.ToString();
     }
 
     void DestroyEnemy(bool dead)
@@ -92,6 +97,11 @@ public class Enemy : MonoBehaviour
             DefenceManager.Instance.SetLife(-1);
         }
         hp = 0;
+        DefenceManager.Instance.enemySpnr.count--;
+        if (DefenceManager.Instance.enemySpnr.count == 0)
+        {
+            DefenceManager.Instance.Wave++;
+        }
         this.gameObject.SetActive(false);
     }
 

@@ -19,7 +19,7 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+         //Å×½ºÆ®
     }
     void OnDisable()
     {
@@ -29,20 +29,20 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(DefenceManager.Instance.Target().Hp - damage <= 0)
+        if(!target.gameObject.activeSelf)
         {
-            DefenceManager.Instance.frontEnemy++;
+            this.gameObject.SetActive(false);
         }
         else if((target.position - transform.position).sqrMagnitude < 0.1f)
         {
-            target.GetComponent<Enemy>().Hp -= damage;
-            ObjectPooler.SpawnFromPool<DamageText>("DmgTxt", this.transform.position).Init(damage);
+            target.GetComponent<Enemy>().Damage(-damage);
+            ObjectPooler.SpawnFromPool<DamageText>("DmgTxt", target.transform.position).Init(target.transform, damage);
             this.gameObject.SetActive(false);
             return;
         }
         transform.Translate(5f * (target.position - transform.position) * Time.deltaTime);
     }
-
+     
     public void Init(int _type, int _damage)
     {
         type = _type;

@@ -10,7 +10,8 @@ public class EnemySpawner : MonoBehaviour
     GameObject enemyPref;
     public List<Enemy> enemy { get; set; } = new List<Enemy>();
 
-    int number = 0;
+    public int number = 0;
+    public int count = 0;
     float timer = 0;
     float waitTime = 0;
     int hp;
@@ -37,10 +38,6 @@ public class EnemySpawner : MonoBehaviour
                 number--;
             }
         }
-        if (DefenceManager.Instance.frontEnemy >= enemy.Count && number == 0)
-        {
-            DefenceManager.Instance.Wave++;
-        }
     }
 
     public void StartWave(int num)
@@ -59,6 +56,7 @@ public class EnemySpawner : MonoBehaviour
             hp += 100;
             gold += 100;
         }
+        count = number;
         enemy.Clear();
     }
 
