@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+
 
 public class PlayerScript : MonoBehaviour
 {
@@ -22,7 +25,11 @@ public class PlayerScript : MonoBehaviour
     public int cardIndex = 0;
     // Tracking aces for 1 to 11 conversions
     List<CardScript> aceList = new List<CardScript>();
-
+    
+    /// <summary>
+    /// 완전히 죽었을 때 Result Pannel 이랑 연계되는 델리게이트
+    /// </summary>
+    public Action onDead;
     public void StartHand()
     {
         GetCard();

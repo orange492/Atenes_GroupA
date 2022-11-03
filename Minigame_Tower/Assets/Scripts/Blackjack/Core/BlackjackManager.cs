@@ -6,8 +6,10 @@ using UnityEngine.UI;
 using TMPro;
 
 public class BlackjackManager : Singletons<BlackjackManager>
-{
-
+{   
+    //델리게이트 실행을 위해서 불러오는 셋팅
+    PlayerScript player;
+    public PlayerScript Player => player;
 
     // Game Buttons
     public Button dealBtn; // 딜, 카드를 나누는 버튼(셔플 개념) -> 패돌림 -> 리셋!
@@ -40,8 +42,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
     public TextMeshProUGUI cashText2; // 얼마 남아 있는지... HP 개념
 
 
-
-
+  
 
     //  딜러는 2번째 카드 부터 숨긴다 
     public GameObject hideCard;
