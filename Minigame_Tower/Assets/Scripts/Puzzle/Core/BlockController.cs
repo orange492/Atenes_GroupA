@@ -626,11 +626,47 @@ public class BlockController : MonoBehaviour
 
         return;
     }
+    //public void CharacterDown(int X, int lowY, int downSize)
+    //{
+
+
+    //    for (int i = lowY; i >= invisibleBlockYSize; i--)
+    //    {
+    //        if (blocks[i - downSize][X].transform.childCount == 2 && blocks[i][X].transform.childCount == 1)
+    //        {
+    //            blocks[i - downSize][X].transform.GetChild(1).transform.parent = blocks[i][X].transform;
+    //            blocks[i][X].transform.GetChild(1).localPosition = Vector3.up * downSize * 1.25f;
+    //        }
+    //    }
+       
+    //    //downSizeIndex = 0;
+    //    //downX = 0;
+    //    //downY = 0;
+    //}
+
+    //public void CharaterDownPlay()
+    //{
+    //    for (int i = 0; i < blockXSize; i++)
+    //    {
+    //        if (emptyBlocks[i].Count != 0)
+    //        {
+    //            for (int j = 0; j < emptyBlocks[i].Count-1; j++)
+    //            {
+    //               if(emptyBlocks[i][j] - emptyBlocks[i][j+1] != -1)
+    //                {
+    //                    CharacterDown(i, emptyBlocks[i].Max(), emptyBlocks[i].Count);
+    //                }
+    //            }
+    //            CharacterDown(i, emptyBlocks[i].Max(), emptyBlocks[i].Count);
+    //        }
+                
+    //    }
+
+
+   // }
     public void CharacterDown(int X, int lowY, int downSize)
     {
-
-
-        for (int i = lowY; i >= invisibleBlockYSize; i--)
+        for (int i = lowY; i >= downSize; i--)
         {
             if (blocks[i - downSize][X].transform.childCount == 2 && blocks[i][X].transform.childCount == 1)
             {
@@ -638,7 +674,6 @@ public class BlockController : MonoBehaviour
                 blocks[i][X].transform.GetChild(1).localPosition = Vector3.up * downSize * 1.25f;
             }
         }
-       
         //downSizeIndex = 0;
         //downX = 0;
         //downY = 0;
@@ -650,21 +685,27 @@ public class BlockController : MonoBehaviour
         {
             if (emptyBlocks[i].Count != 0)
             {
-                for (int j = 0; j < emptyBlocks[i].Count-1; j++)
+                int count = 0;
+                int block;
+                for (int j = 0; j < emptyBlocks[i].Count; j++)
                 {
-                   if(emptyBlocks[i][j] - emptyBlocks[i][j+1] != -1)
+                    if (j == emptyBlocks[i].Count - 1)
                     {
-                        CharacterDown(i, emptyBlocks[i].Max(), emptyBlocks[i].Count);
+                        
                     }
+                    else if (emptyBlocks[i][j] - emptyBlocks[i][j + 1] == -1)
+                    {
+                        count++;
+                        continue;
+                    }
+                    count++;
+                    block = emptyBlocks[i][j];
+                    CharacterDown(i, block, count);
+                    count = 0;
                 }
-                CharacterDown(i, emptyBlocks[i].Max(), emptyBlocks[i].Count);
             }
-                
         }
-
-
     }
-
 
 
     void CharacterDestroyAndAnimation(int X, int Y)
