@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using static System.Net.Mime.MediaTypeNames;
 using System;
 
 public class ResultPannel : MonoBehaviour
@@ -11,7 +10,8 @@ public class ResultPannel : MonoBehaviour
     ResultPannel resultPannel;
     Button nextButton;
     CanvasGroup canvasGroup;
-
+    
+ 
 
     private void Start()
     {
@@ -24,7 +24,7 @@ public class ResultPannel : MonoBehaviour
 
         resultPannel = GetComponent<ResultPannel>();
         nextButton = GetComponent<Button>();
-        nextButton.onClick.AddListener(OnClick_Next);
+        //nextButton.onClick.AddListener(OnClick_Next);
 
     }
     void Close()
@@ -37,15 +37,18 @@ public class ResultPannel : MonoBehaviour
     void Open()
     {
         StartCoroutine(OpenDelay());
+        BlackjackManager.Inst.Player.onDead += Open;
     }
 
     void OnClick_Next()
     {
-        
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);   // 현재 열린 씬을 새로 열기
+
+        {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);   //    // 현재 열린 씬을 새로 열기
+        }
     }
 
-    IEnumerator OpenDelay()
+    public IEnumerator OpenDelay()
     {
         yield return new WaitForSeconds(0.1f);
 
