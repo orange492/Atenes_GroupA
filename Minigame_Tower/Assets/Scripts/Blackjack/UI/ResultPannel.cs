@@ -42,7 +42,7 @@ public class ResultPannel : MonoBehaviour
 
     void OnClick_Next()
     {
-        if (BlackjackManager.Inst.IsDead) // 죽는 값 참이 되면
+
         {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);   //    // 현재 열린 씬을 새로 열기
         }

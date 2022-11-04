@@ -58,7 +58,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
 
     void Start()
     {
-        isDead = false; // 우선 살아있다고 적용
+        
         //버튼 생성값으로 가져오기(읽기) , get 과 같다.
         dealBtn.onClick.AddListener(() => DealClicked()); // 스크립트에 온클릭 리스너 추가 ,셔플개념
         hitBtn.onClick.AddListener(() => HitClicked()); // 스크립트에 온클릭 리스너 추가 ,카드 가져오기개념
@@ -113,7 +113,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
     private void Die() // 죽는 조건 함수!
     {
                 onDead?.Invoke();               // 사망 알림용 델리게이트 실행
-                isDead = true;                  // 죽었다고 표시
+                                // 죽었다고 표시
            
         
     }
