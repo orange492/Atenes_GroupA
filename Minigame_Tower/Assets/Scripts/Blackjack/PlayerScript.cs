@@ -25,7 +25,11 @@ public class PlayerScript : MonoBehaviour
     public int cardIndex = 0;
     // Tracking aces for 1 to 11 conversions
     List<CardScript> aceList = new List<CardScript>();
-    
+
+    bool isDead = false;
+    public bool IsDead { get => isDead; } // 죽은 상태 표시해주는 프로퍼티
+
+
     /// <summary>
     /// 완전히 죽었을 때 Result Pannel 이랑 연계되는 델리게이트
     /// </summary>
@@ -35,6 +39,17 @@ public class PlayerScript : MonoBehaviour
         GetCard();
         GetCard();
     }
+
+
+    private void Start()    // 첫번째 Update 함수가 실행되기 직전
+    {
+        //Debug.Log("Bird - Start");
+        BlackjackManager.Inst.onGameStart += OnGameStart;
+
+        isDead = true;                             // 우선 살아있다고 표시
+     
+    }
+
 
     // Add a hand to the player/dealer's hand
     public int GetCard()
@@ -104,4 +119,12 @@ public class PlayerScript : MonoBehaviour
         handValue = 0;
         aceList = new List<CardScript>();
     }
+
+    private void OnGameStart()
+    {
+        isDead = false;                 // 새를 살아있는 상태로 만들고
+       
+    }
+
+
 }
