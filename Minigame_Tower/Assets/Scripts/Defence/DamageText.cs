@@ -6,7 +6,12 @@ using TMPro;
 public class DamageText : MonoBehaviour
 {
     const float DELETE_TIME = 0.5f;
-
+    Dictionary<int, Color> color = new Dictionary<int, Color>()
+    {
+     {0, Color.black},
+     {1, Color.yellow},
+     {2, Color.green},
+};
     [SerializeField]
     TextMeshPro txt;
     Transform tr;
@@ -42,9 +47,10 @@ public class DamageText : MonoBehaviour
         ObjectPooler.ReturnToPool(gameObject);
     }
 
-    public void Init(Transform _tr, int dmg)
+    public void Init(Transform _tr, int dmg, int type = 0)
     {
         tr = _tr;
         txt.text = dmg.ToString();
+        txt.color = color[type];
     }
 }
