@@ -2,13 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using System.Diagnostics;
-
 public class JUMP : MonoBehaviour
 {
     public float JumpPower = 300.0f;
     [SerializeField] private LayerMask platformLayerMask;
     BoxCollider2D boxCollider2D;
+    bool die = false;  // 새로 추가된 부분
 
     string recentCollisionObjectName = "Ground"; // 새로 추가된 내용
     private void Awake()
@@ -18,13 +17,18 @@ public class JUMP : MonoBehaviour
     void Update()
     {
         IsGrounded();
-        if (Input.GetMouseButtonDown(0) == true)
+        if (Input.GetMouseButtonDown(0) == true && die == false) // 새로 추가된 부분
         {
             if (IsGrounded())
             {
                 GetComponent<Rigidbody2D>().AddForce(new Vector2(0, JumpPower));
             }
         }
+    }
+
+    public void Die() // 새로 추가된 부분
+    {
+        die = true;
     }
 
     public bool IsGrounded()

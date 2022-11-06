@@ -8,7 +8,9 @@ public class PlatformManager : MonoBehaviour
 
     Vector2 pos_WillCreatePlatformGroup;
     public float heightBetweenPlatform = 3.0f;
-    int index = 0; // 추가된 내용
+    int index = 0;
+
+    bool stop = false; // 새로 추가된 부분
     private void Awake()
     {
         pos_WillCreatePlatformGroup = prefab_PlatformGroup.transform.position;
@@ -19,12 +21,20 @@ public class PlatformManager : MonoBehaviour
     }
     public void AddNewPlatform()
     {
-        GameObject added_platformGroup = Instantiate(prefab_PlatformGroup);
-        added_platformGroup.transform.position = pos_WillCreatePlatformGroup;
-        // 추가된 내용!
-        added_platformGroup.name = "new_platform" + index;
-        added_platformGroup.GetComponent<PlatformGroup>().SetName("new_platform" + index);
-        index = index + 1;
-        pos_WillCreatePlatformGroup = new Vector2(pos_WillCreatePlatformGroup.x, pos_WillCreatePlatformGroup.y + heightBetweenPlatform);
+        if (stop == false) // 새로 추가된 부분
+        {
+            GameObject added_platformGroup = Instantiate(prefab_PlatformGroup);
+            added_platformGroup.transform.position = pos_WillCreatePlatformGroup;
+            added_platformGroup.name = "new_platform" + index;
+            added_platformGroup.GetComponent<PlatformGroup>().SetName("new_platform" + index);
+            index = index + 1;
+
+            pos_WillCreatePlatformGroup = new Vector2(pos_WillCreatePlatformGroup.x, pos_WillCreatePlatformGroup.y + heightBetweenPlatform);
+        }
+    }
+
+    public void Stop() // 새로 추가된 부분
+    {
+        stop = true;
     }
 }

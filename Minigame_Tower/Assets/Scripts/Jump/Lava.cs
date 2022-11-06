@@ -12,6 +12,8 @@ public class Lava : MonoBehaviour
 
     GameObject Player;
     BoxCollider2D boxCollider;
+
+    public Panel_GameOver panel_GameOver; // 변경된 부분
     private void Awake()
     {
         Player = FindObjectOfType<JUMP>().gameObject;
@@ -48,8 +50,29 @@ public class Lava : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            UnityEngine.Debug.Log("GameOver");
-            Destroy(collision.gameObject);
+            // 변경
+            GameOver();
         }
+    }
+
+    public void Stop()
+    {
+        StopAllCoroutines();
+    }
+
+    public void GameOver() //  새로 추가된 함수
+    {
+        UnityEngine.Debug.Log("GameOver");
+        Stop(); // 용암 스탑
+        FindObjectOfType<PlatformManager>().Stop(); // 발판 그만 만들어
+        FindObjectOfType<JUMP>().Die(); // 그만 점프
+
+        // **************새로 추가된 부분*****************//
+        ScoreText scoreText = FindObjectOfType<ScoreText>();
+        scoreText.Set_HightScore(scoreText.GetScore());
+        // ***********************************************//
+
+        panel_GameOver.Show(); // 게임오버 팝업
+
     }
 }
