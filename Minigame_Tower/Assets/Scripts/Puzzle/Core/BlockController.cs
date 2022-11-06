@@ -19,8 +19,24 @@ public class BlockController : MonoBehaviour
     public int blockXSize = 6;
     public int blockYSize = 9 * 2;
     public int invisibleBlockYSize = 9;
+    int destroyCount = 0;
     bool isStart = true;
+    int pangAnimationCount=0;
 
+    
+
+    public int PangAnimationCount
+    {
+        get => pangAnimationCount;
+        set => pangAnimationCount = value;
+    }
+   public int DestroyCount {
+     get=>   destroyCount;
+        set
+        {
+            destroyCount = value;
+        }
+    }
     List<int>[] emptyBlocks;
 
   public enum GameMode
@@ -218,6 +234,10 @@ public class BlockController : MonoBehaviour
         }
         int animalType;
         animalType = character_Base.AnimalType;
+        if (animalType == -1)
+        {
+            return;
+        }
 
         XThreeMatchAction(X, Y, animalType);
         YThreeMatchAction(X, Y, animalType);
@@ -306,7 +326,7 @@ public class BlockController : MonoBehaviour
         {
             characters[3] = blocks[Y][X + 2].GetComponentInChildren<Character_Base>();
             if (characters[3] != null)
-                animalTypes[3] = characters[3].AnimalType;
+                animalTypes[3] = (int)characters[3].AnimalType;
         }
         if (X + 1 < blockXSize)
         {
@@ -326,12 +346,17 @@ public class BlockController : MonoBehaviour
             if (characters[1] != null)
                 animalTypes[1] = characters[1].AnimalType;
         }
-        
-        if (animalTypes[2] == animalType) // □□|■■|□
+
+        if (animalType == -1)
         {
-            if (animalTypes[3] == animalType) // □□|■■■|
+            return;
+        }
+        
+        if (animalTypes[2] == animalType ) // □□|■■|□
+        {
+            if (animalTypes[3] == animalType ) // □□|■■■|
             {
-                if (animalTypes[1] == animalType) // □|■■■■|
+                if (animalTypes[1] == animalType ) // □|■■■■|
                 {
                     if (animalTypes[0] == animalType) //  |■■■■■|
                     {
@@ -339,6 +364,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
+                        blocksComponents[Y][X].StartCoroutine(blocksComponents[Y][X].BombCreate()) ;
                         //   StartCoroutine(CharacterDownX(X-2, Y, 5));
                     }
                     else //  |□■■■■|
@@ -516,7 +542,10 @@ public class BlockController : MonoBehaviour
             if (characters[1] != null)
                 animalTypes[1] = characters[1].AnimalType;
         }
-
+        if (animalType == -1)
+        {
+            return;
+        }
         if (animalTypes[2] == animalType) // □□|■■|□
         {
             if (animalTypes[3] == animalType) // □□|■■■|
@@ -529,6 +558,9 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
                         }
+                        Debug.Log("222");
+                        blocksComponents[Y][X].BombCreate() ;
+                        
 
                         //downSizeIndex = 5;
                         //downX = X;
@@ -626,44 +658,18 @@ public class BlockController : MonoBehaviour
 
         return;
     }
-    //public void CharacterDown(int X, int lowY, int downSize)
-    //{
 
-
-    //    for (int i = lowY; i >= invisibleBlockYSize; i--)
-    //    {
-    //        if (blocks[i - downSize][X].transform.childCount == 2 && blocks[i][X].transform.childCount == 1)
-    //        {
-    //            blocks[i - downSize][X].transform.GetChild(1).transform.parent = blocks[i][X].transform;
-    //            blocks[i][X].transform.GetChild(1).localPosition = Vector3.up * downSize * 1.25f;
-    //        }
-    //    }
-       
-    //    //downSizeIndex = 0;
-    //    //downX = 0;
-    //    //downY = 0;
-    //}
-
-    //public void CharaterDownPlay()
-    //{
-    //    for (int i = 0; i < blockXSize; i++)
-    //    {
-    //        if (emptyBlocks[i].Count != 0)
-    //        {
-    //            for (int j = 0; j < emptyBlocks[i].Count-1; j++)
-    //            {
-    //               if(emptyBlocks[i][j] - emptyBlocks[i][j+1] != -1)
-    //                {
-    //                    CharacterDown(i, emptyBlocks[i].Max(), emptyBlocks[i].Count);
-    //                }
-    //            }
-    //            CharacterDown(i, emptyBlocks[i].Max(), emptyBlocks[i].Count);
-    //        }
-                
-    //    }
-
-
-   // }
+    public  void BombExplosion(int X, int Y)
+    {
+        for (int i = X-1; i <=X+1 ; i++)
+        {
+            for (int j = Y-1; j <= Y+1; j++)
+            {
+                CharacterDestroyAndAnimation(i, j);
+            }
+        }
+    }
+    
     public void CharacterDown(int X, int lowY, int downSize)
     {
         for (int i = lowY; i >= downSize; i--)
@@ -672,6 +678,7 @@ public class BlockController : MonoBehaviour
             {
                 blocks[i - downSize][X].transform.GetChild(1).transform.parent = blocks[i][X].transform;
                 blocks[i][X].transform.GetChild(1).localPosition = Vector3.up * downSize * 1.25f;
+                blocks[i][X].transform.GetChild(1).GetComponent<Character_Base>().SetAnimalType(-1);
             }
         }
         //downSizeIndex = 0;
@@ -719,6 +726,7 @@ public class BlockController : MonoBehaviour
             return;
         }
         blocksComponents[Y][X].PangAnimationActive();
+  
 
 
     }
