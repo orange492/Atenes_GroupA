@@ -4,20 +4,24 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
+using Unity.VisualScripting;
 
 public class Block : MonoBehaviour
 {
     public GameObject characterPrefab;
+    public GameObject bombPrefab;
     int indexX;
     int indexY;
+    
     public Sprite[] sprites;
     Animator pangAnim;
-   
- 
+
+
+
     BlockController blockController;
 
 
-    
+
     public int IndexX
     {
         get => indexX;
@@ -46,35 +50,35 @@ public class Block : MonoBehaviour
 
     private void OnEnable()
     {
-  
+
     }
 
     private void Awake()
     {
         MakeCharacter();
         pangAnim = transform.GetChild(0).GetComponent<Animator>();
-       
+
     }
 
     private void Start()
     {
-        
-        blockController = FindObjectOfType<BlockController>();
-       
 
-       
+        blockController = FindObjectOfType<BlockController>();
+
+
+
 
     }
     private void Update()
     {
-        
-        if (transform.childCount == 1 && indexY <blockController.invisibleBlockYSize)
+
+        if (transform.childCount == 1 && indexY < blockController.invisibleBlockYSize)
         {
 
             MakeCharacter();
 
         }
-        
+
 
     }
 
@@ -99,8 +103,18 @@ public class Block : MonoBehaviour
         if (transform.childCount != 1)
         {
             Destroy(transform.GetChild(1).gameObject);
-         
         }
+    }
+
+    public void BlockCheck()
+    {
+        blockController.ThreeMatchAction(indexX, indexY);
+    }
+
+    public IEnumerator BombCreate()
+    {
+        yield return new WaitForSeconds(0.2f);
+        Instantiate(bombPrefab, transform);
 
     }
 

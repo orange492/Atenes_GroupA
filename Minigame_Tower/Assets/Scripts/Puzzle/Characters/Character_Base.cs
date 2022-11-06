@@ -8,62 +8,85 @@ public class Character_Base : MonoBehaviour
 {
 
     SpriteRenderer spriteRenderer;
-    int animalType;
-    Animator anim;
+  
+    protected Animator anim;
     UnityEngine.Vector3 targetDir;
-    Transform characterImage;
-    float moveSpeed = 20.0f;
+    protected Transform characterImage;
+    protected float moveSpeed = 5.0f;
 
+   protected BlockController blockController;
+   protected int animalType;
+    protected int temp;
 
-
-    ParticleSystem ps;
     public int AnimalType
     {
         get => animalType;
         set
         {
+            if (animalType == -1 && animalType != value)
+            {
+                animalType = value;
+                Block block = GetComponentInParent<Block>();
+                block.BlockCheck();
+            }
             animalType = value;
+            
         }
-    }
+    } 
 
-    enum Animal
+
+  public  enum CharaterType
     {
-        Bear,
-        Cat,
-        Deer,
-        Dog,
-        Duck
-        //Mouse,
-        //Panda,
-        // Pig,
-        //Rabbit
+        Animal,
+        Bomb,
+        Gargoyle,
+        Imp
     }
 
+  protected  CharaterType charaterType;
+    public CharaterType CharaterTypeProperty
+    {
+        get => charaterType;
+        set => charaterType = value;
+    }
+
+ 
+
+  
+
+   
 
 
 
-    private void Awake()
+
+
+    protected virtual void Awake()
     {
         characterImage = transform.GetChild(0);
         spriteRenderer = characterImage.GetComponent<SpriteRenderer>();
-
-
-
         anim = characterImage.GetComponent<Animator>();
-
+        temp = animalType;
+        charaterType = CharaterType.Animal;
+        
     }
 
-    private void Start()
+    protected virtual void Start()
     {
+        blockController = FindObjectOfType<BlockController>();
 
 
     }
-    private void Update()
+    protected virtual void Update()
     {
-      
-       transform.localPosition = UnityEngine.Vector3.MoveTowards(transform.localPosition, UnityEngine.Vector3.zero, Time.deltaTime * moveSpeed);
-
-
+        if ((transform.localPosition - UnityEngine.Vector3.zero).magnitude > 0.025f)
+        {
+            transform.localPosition = UnityEngine.Vector3.MoveTowards(transform.localPosition, UnityEngine.Vector3.zero, Time.deltaTime * moveSpeed);
+        }
+        else
+        {
+            AnimalType = temp;
+            
+        }
     }
 
 
@@ -77,9 +100,16 @@ public class Character_Base : MonoBehaviour
 
     public void Init(int type, Sprite spr)
     {
-        animalType = type;
+        animalType =  type;
         spriteRenderer.sprite = spr;
+        temp = type;
+        charaterType = CharaterType.Animal;
     }
 
- 
+    public void SetAnimalType(int type)
+    {
+        AnimalType = type;
+    }
+
+
 }
