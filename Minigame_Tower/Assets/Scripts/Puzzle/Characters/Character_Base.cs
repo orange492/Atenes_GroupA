@@ -12,7 +12,7 @@ public class Character_Base : MonoBehaviour
     protected Animator anim;
     UnityEngine.Vector3 targetDir;
     protected Transform characterImage;
-    protected float moveSpeed = 5.0f;
+    protected float moveSpeed =10.0f;
 
    protected BlockController blockController;
    protected int animalType;
