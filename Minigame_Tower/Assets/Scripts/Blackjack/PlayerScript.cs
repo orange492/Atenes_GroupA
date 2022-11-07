@@ -44,9 +44,9 @@ public class PlayerScript : MonoBehaviour
     private void Start()    // 첫번째 Update 함수가 실행되기 직전
     {
         //Debug.Log("Bird - Start");
-        BlackjackManager.Inst.onGameStart += OnGameStart;
+     
 
-        isDead = true;                             // 우선 살아있다고 표시
+     
      
     }
 
@@ -120,11 +120,6 @@ public class PlayerScript : MonoBehaviour
         aceList = new List<CardScript>();
     }
 
-    private void OnGameStart()
-    {
-        isDead = false;                 // 새를 살아있는 상태로 만들고
-       
-    }
-
+   
 
 }

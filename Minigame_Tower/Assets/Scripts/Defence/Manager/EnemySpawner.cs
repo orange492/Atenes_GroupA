@@ -8,8 +8,8 @@ public class EnemySpawner : MonoBehaviour
     Transform[] tr;
     [SerializeField]
     GameObject enemyPref;
-    public List<Enemy> enemy { get; set; } = new List<Enemy>();
-
+    public Dictionary<int ,Enemy>[] enemy { get; set; } = new Dictionary<int, Enemy>[3];
+    int index = 0;
     public int number = 0;
     public int count = 0;
     float timer = 0;
@@ -22,7 +22,10 @@ public class EnemySpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        for (int i = 0; i < enemy.Length; i++)
+        {
+            enemy[i] = new Dictionary<int, Enemy>();
+        }
     }
 
     // Update is called once per frame
@@ -57,12 +60,35 @@ public class EnemySpawner : MonoBehaviour
             gold += 100;
         }
         count = number;
-        enemy.Clear();
+        for (int i = 0; i < enemy.Length; i++)
+        {
+            enemy[i].Clear();
+        }
+        index = 0;
     }
 
     void CrtEnemy()
     {
-        Enemy newEnemy = ObjectPooler.SpawnFromPool<Enemy>("Enemy", this.transform.position).Init(tr, hp, gold); //수정예정!
-        enemy.Add(newEnemy);
+        Enemy newEnemy = ObjectPooler.SpawnFromPool<Enemy>("Enemy", this.transform.position).Init(index, tr, hp, gold);
+        enemy[0].Add(index, newEnemy);
+        index++;
+    }
+    public void AddDic(int index, Enemy scr)
+    {
+        enemy[index].Add(scr.index, scr);
+    }
+    public void DelDic(int index, int num)
+    {
+        enemy[index].Remove(num);
+    }
+    public int FindRail(int index)
+    {
+        int rail = -1;
+        for (int i = 0; i < enemy.Length; i++)
+        {
+            if (enemy[i].ContainsKey(index))
+                rail = i;
+        }
+        return rail;
     }
 }
