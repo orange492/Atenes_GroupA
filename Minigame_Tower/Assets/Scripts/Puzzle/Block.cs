@@ -44,13 +44,23 @@ public class Block : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
   
+    }
+
+    private void Awake()
+    {
+        MakeCharacter();
+        pangAnim = transform.GetChild(0).GetComponent<Animator>();
+       
+    }
 
     private void Start()
     {
-        pangAnim = transform.GetChild(0).GetComponent<Animator>();
+        
         blockController = FindObjectOfType<BlockController>();
-        MakeCharacter();
+       
 
        
 

@@ -61,7 +61,7 @@ public class Character_Base : MonoBehaviour
     private void Update()
     {
       
-            transform.localPosition = UnityEngine.Vector3.MoveTowards(transform.localPosition, UnityEngine.Vector3.zero, Time.deltaTime * moveSpeed);
+       transform.localPosition = UnityEngine.Vector3.MoveTowards(transform.localPosition, UnityEngine.Vector3.zero, Time.deltaTime * moveSpeed);
 
 
     }
@@ -80,4 +80,6 @@ public class Character_Base : MonoBehaviour
         animalType = type;
         spriteRenderer.sprite = spr;
     }
+
+ 
 }

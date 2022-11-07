@@ -1,28 +1,39 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+
 
 public class PlayerScript : MonoBehaviour
 {
-    // 해당 스크립트는 딜러랑 플레이어 스크립트다
+    // --- This script is for BOTH player and dealer
 
-    // 카드스크립트랑 덱 스크립트 불러오기(읽기)
-    public CardScript cardScript;
+    // Get other scripts
+    public CardScript cardScript;   
     public DeckScript deckScript;
 
-
+    // Total value of player/dealer's hand
     public int handValue = 0;
 
+    // Betting money
+   public int money = 1000;
 
-    public int money = 500; // 얼마 베팅할지
-
-
+    // Array of card objects on table
     public GameObject[] hand;
-
+    // Index of next card to be turned over
     public int cardIndex = 0;
-
+    // Tracking aces for 1 to 11 conversions
     List<CardScript> aceList = new List<CardScript>();
 
+    bool isDead = false;
+    public bool IsDead { get => isDead; } // 죽은 상태 표시해주는 프로퍼티
+
+
+    /// <summary>
+    /// 완전히 죽었을 때 Result Pannel 이랑 연계되는 델리게이트
+    /// </summary>
+    public Action onDead;
     public void StartHand()
     {
         GetCard();
@@ -30,56 +41,76 @@ public class PlayerScript : MonoBehaviour
     }
 
 
-    public int GetCard() //카드읽어오기
+    private void Start()    // 첫번째 Update 함수가 실행되기 직전
     {
+        //Debug.Log("Bird - Start");
+        BlackjackManager.Inst.onGameStart += OnGameStart;
 
+        isDead = true;                             // 우선 살아있다고 표시
+     
+    }
+
+
+    // Add a hand to the player/dealer's hand
+    public int GetCard()
+    {
+        // Get a card, use deal card to assign sprite and value to card on table
+        int cardValue = deckScript.DealCard(hand[cardIndex].GetComponent<CardScript>());
+        // Show card on game screen
         hand[cardIndex].GetComponent<Renderer>().enabled = true;
-
+        // Add card value to running total of the hand
+        handValue += cardValue;
+        // If value is 1, it is an ace
+        if(cardValue == 1)
         {
             aceList.Add(hand[cardIndex].GetComponent<CardScript>());
         }
-
+        // Cehck if we should use an 11 instead of a 1
         AceCheck();
         cardIndex++;
         return handValue;
     }
 
-
+    // Search for needed ace conversions, 1 to 11 or vice versa
     public void AceCheck()
     {
-
+        // for each ace in the lsit check
         foreach (CardScript ace in aceList)
         {
-            if (handValue + 10 < 22 && ace.GetValueOfCard() == 1)
+            if(handValue + 10 < 22 && ace.GetValueOfCard() == 1)
             {
-
+                // if converting, adjust card object value and hand
                 ace.SetValue(11);
                 handValue += 10;
-            }
-            else if (handValue > 21 && ace.GetValueOfCard() == 11)
+            } else if (handValue > 21 && ace.GetValueOfCard() == 11)
             {
-
+                // if converting, adjust gameobject value and hand value
                 ace.SetValue(1);
                 handValue -= 10;
             }
         }
     }
 
-
-    public void AdjustMoney(int amount)
+    // Add or subtract from money, for bets
+    public void AdjustMoney(int amount) // 돈더해주기
     {
         money += amount;
     }
+     public void AdjustMoney2(int amount) // 돈빼주기
+    {
+        money -= amount;
+    }
 
-
+    // Output players current money amount
     public int GetMoney()
     {
         return money;
     }
 
+    // Hides all cards, resets the needed variables
     public void ResetHand()
     {
-        for (int i = 0; i < hand.Length; i++)
+        for(int i = 0; i < hand.Length; i++)
         {
             hand[i].GetComponent<CardScript>().ResetCard();
             hand[i].GetComponent<Renderer>().enabled = false;
@@ -88,4 +119,12 @@ public class PlayerScript : MonoBehaviour
         handValue = 0;
         aceList = new List<CardScript>();
     }
+
+    private void OnGameStart()
+    {
+        isDead = false;                 // 새를 살아있는 상태로 만들고
+       
+    }
+
+
 }
