@@ -75,6 +75,19 @@ public class TouchManager : MonoBehaviour
             return;
         }
         offClickPosition = Mouse.current.position.ReadValue();
+        Vector2 touchPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        RaycastHit2D hitInformation = Physics2D.Raycast(touchPos, Camera.main.transform.forward);
+        if (hitInformation.collider != null)
+        {
+            targetObject = hitInformation.transform.gameObject;
+        }
+
+        if (touchedObject.transform.GetChild(1).GetComponent<Character_Bomb>() != null && targetObject == touchedObject)
+        {
+            blockController.BombExplosion(touchedIndexX, touchedIndexY);
+        }
+
+        
         dragDir = (offClickPosition - onClickPosition);
 
         if (dragDir.magnitude > Vector2.right.magnitude * 50) //드래그 모션인지 확인

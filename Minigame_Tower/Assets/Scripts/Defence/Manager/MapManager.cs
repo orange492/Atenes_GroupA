@@ -2,15 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapManager : MonoBehaviour
+public class MapManager : Singleton<MapManager>
 {
     GameObject[,] tile;
     [SerializeField]
     GameObject tilePref;
     [SerializeField]
     GameObject unitPref;
-    [SerializeField]
-    Sprite[] spr;
     int[] size = new int[2];
     public int unitCnt { get; set; }
 
@@ -39,7 +37,8 @@ public class MapManager : MonoBehaviour
                 tile[i, j] = Instantiate(tilePref, this.transform);
                 tile[i, j].transform.Translate(j, i, 0);
                 tile[i, j].name = $"tile({i},{j})";
-                Instantiate(unitPref, tile[i, j].transform);
+                Unit unit = Instantiate(unitPref, tile[i, j].transform).GetComponent<Unit>();
+                unit.SetIndex(i,j);
             }
         }
     }
@@ -60,7 +59,46 @@ public class MapManager : MonoBehaviour
         }
         Unit unit = this.transform.GetChild(index).GetChild(0).gameObject.GetComponent<Unit>();
         int temp = Random.Range(0, 5);
-        unit.Init(temp,spr[temp], 1);
+        unit.Init(temp, 1);
         unitCnt++;
+    }
+
+    public int CheckGir(int[] index)
+    {
+        GameObject obj;
+        int count = 0;
+        if(index[1]-1 >=0)
+        {
+            obj = tile[index[0], index[1] - 1].transform.GetChild(0).gameObject;
+            if (obj.GetComponent<Unit>().type == 4 && obj.activeSelf)
+            {
+                count++;
+            }
+        }
+        if (index[1] + 1 < 3)
+        {
+            obj = tile[index[0], index[1] + 1].transform.GetChild(0).gameObject;
+            if (obj.GetComponent<Unit>().type == 4 && obj.activeSelf)
+            {
+                count++;
+            }
+        }
+        if (index[0] - 1 >= 0)
+        {
+            obj = tile[index[0] - 1, index[1]].transform.GetChild(0).gameObject;
+            if (obj.GetComponent<Unit>().type == 4 && obj.activeSelf)
+            {
+                count++;
+            }
+        }
+        if (index[0] + 1 < 5)
+        {
+            obj = tile[index[0] + 1, index[1]].transform.GetChild(0).gameObject;
+            if (obj.GetComponent<Unit>().type == 4 && obj.activeSelf)
+            {
+                count++;
+            }
+        }
+        return count;
     }
 }
