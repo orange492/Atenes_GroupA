@@ -6,13 +6,15 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(CanvasGroup))]
 
 public class BlackjackManager : Singletons<BlackjackManager>
 {   
     //델리게이트 실행을 위해서 불러오는 셋팅
     PlayerScript player;
-    
+     
     public PlayerScript Player => player;
+    public ResultPannel rp;
 
     // Game Buttons
     public Button dealBtn; // 딜, 카드를 나누는 버튼(셔플 개념) -> 패돌림 -> 리셋!
@@ -20,9 +22,9 @@ public class BlackjackManager : Singletons<BlackjackManager>
     public Button standBtn; // 스탠드, 카드를 뽑지 않고 차례 마치기 ->턴쉰다
     public Button betBtn; // 배팅, 칩을 더 건다는 버튼 ->칩걸기 ->> 항상 고정적으로 배팅될수 있게 변경 필요
 
+    CanvasGroup canvasGroup;
 
 
-   
 
     private int standClicks = 0; // 처음 스킵하는 버튼 횟수는 0으로 초기화
 
@@ -46,7 +48,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
 
     public Action onDead; // 죽을때 실행되는 델리게이트
     public Action onGameStart; // 게임 처음실행될때 실행 되는 델리게이트
-
+    public Action onResulintg;
 
   
 
@@ -65,58 +67,64 @@ public class BlackjackManager : Singletons<BlackjackManager>
         standBtn.onClick.AddListener(() => StandClicked()); //  스크립트에 온클릭 리스너 추가 ,한턴 쉬기 개념
         betBtn.onClick.AddListener(() => BetClicked()); //  스크립트에 온클릭 리스너 추가 ,배팅 개념
     }
+    private void Awake()
+    {
+        
+    }
 
     private void DealClicked() // 초기화 함수 -> 최종 승패 여기서 결정한다.
     {
-    
-            // 한라운드를 리샛하고 텍스트를 숨기고 새 덱으로 셔플한다.
-            playerScript.ResetHand(); // 플레이어 의 핸드를 리셋
-            dealerScript.ResetHand(); // 딜러의 핸드를 리셋
-            dealerScoreText.gameObject.SetActive(false);  // 딜러의 점수 스코어를 안보이게 한다.
-            mainText.gameObject.SetActive(false); // 게임의 메인 택스트를 안보이게 한다.
-            dealerScoreText.gameObject.SetActive(false); // 딜러 점수 안 보이도록 한다.
-            GameObject.Find("Deck").GetComponent<DeckScript>().Shuffle(); // 덱이라는 오브젝트 찾은 다음 덱스크립트를 셔플한다.
-            playerScript.StartHand(); // 플레이의 핸드를 새로 가져옴
-            dealerScript.StartHand(); // 딜러의 핸드를 새로 가져옴
-                                      // 매프레임 마다 스크린 표시해주기
-            scoreText.text = "손패점수: " + playerScript.handValue.ToString(); // 스코어텍스트 오브젝트의 text의 "Hand"내용에다가 플레이어 스크립트의 hand값 표시해주기
-            dealerScoreText.text = "상대점수: " + dealerScript.handValue.ToString(); //스코어텍스트 오브젝트의 text의 "Hand"내용에다가 딜러 스크립트의 hand값 표시해주기
-                                                                                 // 딜러카드를 뒤로놓고 숨긴다
-            hideCard.GetComponent<Renderer>().enabled = true; //숨긴 카드 표시
-                                                              // 버튼들 보이게 조정하기
-            dealBtn.gameObject.SetActive(false); // 패돌리는 버튼 안보이게 하기
-            hitBtn.gameObject.SetActive(true); // 카드 한장 가져오는 버튼 보이기
 
-            standBtn.gameObject.SetActive(true); //한 턴 쉬는 버튼 보이기
-            standBtnText.text = "턴넘겨"; // 기본 베팅 단위 출력!
-                                       //  기본 배팅금액 등등 설정
-            pot = 20;
-            betsText.text = "얼마걸까: $" + pot.ToString();
+        // 한라운드를 리샛하고 텍스트를 숨기고 새 덱으로 셔플한다.
+        playerScript.ResetHand(); // 플레이어 의 핸드를 리셋
+        dealerScript.ResetHand(); // 딜러의 핸드를 리셋
+        dealerScoreText.gameObject.SetActive(false);  // 딜러의 점수 스코어를 안보이게 한다.
+        mainText.gameObject.SetActive(false); // 게임의 메인 택스트를 안보이게 한다.
+        dealerScoreText.gameObject.SetActive(false); // 딜러 점수 안 보이도록 한다.
+        GameObject.Find("Deck").GetComponent<DeckScript>().Shuffle(); // 덱이라는 오브젝트 찾은 다음 덱스크립트를 셔플한다.
+        playerScript.StartHand(); // 플레이의 핸드를 새로 가져옴
+        dealerScript.StartHand(); // 딜러의 핸드를 새로 가져옴
+                                  // 매프레임 마다 스크린 표시해주기
+        scoreText.text = "손패점수: " + playerScript.handValue.ToString(); // 스코어텍스트 오브젝트의 text의 "Hand"내용에다가 플레이어 스크립트의 hand값 표시해주기
+        dealerScoreText.text = "상대점수: " + dealerScript.handValue.ToString(); //스코어텍스트 오브젝트의 text의 "Hand"내용에다가 딜러 스크립트의 hand값 표시해주기
+                                                                             // 딜러카드를 뒤로놓고 숨긴다
+        hideCard.GetComponent<Renderer>().enabled = true; //숨긴 카드 표시
+                                                          // 버튼들 보이게 조정하기
+        dealBtn.gameObject.SetActive(false); // 패돌리는 버튼 안보이게 하기
+        hitBtn.gameObject.SetActive(true); // 카드 한장 가져오는 버튼 보이기
 
-            //playerScript.AdjustMoney(-20);
-            cashText.text = "$" + playerScript.GetMoney().ToString();
-            cashText2.text = "$" + dealerScript.GetMoney().ToString();
-        
-        if (playerScript.money <= 0 )   // 최종적으로 이길때 출력됨
+        standBtn.gameObject.SetActive(true); //한 턴 쉬는 버튼 보이기
+        standBtnText.text = "턴넘겨"; // 기본 베팅 단위 출력!
+                                   //  기본 배팅금액 등등 설정
+        pot = 20;
+        betsText.text = "얼마걸까: $" + pot.ToString();
+
+        //playerScript.AdjustMoney(-20);
+        cashText.text = "$" + playerScript.GetMoney().ToString();
+        cashText2.text = "$" + dealerScript.GetMoney().ToString();
+
+        Resulting();
+
+    }
+
+    private void Resulting()
+    {
+        if (playerScript.money <= 0)   // 최종적으로 이길때 출력됨
         {
-            Die();
             Debug.Log("완전히 패배했습니다.");
+            GameObject.Find("ResultPannel").GetComponent<ResultPannel>().Open();
+
+
         }
         else if (dealerScript.money <= 0)  // 최종적으로 졋을때 출력됨
         {
-            Die();
             Debug.Log("최종 승리했습니다");
+            GameObject.Find("ResultPannel").GetComponent<ResultPannel>().Open();
+
         }
-
     }
 
-    private void Die() // 죽는 조건 함수!
-    {
-                onDead?.Invoke();               // 사망 알림용 델리게이트 실행
-                                // 죽었다고 표시
-           
-        
-    }
+
 
 
     private void HitClicked() // 카드한장 가져오는 버튼 클릭시 발동되는 함수
@@ -232,9 +240,5 @@ public class BlackjackManager : Singletons<BlackjackManager>
         betsText.text = "얼마걸까: $" + pot.ToString();
     }
 
-    public void GameStart()
-    {
-        onGameStart?.Invoke();      // 게임이 시작되었음을 알림   
-    }
-
+  
 }
