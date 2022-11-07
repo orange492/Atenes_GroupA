@@ -1789,7 +1789,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 623023694}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 336549507}
+        m_TargetAssemblyTypeName: ResultPannel, Assembly-CSharp
+        m_MethodName: OnClick_Next
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &623023694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3930,6 +3942,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1889225995}
   - component: {fileID: 1889225994}
+  - component: {fileID: 1889225996}
   m_Layer: 0
   m_Name: GameMamager
   m_TagString: Untagged
@@ -3949,6 +3962,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aca1a89e93168d94e849d7a69b1c5db1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rp: {fileID: 0}
   dealBtn: {fileID: 15309217}
   hitBtn: {fileID: 1240757132}
   standBtn: {fileID: 596014815}
@@ -3981,6 +3995,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!225 &1889225996
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1889225993}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1954065376
 GameObject:
   m_ObjectHideFlags: 0
