@@ -364,7 +364,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
-                        blocksComponents[Y][X].StartCoroutine(blocksComponents[Y][X].BombCreate()) ;
+                        blocksComponents[Y][X].StartCoroutine(blocksComponents[Y][X].BombCreate(0.2f)) ;
                         //   StartCoroutine(CharacterDownX(X-2, Y, 5));
                     }
                     else //  |□■■■■|
@@ -559,7 +559,7 @@ public class BlockController : MonoBehaviour
                             CharacterDestroyAndAnimation(X, Y + i);
                         }
                         Debug.Log("222");
-                        blocksComponents[Y][X].BombCreate() ;
+                        blocksComponents[Y][X].BombCreate(0.2f) ;
                         
 
                         //downSizeIndex = 5;
@@ -661,11 +661,24 @@ public class BlockController : MonoBehaviour
 
     public  void BombExplosion(int X, int Y)
     {
+        blocksComponents[Y][X].SetCharacterType(Block.CharacterType.Animal);
         for (int i = X-1; i <=X+1 ; i++)
         {
+            if( i < 0 || i >= blockXSize)
+            {
+                continue;
+            }
             for (int j = Y-1; j <= Y+1; j++)
             {
+                if (j < invisibleBlockYSize || j >= blockYSize)
+                {
+                    continue;
+                }
                 CharacterDestroyAndAnimation(i, j);
+                if (blocksComponents[j][i].charaterType == Block.CharacterType.Bomb)
+                {
+                    BombExplosion(i, j);
+                }
             }
         }
     }
@@ -677,7 +690,9 @@ public class BlockController : MonoBehaviour
             if (blocks[i - downSize][X].transform.childCount == 2 && blocks[i][X].transform.childCount == 1)
             {
                 blocks[i - downSize][X].transform.GetChild(1).transform.parent = blocks[i][X].transform;
+                blocksComponents[i][X].SetCharacterType();
                 blocks[i][X].transform.GetChild(1).localPosition = Vector3.up * downSize * 1.25f;
+                
                 blocks[i][X].transform.GetChild(1).GetComponent<Character_Base>().SetAnimalType(-1);
             }
         }
@@ -751,6 +766,18 @@ public class BlockController : MonoBehaviour
         for (int i = 0; i < blockXSize; i++)
         {
             emptyBlocks[i].Clear();
+        }
+
+    }
+
+    public void ResetAllBlock()
+    {
+        for (int i = 0; i < blockXSize; i++)
+        {
+            for (int j = invisibleBlockYSize; j < blockYSize; j++)
+            {
+                blocksComponents[j][i].DestroyImmediateCharacter();
+            }
         }
 
     }

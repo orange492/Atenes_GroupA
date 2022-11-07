@@ -19,7 +19,7 @@ public class TouchManager : MonoBehaviour
     protected int targetIndexY;
     bool isMoving = false;
     bool isClickLock = false;
-
+    ItemButton itemButton;
 
     public bool IsClickLock
     {
@@ -34,6 +34,7 @@ public class TouchManager : MonoBehaviour
     private void Start()
     {
         blockController = FindObjectOfType<BlockController>();
+        itemButton = FindObjectOfType<ItemButton>();
     }
 
     private void OnEnable()
@@ -82,9 +83,20 @@ public class TouchManager : MonoBehaviour
             targetObject = hitInformation.transform.gameObject;
         }
 
+        if (targetObject == touchedObject&&itemButton.IsClicked)
+        {
+            Block targetBlock= targetObject.GetComponent<Block>();
+            targetBlock.DestroyCharacter();
+            targetBlock.StartCoroutine(targetBlock.BombCreate(0.0f));
+            ResetObject();
+            return;
+        }
+
         if (touchedObject.transform.GetChild(1).GetComponent<Character_Bomb>() != null && targetObject == touchedObject)
         {
             blockController.BombExplosion(touchedIndexX, touchedIndexY);
+            ResetObject();
+            return;
         }
 
         

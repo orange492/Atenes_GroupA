@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using Unity.VisualScripting;
+using System.Transactions;
 
 public class Block : MonoBehaviour
 {
@@ -38,16 +39,15 @@ public class Block : MonoBehaviour
             indexY = value;
         }
     }
-    int animalType;
-    public int AnimalType
+    public enum CharacterType
     {
-        get => animalType;
-        set
-        {
-            animalType = value;
-        }
+        Animal,
+        Bomb,
+        Gargoyle,
+        Imp
     }
 
+    public CharacterType charaterType;
     private void OnEnable()
     {
 
@@ -78,6 +78,7 @@ public class Block : MonoBehaviour
             MakeCharacter();
 
         }
+    
 
 
     }
@@ -91,6 +92,7 @@ public class Block : MonoBehaviour
         int animalType = Random.Range(0, sprites.Length);
 
         character_Base.Init(animalType, sprites[animalType]);
+        charaterType = CharacterType.Animal;
     }
 
     public void PangAnimationActive()
@@ -104,6 +106,16 @@ public class Block : MonoBehaviour
         {
             Destroy(transform.GetChild(1).gameObject);
         }
+       
+    }
+
+    public void DestroyImmediateCharacter()
+    {
+        if (transform.childCount != 1)
+        {
+            DestroyImmediate(transform.GetChild(1).gameObject);
+        }
+
     }
 
     public void BlockCheck()
@@ -111,13 +123,31 @@ public class Block : MonoBehaviour
         blockController.ThreeMatchAction(indexX, indexY);
     }
 
-    public IEnumerator BombCreate()
+    public IEnumerator BombCreate(float time)
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(time);
         Instantiate(bombPrefab, transform);
+        SetCharacterType();
 
     }
 
+    public void SetCharacterType()
+    {
+        if (transform.childCount == 2)
+        {
+            charaterType = (CharacterType)transform.GetChild(1).GetComponent<Character_Base>().CharaterTypeProperty;
+        }
+    }
+
+    public void SetCharacterType(CharacterType type)
+    {
+        charaterType = type;
+    }
+
+    public void DestroySelf()
+    {
+        Destroy(this.gameObject);
+    }
 
 
 }
