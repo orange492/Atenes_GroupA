@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterPrefab: {fileID: 1498664391938371539, guid: cbcfec0404f06444c8b70357759198e7, type: 3}
+  bombPrefab: {fileID: 2754980892721441107, guid: dba036e480342ce46897347ac6bcd705, type: 3}
   sprites:
   - {fileID: 21300000, guid: 1d43987c40ee2964eb8a10128de90f34, type: 3}
   - {fileID: 21300000, guid: eaa41b6eb1d10604e9755ca0bf5ec8a5, type: 3}

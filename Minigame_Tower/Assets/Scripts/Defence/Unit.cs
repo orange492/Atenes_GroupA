@@ -5,12 +5,15 @@ using UnityEngine;
 public class Unit : MonoBehaviour
 {
     [SerializeField]
+    Sprite[] allSpr;
+    [SerializeField]
     GameObject pBullet;
     SpriteRenderer spr;
     GameObject[] stars = new GameObject[5];
     public int type { get; set; }
     public int star { get; set; }
     float timer;
+    int[] index = new int[2];
 
     // Start is called before the first frame update
     void Awake()
@@ -39,12 +42,18 @@ public class Unit : MonoBehaviour
         
     }
 
-    public void Init(int _type, Sprite spr,int _star)
+    public void SetIndex(int y, int x)
+    {
+        index[0] = y;
+        index[1] = x;
+    }
+
+    public void Init(int _type,int _star)
     {
         this.gameObject.SetActive(true);
         type = _type;
         star = _star;
-        this.GetComponent<SpriteRenderer>().sprite = spr;
+        spr.sprite = allSpr[type];
         PrintUnit();
     }
 
@@ -72,6 +81,8 @@ public class Unit : MonoBehaviour
     public void Merge()
     {
         star++;
+        type = Random.Range(0, 5);
+        spr.sprite = allSpr[type];
         PrintUnit();
     }
 
@@ -86,7 +97,19 @@ public class Unit : MonoBehaviour
 
     void Shoot()
     {
-        DefenceManager.Instance.Shoot(this.transform, type);
+        if (type == 2)
+        {
+            int damage = DefenceManager.Instance.level[type] * 10;
+            DefenceManager.Instance.Gold += damage;
+            ObjectPooler.SpawnFromPool<DamageText>("DmgTxt", this.transform.position).Init(this.transform, damage, 1);
+        }
+        if(type==4)
+        {
+            DefenceManager.Instance.Shoot(this.transform, type, MapManager.Instance.CheckGir(index));
+        }
+        else
+        {
+            DefenceManager.Instance.Shoot(this.transform, type);
+        }
     }
-
 }

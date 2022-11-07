@@ -20,7 +20,7 @@ public class DefenceManager : Singleton<DefenceManager>
     public EnemySpawner enemySpnr { get; set; }
     public int frontEnemy { get; set; }
     int life;
-    int[] level = new int[5];
+    public int[] level { get; set; } = new int[5];
 
     int wave;
     public int Wave
@@ -146,23 +146,70 @@ public class DefenceManager : Singleton<DefenceManager>
         }
     }
 
-    public void Shoot(Transform tr, int type)
+    public void Shoot(Transform tr, int type, int gir=0)
     {
-        if (enemySpnr.enemy.Count <= frontEnemy)
+        int repeat = 1;
+        int[,] index = new int[3,2];
+        if (type==0)
         {
-            return;
+            repeat = 3;
         }
-        int damage = level[type] * 10;
-        enemySpnr.enemy[frontEnemy].Hp -= damage;
-        ObjectPooler.SpawnFromPool<Bullet>("Bullet", tr.position).Init(type, damage);
-        if (enemySpnr.enemy[frontEnemy].Hp <= 0)
+        Dictionary<int, Enemy>[] tempEnemy = new Dictionary<int, Enemy>[3];
+        for (int i = 0; i < tempEnemy.Length; i++)
         {
-            frontEnemy++;
+            tempEnemy[i] = new Dictionary<int, Enemy>(enemySpnr.enemy[i]);
         }
-    }
 
-    public Enemy Target()
-    {
-        return enemySpnr.enemy[frontEnemy];
+        for (int j = 0; j < repeat; j++)
+        {
+            index[j, 0] = 2;
+            if (tempEnemy[2].Count == 0)
+            {
+                if (tempEnemy[1].Count == 0)
+                {
+                    if (tempEnemy[0].Count == 0)
+                    {
+                        index[j, 0] = -1;
+                        continue;
+                    }
+                    index[j, 0]--;
+                }
+                index[j, 0]--;
+            }
+            float? minVal = null;
+            foreach (KeyValuePair<int, Enemy> items in tempEnemy[index[j, 0]])
+            {
+                Enemy thisEnemy = items.Value;
+                if (!minVal.HasValue)
+                {
+                    minVal = thisEnemy.RemainTr();
+                    index[j,1] = thisEnemy.index;
+                    continue;
+                }
+                float thisNum = thisEnemy.RemainTr();
+                if (thisNum < minVal)
+                {
+                    minVal = thisNum;
+                    index[j,1] = thisEnemy.index;
+                }
+            }
+            tempEnemy[index[j, 0]].Remove(index[j,1]);
+        }
+
+        for (int j = 0; j < repeat; j++)
+        {
+            if (index[j, 0] == -1)
+            {
+                continue;
+            }
+            int damage = level[type] * 10;
+            damage += damage / 4 * gir;
+            enemySpnr.enemy[index[j, 0]][index[j, 1]].Hp -= damage;
+            ObjectPooler.SpawnFromPool<Bullet>("Bullet", tr.position).Init(enemySpnr.enemy[index[j, 0]][index[j, 1]].transform, type, damage);
+            if (enemySpnr.enemy[index[j, 0]][index[j, 1]].Hp <= 0)
+            {
+                enemySpnr.DelDic(index[j, 0], index[j, 1]);
+            }
+        }
     }
 }
