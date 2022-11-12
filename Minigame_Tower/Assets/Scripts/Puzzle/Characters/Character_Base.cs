@@ -8,15 +8,18 @@ public class Character_Base : MonoBehaviour
 {
 
     SpriteRenderer spriteRenderer;
-  
+
     protected Animator anim;
     UnityEngine.Vector3 targetDir;
     protected Transform characterImage;
-    protected float moveSpeed =10.0f;
+    protected float moveSpeed = 10.0f;
 
-   protected BlockController blockController;
-   protected int animalType;
+    protected BlockController blockController;
+    protected int animalType;
     protected int temp;
+
+    bool isPang = false;
+
 
     public int AnimalType
     {
@@ -30,12 +33,12 @@ public class Character_Base : MonoBehaviour
                 block.BlockCheck();
             }
             animalType = value;
-            
+
         }
-    } 
+    }
 
 
-  public  enum CharaterType
+    public enum CharaterType
     {
         Animal,
         Bomb,
@@ -43,18 +46,18 @@ public class Character_Base : MonoBehaviour
         Imp
     }
 
-  protected  CharaterType charaterType;
+    protected CharaterType charaterType;
     public CharaterType CharaterTypeProperty
     {
         get => charaterType;
         set => charaterType = value;
     }
 
- 
 
-  
 
-   
+
+
+
 
 
 
@@ -67,7 +70,7 @@ public class Character_Base : MonoBehaviour
         anim = characterImage.GetComponent<Animator>();
         temp = animalType;
         charaterType = CharaterType.Animal;
-        
+
     }
 
     protected virtual void Start()
@@ -85,8 +88,13 @@ public class Character_Base : MonoBehaviour
         else
         {
             AnimalType = temp;
-            
+
         }
+    }
+
+    public void IsPang(){
+        isPang = true;
+
     }
 
 
@@ -94,13 +102,13 @@ public class Character_Base : MonoBehaviour
 
     public void AnimationActive(string direction)
     {
-
+        if(isPang==false)
         anim.SetTrigger(direction);
     }
 
     public void Init(int type, Sprite spr)
     {
-        animalType =  type;
+        animalType = type;
         spriteRenderer.sprite = spr;
         temp = type;
         charaterType = CharaterType.Animal;
