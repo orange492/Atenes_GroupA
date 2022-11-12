@@ -83,15 +83,17 @@ public class TouchManager : MonoBehaviour
             targetObject = hitInformation.transform.gameObject;
         }
 
-        if (targetObject == touchedObject&&itemButton.IsClicked)
+        if (targetObject == touchedObject && itemButton.IsClicked && itemButton.bombRemain > 0 && touchedObject.transform.GetChild(1).GetComponent < Character_Bomb >()== null)
         {
+            itemButton.bombRemain--;
+            itemButton.BombRemainToText();
             Block targetBlock= targetObject.GetComponent<Block>();
             targetBlock.DestroyCharacter();
             targetBlock.StartCoroutine(targetBlock.BombCreate(0.0f));
             ResetObject();
             return;
         }
-
+        
         if (touchedObject.transform.GetChild(1).GetComponent<Character_Bomb>() != null && targetObject == touchedObject)
         {
             blockController.BombExplosion(touchedIndexX, touchedIndexY);
@@ -99,6 +101,10 @@ public class TouchManager : MonoBehaviour
             return;
         }
 
+        if(touchedObject.transform.GetChild(1).GetComponent<Character_Bomb>() != null)
+        {
+            return;
+        }
         
         dragDir = (offClickPosition - onClickPosition);
 
@@ -110,7 +116,7 @@ public class TouchManager : MonoBehaviour
 
             if (singedAngle >= -45 && singedAngle < 45)
             {
-                Debug.Log("우");
+               // Debug.Log("우");
                 if (touchedIndexX < blockController.blockXSize - 1 && !isMoving)
                 {
                     targetIndexX += 1;
@@ -118,12 +124,12 @@ public class TouchManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("오른쪽 이동불가");
+                  //  Debug.Log("오른쪽 이동불가");
                 }
             }
             else if (singedAngle >= 45 && singedAngle < 135)
             {
-                Debug.Log("상");
+               // Debug.Log("상");
                 if (touchedIndexY >blockController.invisibleBlockYSize && !isMoving)
                 {
                     targetIndexY -= 1;
@@ -131,13 +137,13 @@ public class TouchManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log($"위쪽 이동불가");
+                   // Debug.Log($"위쪽 이동불가");
                 }
 
             }
             else if (singedAngle >= 135 || singedAngle < -135)
             {
-                Debug.Log("좌");
+               // Debug.Log("좌");
                 if (touchedIndexX > 0 && !isMoving)
                 {
                     targetIndexX -= 1;
@@ -145,18 +151,20 @@ public class TouchManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("왼쪽 이동불가");
+                    //Debug.Log("왼쪽 이동불가");
                 }
             }
             else
             {
-                Debug.Log("하");
+                // Debug.Log("하");
                 if (touchedIndexY < blockController.blockYSize - 1 && !isMoving)
                 {
                     targetIndexY += 1;
                     MoveCharacter("Up", "Down");
                 }
-                else Debug.Log("아래쪽 이동불가");
+                else { }
+
+                    //Debug.Log("아래쪽 이동불가");
             }
 
 
@@ -197,14 +205,17 @@ public class TouchManager : MonoBehaviour
     void MoveCharacter(string targetAnim, string touchedAnim)
     {
         targetObject = blockController.blocks[targetIndexY][targetIndexX];
-        if (targetObject.transform.childCount == 1)
+        if (targetObject.transform.childCount == 1 || targetObject.transform.GetChild(1).GetComponent<Character_Bomb>() != null)
         {
             return;
         }
+
         Character_Base targetCharacter = targetObject.transform.GetChild(1).GetComponent<Character_Base>();
         Character_Base touchedCharacter = touchedObject.transform.GetChild(1).GetComponent<Character_Base>();
+
         targetCharacter.AnimationActive(targetAnim);
         touchedCharacter.AnimationActive(touchedAnim);
+
     }
 
     public virtual void ChildChange()
@@ -223,6 +234,8 @@ public class TouchManager : MonoBehaviour
         touchedObject.transform.GetChild(1).transform.parent = transform;
         targetObject.transform.GetChild(1).transform.parent = touchedObject.transform;
         transform.GetChild(0).transform.parent = targetObject.transform;
+        targetObject.transform.GetChild(1).localPosition = Vector3.zero;
+        touchedObject.transform.GetChild(1).localPosition = Vector3.zero;
         if (blockController.ThreeMatchCheck(touchedIndexX, touchedIndexY) ||
             blockController.ThreeMatchCheck(targetIndexX, targetIndexY))
         {

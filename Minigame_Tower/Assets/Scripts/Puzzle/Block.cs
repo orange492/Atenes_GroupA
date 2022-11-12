@@ -120,6 +120,10 @@ public class Block : MonoBehaviour
 
     public void BlockCheck()
     {
+        if (indexY < blockController.invisibleBlockYSize)
+        {
+            return;
+        }
         blockController.ThreeMatchAction(indexX, indexY);
     }
 
