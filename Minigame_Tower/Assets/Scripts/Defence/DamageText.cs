@@ -8,7 +8,7 @@ public class DamageText : MonoBehaviour
     const float DELETE_TIME = 0.5f;
     Dictionary<int, Color> color = new Dictionary<int, Color>()
     {
-     {0, Color.black},
+     {0, Color.white},
      {1, Color.yellow},
      {2, Color.green},
 };
