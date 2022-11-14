@@ -20,6 +20,18 @@ public class Character_Base : MonoBehaviour
 
     bool isPang = false;
 
+    bool isOnGargoyle=false;
+
+    public bool IsOnGargoyle
+    {
+        get => isOnGargoyle;
+        set
+        {
+            OnGargoyle();
+            isOnGargoyle = value;
+        }
+    }
+
 
     public int AnimalType
     {
@@ -31,6 +43,7 @@ public class Character_Base : MonoBehaviour
                 animalType = value;
                 Block block = GetComponentInParent<Block>();
                 block.BlockCheck();
+                block.GargolyeBlockCheck();
             }
             animalType = value;
 
@@ -76,7 +89,8 @@ public class Character_Base : MonoBehaviour
     protected virtual void Start()
     {
         blockController = FindObjectOfType<BlockController>();
-
+        Block block = GetComponentInParent<Block>();
+        block.GargolyeBlockCheck();
 
     }
     protected virtual void Update()
@@ -90,6 +104,7 @@ public class Character_Base : MonoBehaviour
             AnimalType = temp;
 
         }
+        
     }
 
     public void IsPang(){
@@ -106,17 +121,23 @@ public class Character_Base : MonoBehaviour
         anim.SetTrigger(direction);
     }
 
-    public void Init(int type, Sprite spr)
+    public void Init(CharaterType character,int type, Sprite spr)
     {
         animalType = type;
         spriteRenderer.sprite = spr;
         temp = type;
-        charaterType = CharaterType.Animal;
+        charaterType = character;
+       
     }
 
     public void SetAnimalType(int type)
     {
         AnimalType = type;
+    }
+
+    void OnGargoyle()
+    {
+        spriteRenderer.color = Color.black;
     }
 
 

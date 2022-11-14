@@ -89,11 +89,21 @@ public class Block : MonoBehaviour
         GameObject obj = Instantiate(characterPrefab, transform.position, transform.rotation, transform);
 
         Character_Base character_Base = obj.GetComponent<Character_Base>();
-        int animalType = Random.Range(0, sprites.Length);
 
-        character_Base.Init(animalType, sprites[animalType]);
-        charaterType = CharacterType.Animal;
+        if (Random.Range(0.0f, 1.0f) < 0.1)
+        {
+            character_Base.Init(Character_Base.CharaterType.Gargoyle, -3, sprites[sprites.Length-1]);
+            charaterType = CharacterType.Gargoyle;
+        }
+        else
+        {
+            
+            int animalType = Random.Range(0, sprites.Length-1);
+            character_Base.Init(Character_Base.CharaterType.Animal,animalType, sprites[animalType]);
+            charaterType = CharacterType.Animal;
+        }
     }
+
 
     public void PangAnimationActive()
     {
@@ -125,6 +135,15 @@ public class Block : MonoBehaviour
             return;
         }
         blockController.ThreeMatchAction(indexX, indexY);
+    }
+
+    public void GargolyeBlockCheck()
+    {
+        if (indexY < blockController.invisibleBlockYSize)
+        {
+            return;
+        }
+        blockController.GargoyleCheck(indexX, indexY);
     }
 
     public IEnumerator BombCreate(float time)
