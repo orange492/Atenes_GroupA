@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.UIElements;
 
 public class BlockController : MonoBehaviour
@@ -14,37 +15,65 @@ public class BlockController : MonoBehaviour
     public GameObject[][] blocks;
     Block[][] blocksComponents;
     TouchManager touchManager;
+    int totalScore = 0;
+    float comboMagnification = 1.0f;
+    float feverMagenification = 1.0f;
+    int feverGauge = 0;
+
+    bool isFevering = false;
 
 
     public int blockXSize = 6;
     public int blockYSize = 9 * 2;
     public int invisibleBlockYSize = 9;
     int destroyCount = 0;
-    bool isStart = true;
-    int pangAnimationCount=0;
+    int pangAnimationCount = 0;
+    public Action<int> onScoreChange;
+    public Action onComboChange;
+    public Action<int> onFeverChange;
 
-    
 
     public int PangAnimationCount
     {
         get => pangAnimationCount;
         set => pangAnimationCount = value;
     }
-   public int DestroyCount {
-     get=>   destroyCount;
+    public int DestroyCount
+    {
+        get => destroyCount;
         set
         {
             destroyCount = value;
         }
     }
+
+    public int FeverGauge
+    {
+        get => feverGauge;
+        set
+        {
+            feverGauge = value;
+        }
+    }
+    
+    public bool IsFevering
+    {
+        get => isFevering;
+        set
+        {
+            isFevering = value;
+        }
+    }
+
+
     List<int>[] emptyBlocks;
 
-  public enum GameMode
+    public enum GameMode
     {
-        CHECKMODE,
-        STOPCHECKMODE
+        Normal,
+        Checking
     }
-   public GameMode mode = GameMode.CHECKMODE;
+    public GameMode mode = GameMode.Normal;
     public GameMode Mode
     {
         get => mode;
@@ -52,8 +81,8 @@ public class BlockController : MonoBehaviour
         {
             mode = value;
         }
-    } 
- 
+    }
+
 
 
     private void Awake()
@@ -83,6 +112,7 @@ public class BlockController : MonoBehaviour
         MoveBlock(blockYSize, invisibleBlockYSize);
 
         touchManager = FindObjectOfType<TouchManager>();
+        AddScore(0);
 
         for (int i = 0; i < blockYSize; i++)
         {
@@ -93,7 +123,7 @@ public class BlockController : MonoBehaviour
 
         }
 
-    
+
         AllBlockAction();
 
     }
@@ -105,7 +135,7 @@ public class BlockController : MonoBehaviour
         //    AllBlockAction();
         //    isStart = false;
         //}
-      
+
 
     }
 
@@ -162,20 +192,20 @@ public class BlockController : MonoBehaviour
     {
         for (int i = 0; i < blockXSize; i++)
         {
-            for (int j = 0; j < blockYSize; j++)
+            for (int j = invisibleBlockYSize; j < blockYSize; j++)
             {
                 if (ThreeMatchCheck(i, j))
                     return true;
 
             }
         }
-      //  Mode = GameMode.CHECKMODE;
+        //  Mode = GameMode.CHECKMODE;
         return false;
     }
 
     public void AllBlockAction()
     {
-       
+
         for (int i = 0; i < blockXSize; i++)
         {
             for (int j = invisibleBlockYSize; j < blockYSize; j++)
@@ -226,7 +256,7 @@ public class BlockController : MonoBehaviour
         //    return;
         //}
         //Mode = GameMode.STOPCHECKMODE;
-        
+
         Character_Base character_Base = blocks[Y][X].transform.GetComponentInChildren<Character_Base>();
         if (character_Base == null)
         {
@@ -351,12 +381,12 @@ public class BlockController : MonoBehaviour
         {
             return;
         }
-        
-        if (animalTypes[2] == animalType ) // □□|■■|□
+
+        if (animalTypes[2] == animalType) // □□|■■|□
         {
-            if (animalTypes[3] == animalType ) // □□|■■■|
+            if (animalTypes[3] == animalType) // □□|■■■|
             {
-                if (animalTypes[1] == animalType ) // □|■■■■|
+                if (animalTypes[1] == animalType) // □|■■■■|
                 {
                     if (animalTypes[0] == animalType) //  |■■■■■|
                     {
@@ -364,7 +394,10 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
-                        blocksComponents[Y][X].StartCoroutine(blocksComponents[Y][X].BombCreate()) ;
+                        blocksComponents[Y][X].StartCoroutine(blocksComponents[Y][X].BombCreate(0.2f));
+                        AddScore(100);
+                        onComboChange?.Invoke();
+
                         //   StartCoroutine(CharacterDownX(X-2, Y, 5));
                     }
                     else //  |□■■■■|
@@ -373,6 +406,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
+                        onComboChange?.Invoke();
                         //    StartCoroutine(CharacterDownX(X - 1, Y, 4));
                     }
                 }
@@ -382,6 +416,7 @@ public class BlockController : MonoBehaviour
                     {
                         CharacterDestroyAndAnimation(X + i, Y);
                     }
+                    onComboChange?.Invoke();
                     //     StartCoroutine(CharacterDownX(X, Y, 3));
                 }
             }
@@ -395,6 +430,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
+                        onComboChange?.Invoke();
                         //   StartCoroutine(CharacterDownX(X - 2, Y, 4));
                     }
                     else // |□■■■□|
@@ -403,6 +439,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
                         }
+                        onComboChange?.Invoke();
                         //StartCoroutine(CharacterDownX(X - 1, Y, 3));
                     }
                 }
@@ -422,6 +459,7 @@ public class BlockController : MonoBehaviour
                     {
                         CharacterDestroyAndAnimation(X + i, Y);
                     }
+                    onComboChange?.Invoke();
                     //StartCoroutine(CharacterDownX(X - 2, Y, 3));
                 }
                 else  // |□■■□□|
@@ -558,9 +596,11 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
                         }
-                        Debug.Log("222");
-                        blocksComponents[Y][X].BombCreate() ;
-                        
+                        blocksComponents[Y][X].BombCreate(0.2f);
+                        AddScore(100);
+                        onComboChange?.Invoke();
+
+
 
                         //downSizeIndex = 5;
                         //downX = X;
@@ -574,9 +614,8 @@ public class BlockController : MonoBehaviour
                         for (int i = -1; i <= 2; i++)
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
-
-
                         }
+                        onComboChange?.Invoke();
                         //downSizeIndex = 4;
 
                         //downX = X;
@@ -590,6 +629,7 @@ public class BlockController : MonoBehaviour
                     {
                         CharacterDestroyAndAnimation(X, Y + i);
                     }
+                    onComboChange?.Invoke();
                     //downSizeIndex = 3;
                     //downX = X;
                     //downY = Y+2;
@@ -606,6 +646,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
                         }
+                        onComboChange?.Invoke();
                         //downSizeIndex = 4;
                         //downX = X;
                         //downY = Y + 1;
@@ -617,6 +658,7 @@ public class BlockController : MonoBehaviour
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
                         }
+                        onComboChange?.Invoke();
                         //downSizeIndex = 3;
                         //downX = X;
                         //downY = Y + 1; 
@@ -639,6 +681,7 @@ public class BlockController : MonoBehaviour
                     {
                         CharacterDestroyAndAnimation(X, Y + i);
                     }
+                    onComboChange?.Invoke();
                     //downSizeIndex = 3;
                     //downX = X;
                     //downY = Y;
@@ -659,17 +702,31 @@ public class BlockController : MonoBehaviour
         return;
     }
 
-    public  void BombExplosion(int X, int Y)
+    public void BombExplosion(int X, int Y)
     {
-        for (int i = X-1; i <=X+1 ; i++)
+        blocksComponents[Y][X].SetCharacterType(Block.CharacterType.Animal);
+        for (int i = X - 1; i <= X + 1; i++)
         {
-            for (int j = Y-1; j <= Y+1; j++)
+            if (i < 0 || i >= blockXSize)
             {
+                continue;
+            }
+            for (int j = Y - 1; j <= Y + 1; j++)
+            {
+                if (j < invisibleBlockYSize || j >= blockYSize)
+                {
+                    continue;
+                }
                 CharacterDestroyAndAnimation(i, j);
+                if (blocksComponents[j][i].charaterType == Block.CharacterType.Bomb)
+                {
+                    BombExplosion(i, j);
+                }
             }
         }
+        onComboChange?.Invoke();
     }
-    
+
     public void CharacterDown(int X, int lowY, int downSize)
     {
         for (int i = lowY; i >= downSize; i--)
@@ -677,7 +734,9 @@ public class BlockController : MonoBehaviour
             if (blocks[i - downSize][X].transform.childCount == 2 && blocks[i][X].transform.childCount == 1)
             {
                 blocks[i - downSize][X].transform.GetChild(1).transform.parent = blocks[i][X].transform;
+                blocksComponents[i][X].SetCharacterType();
                 blocks[i][X].transform.GetChild(1).localPosition = Vector3.up * downSize * 1.25f;
+
                 blocks[i][X].transform.GetChild(1).GetComponent<Character_Base>().SetAnimalType(-1);
             }
         }
@@ -698,7 +757,7 @@ public class BlockController : MonoBehaviour
                 {
                     if (j == emptyBlocks[i].Count - 1)
                     {
-                        
+
                     }
                     else if (emptyBlocks[i][j] - emptyBlocks[i][j + 1] == -1)
                     {
@@ -711,6 +770,7 @@ public class BlockController : MonoBehaviour
                     count = 0;
                 }
             }
+
         }
     }
 
@@ -725,10 +785,8 @@ public class BlockController : MonoBehaviour
         {
             return;
         }
+        blocks[Y][X].transform.GetChild(1).GetComponent<Character_Base>().IsPang();
         blocksComponents[Y][X].PangAnimationActive();
-  
-
-
     }
 
     public void EmptyBlockCheck()
@@ -742,7 +800,6 @@ public class BlockController : MonoBehaviour
                     emptyBlocks[i].Add(j);
                 }
             }
-
         }
     }
 
@@ -755,6 +812,57 @@ public class BlockController : MonoBehaviour
 
     }
 
+    public void ResetAllBlock()
+    {
+        for (int i = 0; i < blockXSize; i++)
+        {
+            for (int j = invisibleBlockYSize; j < blockYSize; j++)
+            {
+                blocksComponents[j][i].DestroyImmediateCharacter();
+            }
+        }
+
+    }
+
+    public void AddScore(int score)
+    {
+        totalScore += (int)(score * comboMagnification * feverMagenification);
+        onScoreChange?.Invoke(totalScore);
+    }
+
+ public void OnFever()
+    {
+        feverMagenification = 2.0f;
+    }
+
+    public void OffFever()
+    {
+        feverMagenification = 1.0f;
+    }
+
+    public void ComboAddtionalScore(int combo)
+    {
+        if (combo <= 10)
+        {
+            comboMagnification = 1.0f;
+        }
+        else if (combo <= 30)
+        {
+            comboMagnification = 1.2f;
+        }
+        else if(combo <= 50) 
+        {
+            comboMagnification = 1.3f;
+        }
+        else if(combo <= 70)
+        {
+            comboMagnification = 1.5f;
+        }
+        else
+        {
+            comboMagnification = 2.0f;
+        }
+    }
 
 
 
