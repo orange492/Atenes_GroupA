@@ -55,7 +55,7 @@ public class BlockController : MonoBehaviour
             feverGauge = value;
         }
     }
-    
+
     public bool IsFevering
     {
         get => isFevering;
@@ -155,6 +155,10 @@ public class BlockController : MonoBehaviour
         return true;
     }
 
+    void AllGargoyleCheck()
+    {
+
+    }
 
     void MoveBlock(int X, int Y)
     {
@@ -221,6 +225,14 @@ public class BlockController : MonoBehaviour
 
         int animalType = -2;
         Character_Base character_Base = blocks[Y][X].transform.GetComponentInChildren<Character_Base>();
+
+
+        if (character_Base == null)
+        {
+            return false;
+        }
+
+
         if (character_Base != null)
         {
             animalType = character_Base.AnimalType;
@@ -262,6 +274,13 @@ public class BlockController : MonoBehaviour
         {
             return;
         }
+
+        if (character_Base.CharaterTypeProperty == Character_Base.CharaterType.Gargoyle)
+        {
+            GargoyleCheck(X, Y);
+            return;
+        }
+
         int animalType;
         animalType = character_Base.AnimalType;
         if (animalType == -1)
@@ -393,6 +412,7 @@ public class BlockController : MonoBehaviour
                         for (int i = -2; i <= 2; i++)
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
+                            GargoyledCheck(X+i, Y);
                         }
                         blocksComponents[Y][X].StartCoroutine(blocksComponents[Y][X].BombCreate(0.2f));
                         AddScore(100);
@@ -404,7 +424,8 @@ public class BlockController : MonoBehaviour
                     {
                         for (int i = -1; i <= 2; i++)
                         {
-                            CharacterDestroyAndAnimation(X + i, Y);
+                            CharacterDestroyAndAnimation(X + i, Y); 
+                            GargoyledCheck(X + i, Y);
                         }
                         onComboChange?.Invoke();
                         //    StartCoroutine(CharacterDownX(X - 1, Y, 4));
@@ -415,6 +436,7 @@ public class BlockController : MonoBehaviour
                     for (int i = 0; i <= 2; i++)
                     {
                         CharacterDestroyAndAnimation(X + i, Y);
+                        GargoyledCheck(X + i, Y);
                     }
                     onComboChange?.Invoke();
                     //     StartCoroutine(CharacterDownX(X, Y, 3));
@@ -429,6 +451,7 @@ public class BlockController : MonoBehaviour
                         for (int i = -2; i <= 1; i++)
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
+                            GargoyledCheck(X + i, Y);
                         }
                         onComboChange?.Invoke();
                         //   StartCoroutine(CharacterDownX(X - 2, Y, 4));
@@ -438,6 +461,7 @@ public class BlockController : MonoBehaviour
                         for (int i = -1; i <= 1; i++)
                         {
                             CharacterDestroyAndAnimation(X + i, Y);
+                            GargoyledCheck(X + i, Y);
                         }
                         onComboChange?.Invoke();
                         //StartCoroutine(CharacterDownX(X - 1, Y, 3));
@@ -458,6 +482,7 @@ public class BlockController : MonoBehaviour
                     for (int i = -2; i <= 0; i++)
                     {
                         CharacterDestroyAndAnimation(X + i, Y);
+                        GargoyledCheck(X + i, Y);
                     }
                     onComboChange?.Invoke();
                     //StartCoroutine(CharacterDownX(X - 2, Y, 3));
@@ -595,6 +620,7 @@ public class BlockController : MonoBehaviour
                         for (int i = -2; i <= 2; i++)
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
+                            GargoyledCheck(X, Y + i);
                         }
                         blocksComponents[Y][X].BombCreate(0.2f);
                         AddScore(100);
@@ -614,6 +640,7 @@ public class BlockController : MonoBehaviour
                         for (int i = -1; i <= 2; i++)
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
+                            GargoyledCheck(X, Y + i);
                         }
                         onComboChange?.Invoke();
                         //downSizeIndex = 4;
@@ -628,6 +655,7 @@ public class BlockController : MonoBehaviour
                     for (int i = 0; i <= 2; i++)
                     {
                         CharacterDestroyAndAnimation(X, Y + i);
+                        GargoyledCheck(X, Y + i);
                     }
                     onComboChange?.Invoke();
                     //downSizeIndex = 3;
@@ -645,6 +673,7 @@ public class BlockController : MonoBehaviour
                         for (int i = -2; i <= 1; i++)
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
+                            GargoyledCheck(X, Y + i);
                         }
                         onComboChange?.Invoke();
                         //downSizeIndex = 4;
@@ -657,6 +686,7 @@ public class BlockController : MonoBehaviour
                         for (int i = -1; i <= 1; i++)
                         {
                             CharacterDestroyAndAnimation(X, Y + i);
+                            GargoyledCheck(X, Y + i);
                         }
                         onComboChange?.Invoke();
                         //downSizeIndex = 3;
@@ -680,6 +710,7 @@ public class BlockController : MonoBehaviour
                     for (int i = -2; i <= 0; i++)
                     {
                         CharacterDestroyAndAnimation(X, Y + i);
+                        GargoyledCheck(X, Y + i);
                     }
                     onComboChange?.Invoke();
                     //downSizeIndex = 3;
@@ -774,6 +805,104 @@ public class BlockController : MonoBehaviour
         }
     }
 
+    public void GargoyleCheck(int X, int Y)
+    {
+
+        Character_Base[] characters;
+        characters = new Character_Base[2];
+
+        characters[0] = blocks[Y][X].transform.GetChild(1).GetComponent<Character_Base>();
+
+        if (characters[0].CharaterTypeProperty == Character_Base.CharaterType.Gargoyle)
+        {
+            if (X + 1 < blockXSize)
+            {
+                characters[1] = blocks[Y][X + 1].transform.GetChild(1).GetComponent<Character_Base>();
+            }
+            Gargolyed(characters);
+
+            if (Y + 1 < blockYSize)
+            {
+                characters[1] = blocks[Y + 1][X].transform.GetChild(1).GetComponent<Character_Base>();
+            }
+            Gargolyed(characters);
+
+            if (X - 1 >= 0)
+            {
+                characters[1] = blocks[Y][X - 1].transform.GetChild(1).GetComponent<Character_Base>();
+
+            }
+            Gargolyed(characters);
+
+            if (Y - 1 >= invisibleBlockYSize)
+            {
+                characters[1] = blocks[Y - 1][X].transform.GetChild(1).GetComponent<Character_Base>();
+
+            }
+            Gargolyed(characters);
+        }
+
+    }
+    public void GargoyledCheck(int X, int Y)
+    {
+        Character_Base character;
+
+        if (X + 1 < blockXSize)
+        {
+            character = blocks[Y][X + 1].transform.GetChild(1).GetComponent<Character_Base>();
+            if (character.IsOnGargoyle)
+            {
+                CharacterDestroyAndAnimation(X + 1, Y);
+            }
+        }
+
+
+        if (Y + 1 < blockYSize)
+        {
+            character = blocks[Y + 1][X].transform.GetChild(1).GetComponent<Character_Base>();
+            if (character.IsOnGargoyle)
+            {
+                CharacterDestroyAndAnimation(X, Y+1);
+            }
+        }
+
+
+        if (X - 1 >= 0)
+        {
+            character = blocks[Y][X - 1].transform.GetChild(1).GetComponent<Character_Base>();
+            if (character.IsOnGargoyle)
+            {
+                CharacterDestroyAndAnimation(X-1, Y);
+            }
+
+        }
+  
+
+        if (Y - 1 >= invisibleBlockYSize)
+        {
+            character = blocks[Y - 1][X].transform.GetChild(1).GetComponent<Character_Base>();
+            if (character.IsOnGargoyle)
+            {
+                CharacterDestroyAndAnimation(X, Y-1);
+            }
+
+        }
+
+    }
+
+    void Gargolyed(Character_Base[] characters)
+    {
+        if (characters[1] != null)
+        {
+            if (characters[1].CharaterTypeProperty == Character_Base.CharaterType.Gargoyle)
+            {
+                characters[0].IsOnGargoyle = true;
+                characters[1].IsOnGargoyle = true;
+
+            }
+        }
+    }
+
 
     void CharacterDestroyAndAnimation(int X, int Y)
     {
@@ -830,7 +959,7 @@ public class BlockController : MonoBehaviour
         onScoreChange?.Invoke(totalScore);
     }
 
- public void OnFever()
+    public void OnFever()
     {
         feverMagenification = 2.0f;
     }
@@ -850,11 +979,11 @@ public class BlockController : MonoBehaviour
         {
             comboMagnification = 1.2f;
         }
-        else if(combo <= 50) 
+        else if (combo <= 50)
         {
             comboMagnification = 1.3f;
         }
-        else if(combo <= 70)
+        else if (combo <= 70)
         {
             comboMagnification = 1.5f;
         }

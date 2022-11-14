@@ -75,6 +75,7 @@ public class TouchManager : MonoBehaviour
         {
             return;
         }
+
         offClickPosition = Mouse.current.position.ReadValue();
         Vector2 touchPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         RaycastHit2D hitInformation = Physics2D.Raycast(touchPos, Camera.main.transform.forward);
@@ -205,6 +206,17 @@ public class TouchManager : MonoBehaviour
     void MoveCharacter(string targetAnim, string touchedAnim)
     {
         targetObject = blockController.blocks[targetIndexY][targetIndexX];
+
+
+        if (touchedObject.GetComponentInChildren<Character_Base>() != null && targetObject.GetComponentInChildren<Character_Base>() != null)
+        {
+
+            if (touchedObject.GetComponentInChildren<Character_Base>().IsOnGargoyle || targetObject.GetComponentInChildren<Character_Base>().IsOnGargoyle)
+            {
+                return;
+            }
+        }
+
         if (targetObject.transform.childCount == 1 || targetObject.transform.GetChild(1).GetComponent<Character_Bomb>() != null)
         {
             return;
