@@ -19,11 +19,23 @@ public class PlatformGroup : MonoBehaviour
     public void Activate()
     {
         float randomPlatformMovingTime = GetRandTime();
+        bool rotate = false;
+        float rotate_percent = UnityEngine.Random.Range(0, 1.0f);
+        if (rotate_percent <= 0.3f)
+        {
+            rotate = true;
+        }
+
         foreach (Platform platform in platforms)
         {
             platform.Activate(randomPlatformMovingTime);
+            if (rotate)
+            {
+                platform.Rotation(randomPlatformMovingTime);
+            }
         }
     }
+
     public float GetRandTime()
     {
         float minTime = 0.7f;

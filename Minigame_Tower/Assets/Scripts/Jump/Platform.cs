@@ -15,7 +15,34 @@ public class Platform : MonoBehaviour
         StartCoroutine(Moveoverthereinafewseconds((Vector2)transform.position + move_dir * distance, move_time));
     }
 
-    IEnumerator Moveoverthereinafewseconds(Vector2 TargetPosition, float TargetTime)
+public void Rotation(float time)
+    {
+        StartCoroutine(OneTurn(time));
+    }
+
+    IEnumerator OneTurn(float TargetTime)
+    {
+        float target_angle = 360.0f;
+        if (transform.position.x < 0)
+        {
+            target_angle = target_angle;
+        }
+        else
+        {
+            target_angle = target_angle * -1.0f;
+        }
+
+        float ElapsedTime = 0.0f;
+        Vector3 ori_angle = transform.eulerAngles;
+        while (ElapsedTime < TargetTime)
+        {
+            transform.eulerAngles = Vector3.Lerp(ori_angle, Vector3.forward * target_angle, ElapsedTime / TargetTime);
+            ElapsedTime += Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+    }
+
+        IEnumerator Moveoverthereinafewseconds(Vector2 TargetPosition, float TargetTime)
     {
         float ElapsedTime = 0.0f;
         Vector2 FirstPosition = transform.position;
