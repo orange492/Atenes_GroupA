@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     Sprite[] spr;
     [SerializeField]
-    Material[] mat;
+    SpriteRenderer ice;
     SpriteRenderer spriteRenderer;
     Transform[] tr;
     public int index { get; set; }
@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour
     int showHp;
     int gold;
 
+    float orderDistance;
     float slow = 0;
     float poisonTime = 0;
     int[] poison = new int[2] { 0,0};
@@ -48,6 +49,7 @@ public class Enemy : MonoBehaviour
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        ice.gameObject.SetActive(false);
     }
     void OnDisable()
     {
@@ -63,6 +65,7 @@ public class Enemy : MonoBehaviour
             DefenceManager.Instance.enemySpnr.DelDic(dir, index);
             dir++;
             DefenceManager.Instance.enemySpnr.AddDic(dir, this);
+            SetOrderDistance();
         }
         else if (dir == 1 && Mathf.Abs(tr[dir].position.x - this.transform.position.x) < 0.01f)
         {
@@ -70,6 +73,7 @@ public class Enemy : MonoBehaviour
             DefenceManager.Instance.enemySpnr.DelDic(dir, index);
             dir++;
             DefenceManager.Instance.enemySpnr.AddDic(dir, this);
+            SetOrderDistance();
         }
         else if (dir == 2 && Mathf.Abs(tr[dir].position.y - this.transform.position.y) < 0.01f)
         {
@@ -97,11 +101,10 @@ public class Enemy : MonoBehaviour
                 spriteRenderer.sprite = spr[0];
             }
         }
-
         if(slow>0)
         {
             slow -= Time.deltaTime;
-            this.transform.Translate(Time.deltaTime * (tr[dir].position - this.transform.position).normalized/2);
+            this.transform.Translate(Time.deltaTime * (tr[dir].position - this.transform.position).normalized / 2);
         }
         else if(slow == -10)
         {
@@ -110,7 +113,12 @@ public class Enemy : MonoBehaviour
         else
         {
             slow = -10;
-            spriteRenderer.material = mat[0];
+            ice.gameObject.SetActive(false);
+        }
+        if(Vector3.Distance(tr[dir].position, this.transform.position) < orderDistance)
+        {
+            SetOrder();
+            SetOrderDistance();
         }
     }
 
@@ -122,8 +130,20 @@ public class Enemy : MonoBehaviour
         hp = _hp;
         showHp = _hp;
         gold = _gold;
+        slow = 0;
+        poison[0] = 0;
+        poison[1] = 0;
+        poisonTime = 0;
         Damage(0);
+        ResetOrder();
+        SetOrderDistance();
         return this;
+    }
+
+    void SetOrderDistance()
+    {
+        orderDistance = Vector3.Distance(tr[dir].position, this.transform.position);
+        orderDistance -= 0.02f;
     }
 
     public void Damage(int num)
@@ -151,6 +171,8 @@ public class Enemy : MonoBehaviour
         {
             DefenceManager.Instance.Wave++;
         }
+        spriteRenderer.sprite = spr[0];
+        ice.gameObject.SetActive(false);
         this.gameObject.SetActive(false);
     }
     public float RemainTr()
@@ -173,6 +195,18 @@ public class Enemy : MonoBehaviour
     public void SetSlow(float _slow)
     {
         slow = _slow;
-        spriteRenderer.material = mat[1];
+        ice.gameObject.SetActive(true);
+    }
+    void SetOrder()
+    {
+        tHp.sortingOrder+=2;
+        spriteRenderer.sortingOrder+=2;
+        ice.sortingOrder+=2;
+    }
+    void ResetOrder()
+    {
+        tHp.sortingOrder = 3;
+        spriteRenderer.sortingOrder = 2;
+        ice.sortingOrder = 3;
     }
 }
