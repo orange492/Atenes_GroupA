@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using System.Linq;
-using System;
 
 public class DefenceManager : Singleton<DefenceManager>
 {

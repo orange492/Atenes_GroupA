@@ -14,7 +14,9 @@ public class Character_Bomb : Character_Base
 
     protected override void Awake()
     {
+        
         charaterType = CharaterType.Bomb;
         AnimalType = -2;
+        temp = AnimalType;
     }
 }

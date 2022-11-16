@@ -11,7 +11,9 @@ public class CharacterMovingAnimationState : StateMachineBehaviour
     {
         blockController = FindObjectOfType<BlockController>();
         touchManager = FindObjectOfType<TouchManager>();
-        touchManager.IsClickLock = true ;
+        blockController.Mode = BlockController.GameMode.Checking;
+        Debug.Log("이동애니메이션체킹");
+
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -26,6 +28,7 @@ public class CharacterMovingAnimationState : StateMachineBehaviour
         touchManager.ChildChange();
         touchManager.ResetObject();
         touchManager.IsClickLock = false;
+        
 
     }
 
