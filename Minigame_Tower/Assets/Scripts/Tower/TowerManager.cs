@@ -7,18 +7,18 @@ public class TowerManager : Singleton<TowerManager>
 {
     Dictionary<int, string> scene = new Dictionary<int, string>()
     {
-     {0, "TowerScene"},
-     {1, "DefenceScene"},
-     {2, "Test_Table"},
-     {3, "Test_Puzzle"},
-     {4, "JumpScene"},
-     {5, "PlatformerScene"}
+     {0, "DefenceScene"},
+     {1, "Test_Table"},
+     {2, "Test_Puzzle"},
+     {3, "JumpScene"},
+     {4, "PlatformerScene"},
+     {5, "TowerScene"}
 };
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
-        DontDestroyOnLoad(gameObject.transform.parent);
+        
     }
 
     // Update is called once per frame
