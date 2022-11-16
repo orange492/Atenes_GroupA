@@ -60,6 +60,17 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""ee4e578f-e2c1-417b-9e5a-7dbe08f50fb9"",
+                    ""path"": ""<Touchscreen>/touch*/Press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Touch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""4c43983d-ef45-4f02-9ccb-b6ac00a21910"",
                     ""path"": ""<Keyboard>/3"",
                     ""interactions"": """",
