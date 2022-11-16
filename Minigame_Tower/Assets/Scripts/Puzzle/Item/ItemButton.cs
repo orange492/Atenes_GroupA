@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.U2D.Sprites;
+
 using UnityEngine;
 using UnityEngine.UI;
 using static BlockController;
