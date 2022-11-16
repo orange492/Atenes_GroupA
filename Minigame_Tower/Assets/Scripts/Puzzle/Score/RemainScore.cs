@@ -12,6 +12,21 @@ public class RemainScore : MonoBehaviour
     BlockController blockController;
     bool isClear = false;
 
+    public bool IsClear 
+    {
+        get =>isClear;
+        set
+        {
+            isClear = value;
+            if (isClear)
+            {
+                PuzzleGameManager.Inst.RemainTime.IsGameOver = true;
+            }
+        }
+
+    }
+    float clearScore = 10000;
+
 
 
 
@@ -23,6 +38,7 @@ public class RemainScore : MonoBehaviour
     {
         blockController = FindObjectOfType<BlockController>();
         blockController.onScoreChange += RemainScoreUpdate;
+        slider.maxValue = clearScore;
     }
 
     
@@ -38,6 +54,15 @@ public class RemainScore : MonoBehaviour
     private void RemainScoreUpdate(int obj)
     {
         slider.value = obj;
+        if (slider.value >= clearScore)
+        {
+            IsClear = true;
+        }
+    }
+
+    public int RemainScoreReturn()
+    {
+        return (int)(clearScore - slider.value);
     }
     
 

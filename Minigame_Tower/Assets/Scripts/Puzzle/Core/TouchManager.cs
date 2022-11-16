@@ -59,7 +59,11 @@ public class TouchManager : MonoBehaviour
 
     private void OffClick(InputAction.CallbackContext obj)
     {
-        if (IsClickLock)
+        if (blockController.IsGameOver)
+        {
+            return;
+        }
+        if (blockController.Mode == BlockController.GameMode.Checking)
         {
             return;
         }
@@ -178,11 +182,14 @@ public class TouchManager : MonoBehaviour
 
     private void OnClick(InputAction.CallbackContext obj)
     {
-
+        if (blockController.IsGameOver)
+        {
+            return;
+        }
         onClickPosition = Mouse.current.position.ReadValue();
        
 
-        if (isClickLock)
+        if (blockController.Mode==BlockController.GameMode.Checking)
         {
             return;
         }
@@ -251,14 +258,18 @@ public class TouchManager : MonoBehaviour
         if (blockController.ThreeMatchCheck(touchedIndexX, touchedIndexY) ||
             blockController.ThreeMatchCheck(targetIndexX, targetIndexY))
         {
+
             blockController.ThreeMatchAction(touchedIndexX, touchedIndexY);
             blockController.ThreeMatchAction(targetIndexX, targetIndexY);
+         
         }
         else
         {
             touchedObject.transform.GetChild(1).transform.parent = transform;
             targetObject.transform.GetChild(1).transform.parent = touchedObject.transform;
             transform.GetChild(0).transform.parent = targetObject.transform;
+            blockController.Mode = BlockController.GameMode.Normal;
+            Debug.Log("잘못된 블럭을 옮겼을때 노말");
         }
 
 

@@ -48,6 +48,7 @@ public class Combo : MonoBehaviour
         blockController.onComboChange += ComboRefresh;
         comboNumberText.text = combo.ToString();
         comboObject.SetActive(false);
+        comboText.SetActive(false);
     }
 
     private void Update()

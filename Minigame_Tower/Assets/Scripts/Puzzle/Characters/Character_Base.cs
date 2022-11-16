@@ -20,7 +20,12 @@ public class Character_Base : MonoBehaviour
 
     bool isPang = false;
 
-    bool isOnGargoyle=false;
+    public int Temp => temp;
+  
+
+
+
+    bool isOnGargoyle = false;
 
     public bool IsOnGargoyle
     {
@@ -104,10 +109,11 @@ public class Character_Base : MonoBehaviour
             AnimalType = temp;
 
         }
-        
+
     }
 
-    public void IsPang(){
+    public void IsPang()
+    {
         isPang = true;
 
     }
@@ -117,17 +123,17 @@ public class Character_Base : MonoBehaviour
 
     public void AnimationActive(string direction)
     {
-        if(isPang==false)
-        anim.SetTrigger(direction);
+        if (isPang == false)
+            anim.SetTrigger(direction);
     }
 
-    public void Init(CharaterType character,int type, Sprite spr)
+    public void Init(CharaterType character, int type, Sprite spr)
     {
         animalType = type;
         spriteRenderer.sprite = spr;
         temp = type;
         charaterType = character;
-       
+
     }
 
     public void SetAnimalType(int type)
