@@ -10,7 +10,37 @@ public class RemainTime : MonoBehaviour
      Slider slider;
     
     BlockController blockController;
-    bool IsTimeOver = false;
+    bool isGameOver = false;
+
+
+
+    public bool IsGameOver
+    {
+        get => isGameOver;
+        set { isGameOver = value;
+            if (isGameOver)
+            {
+                blockController.IsGameOver = true;
+                PuzzleGameManager.Inst.GameOverPanel.GameOver();
+            }
+        }
+    }
+
+    float remainTime;
+
+    public float RemainTimeProperty
+    {
+        get => remainTime;
+        set
+        {
+            remainTime = value;
+            if (remainTime <= 0)
+            {
+                IsGameOver = true;
+                
+            }
+        }
+    }
 
     
 
@@ -22,15 +52,18 @@ public class RemainTime : MonoBehaviour
     private void Start()
     {
         blockController = FindObjectOfType<BlockController>();
+        
     }
 
 
     private void Update()
     {
 
-
-        slider.value -= Time.deltaTime;
-  
+        if (!isGameOver)
+        {
+            slider.value -= Time.deltaTime;
+            RemainTimeProperty = slider.value;
+        }
     }
    
 

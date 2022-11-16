@@ -5,6 +5,7 @@ using TMPro;
 using UnityEditor.U2D.Sprites;
 using UnityEngine;
 using UnityEngine.UI;
+using static BlockController;
 
 public class ItemButton : MonoBehaviour
 {
@@ -68,7 +69,7 @@ public class ItemButton : MonoBehaviour
 
     private void OnClick_Bomb()
     {
-        if (bombRemain > 0)
+        if (bombRemain > 0&& blockController.Mode == BlockController.GameMode.Normal)
         {
             isClicked = !isClicked;
             materialIndex++;
@@ -79,12 +80,22 @@ public class ItemButton : MonoBehaviour
 
     private void OnClick_Reset()
     {
-        if (resetRemain > 0)
+       
+        if (resetRemain > 0 && blockController.Mode == BlockController.GameMode.Normal)
         {
             blockController.ResetAllBlock();
-            blockController.EmptyBlockCheck();
-            blockController.CharaterDownPlay();
-            blockController.ResetList();
+                blockController.Mode = GameMode.Checking;
+            Debug.Log("리셋체킹");
+            blockController.CreateAllBlock();
+            if (!blockController.AllBlockCheck())
+            {
+                blockController.Mode = GameMode.Normal;
+                Debug.Log("리셋후 노멀");
+            }
+            else
+            {
+                //blockController.AllBlockAction();
+            }
             resetRemain--;
             resetRemainText.text = resetRemain.ToString();
 
