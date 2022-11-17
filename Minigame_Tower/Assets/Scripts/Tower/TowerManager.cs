@@ -18,7 +18,7 @@ public class TowerManager : Singleton<TowerManager>
     // Start is called before the first frame update
     void Awake()
     {
-        DontDestroyOnLoad(gameObject.transform.parent);
+        DontDestroyOnLoad(this);
     }
 
     // Update is called once per frame
