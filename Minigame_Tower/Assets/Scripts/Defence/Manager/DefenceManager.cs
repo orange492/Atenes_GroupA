@@ -1,22 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
-public class DefenceManager : Singleton<DefenceManager>
+public class DefenceManager : SingletonPuzzle<DefenceManager>
 {
-    [SerializeField]
     GameObject oLife;
-    [SerializeField]
-    TextMeshProUGUI[] tLevel;
-    [SerializeField]
+    TextMeshProUGUI[] tLevel = new TextMeshProUGUI[5];
     TextMeshProUGUI tWave;
-    [SerializeField]
     TextMeshProUGUI tPrice;
-    [SerializeField]
     TextMeshProUGUI tGold;
 
-    MapManager mapMgr;
+    public bool isGame { get; set; }
+
+    public MapManager mapMgr;
     public EnemySpawner enemySpnr { get; set; }
     public int frontEnemy { get; set; }
     int life;
@@ -32,6 +31,13 @@ public class DefenceManager : Singleton<DefenceManager>
         set
         {
             wave = value;
+            // if((TowerManager.Instance.difficulty+1)*10 < wave)
+            if (1 < wave)
+            {
+                TowerManager.Inst.Clear();
+                Init();
+                return;
+            }
             string str = "Wave\n " + wave.ToString();
             tWave.text = str.Replace("\\n", "\n");
             enemySpnr.StartWave(wave);
@@ -67,15 +73,35 @@ public class DefenceManager : Singleton<DefenceManager>
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    protected override void Initialize()
     {
+        if (SceneManager.GetActiveScene().name != "DefenceScene")
+        {
+            return;
+        }
+        oLife = GameObject.Find("Life");
+        tLevel[0] = GameObject.Find("LevelTxt1").GetComponent<TextMeshProUGUI>();
+        tLevel[1] = GameObject.Find("LevelTxt2").GetComponent<TextMeshProUGUI>();
+        tLevel[2] = GameObject.Find("LevelTxt3").GetComponent<TextMeshProUGUI>();
+        tLevel[3] = GameObject.Find("LevelTxt4").GetComponent<TextMeshProUGUI>();
+        tLevel[4] = GameObject.Find("LevelTxt5").GetComponent<TextMeshProUGUI>();
+        tWave = GameObject.Find("WaveText").GetComponent<TextMeshProUGUI>();
+        tPrice = GameObject.Find("PriceTxt").GetComponent<TextMeshProUGUI>();
+        tGold = GameObject.Find("GoldText").GetComponent<TextMeshProUGUI>();
+        GameObject.Find("CreateButton").GetComponent<Button>().onClick.AddListener(CrtUnit);
+        GameObject.Find("LvUpBtn1").GetComponent<Button>().onClick.AddListener(() => SetLevel(0));
+        GameObject.Find("LvUpBtn2").GetComponent<Button>().onClick.AddListener(() => SetLevel(1));
+        GameObject.Find("LvUpBtn3").GetComponent<Button>().onClick.AddListener(() => SetLevel(2));
+        GameObject.Find("LvUpBtn4").GetComponent<Button>().onClick.AddListener(() => SetLevel(3));
+        GameObject.Find("LvUpBtn5").GetComponent<Button>().onClick.AddListener(() => SetLevel(4));
+        isGame = true;
         mapMgr = FindObjectOfType<MapManager>();
         enemySpnr = FindObjectOfType<EnemySpawner>();
         mapMgr.InitMap();
         Gold = 600;
         for (int i = 0; i < level.Length; i++)
         {
+            level[i] = 0;
             SetLevel(i);
         }
         Wave = 1;
@@ -83,6 +109,13 @@ public class DefenceManager : Singleton<DefenceManager>
         frontEnemy = 0;
         life = 3;
         SetLife(0);
+    }
+
+    // Start is called before the first frame update
+
+    public void Init()
+    {
+        
     }
 
     // Update is called once per frame
@@ -143,6 +176,11 @@ public class DefenceManager : Singleton<DefenceManager>
             {
                 oLife.transform.GetChild(i).gameObject.SetActive(false);
             }
+        }
+        if (life == 0)
+        {
+            TowerManager.Inst.GameOver();
+            isGame = false;
         }
     }
 

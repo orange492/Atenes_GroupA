@@ -8,7 +8,7 @@ public class EnemySpawner : MonoBehaviour
     Transform[] tr;
     [SerializeField]
     GameObject enemyPref;
-    public Dictionary<int ,Enemy>[] enemy { get; set; } = new Dictionary<int, Enemy>[3];
+    public Dictionary<int, Enemy>[] enemy { get; set; } = new Dictionary<int, Enemy>[3];
     int index = 0;
     public int number = 0;
     public int count = 0;
@@ -62,7 +62,10 @@ public class EnemySpawner : MonoBehaviour
         count = number;
         for (int i = 0; i < enemy.Length; i++)
         {
-            enemy[i].Clear();
+            if (enemy[i] != null)
+            {
+                enemy[i].Clear();
+            }
         }
         index = 0;
     }

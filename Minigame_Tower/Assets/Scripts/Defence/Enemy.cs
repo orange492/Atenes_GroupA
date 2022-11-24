@@ -59,25 +59,28 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+        if (!DefenceManager.Inst.isGame)
+        {
+            return;
+        }
         if (dir == 0 && Mathf.Abs(tr[dir].position.y - this.transform.position.y) < 0.01f)
         {
-            DefenceManager.Instance.enemySpnr.DelDic(dir, index);
+            DefenceManager.Inst.enemySpnr.DelDic(dir, index);
             dir++;
-            DefenceManager.Instance.enemySpnr.AddDic(dir, this);
+            DefenceManager.Inst.enemySpnr.AddDic(dir, this);
             SetOrderDistance();
         }
         else if (dir == 1 && Mathf.Abs(tr[dir].position.x - this.transform.position.x) < 0.01f)
         {
             
-            DefenceManager.Instance.enemySpnr.DelDic(dir, index);
+            DefenceManager.Inst.enemySpnr.DelDic(dir, index);
             dir++;
-            DefenceManager.Instance.enemySpnr.AddDic(dir, this);
+            DefenceManager.Inst.enemySpnr.AddDic(dir, this);
             SetOrderDistance();
         }
         else if (dir == 2 && Mathf.Abs(tr[dir].position.y - this.transform.position.y) < 0.01f)
         {
-            DefenceManager.Instance.enemySpnr.DelDic(dir, index);
+            DefenceManager.Inst.enemySpnr.DelDic(dir, index);
             DestroyEnemy(false);
         }
 
@@ -90,10 +93,10 @@ public class Enemy : MonoBehaviour
             poisonTime = 0.5f;
             Damage(-poison[1]);
             poison[0]--;
-            int temp = DefenceManager.Instance.enemySpnr.FindRail(index);
+            int temp = DefenceManager.Inst.enemySpnr.FindRail(index);
             if(temp != -1)
             {
-                DefenceManager.Instance.enemySpnr.enemy[temp][index].Hp -= poison[1];
+                DefenceManager.Inst.enemySpnr.enemy[temp][index].Hp -= poison[1];
             }
             ObjectPooler.SpawnFromPool<DamageText>("DmgTxt", this.transform.position).Init(this.transform, poison[1], 2);
             if (poison[0] == 0)
@@ -160,16 +163,16 @@ public class Enemy : MonoBehaviour
     {
         if (dead)
         {
-            DefenceManager.Instance.Gold += gold;
+            DefenceManager.Inst.Gold += gold;
         }
         else
         {
-            DefenceManager.Instance.SetLife(-1);
+            DefenceManager.Inst.SetLife(-1);
         }
-        DefenceManager.Instance.enemySpnr.count--;
-        if (DefenceManager.Instance.enemySpnr.count == 0)
+        DefenceManager.Inst.enemySpnr.count--;
+        if (DefenceManager.Inst.enemySpnr.count == 0)
         {
-            DefenceManager.Instance.Wave++;
+            DefenceManager.Inst.Wave++;
         }
         spriteRenderer.sprite = spr[0];
         ice.gameObject.SetActive(false);

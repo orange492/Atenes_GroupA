@@ -337,7 +337,7 @@ GameObject:
   - component: {fileID: 188760374}
   - component: {fileID: 188760373}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: LvUpBtn2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -407,19 +407,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 188760374}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1087317911}
-        m_TargetAssemblyTypeName: DefenceManager, Assembly-CSharp
-        m_MethodName: SetLevel
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &188760374
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -470,7 +458,7 @@ GameObject:
   - component: {fileID: 193456158}
   - component: {fileID: 193456157}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: LevelTxt2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -607,7 +595,7 @@ GameObject:
   - component: {fileID: 213410896}
   - component: {fileID: 213410895}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: LevelTxt4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -749,7 +737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &226875221
 RectTransform:
   m_ObjectHideFlags: 0
@@ -961,7 +949,7 @@ GameObject:
   - component: {fileID: 248824138}
   - component: {fileID: 248824137}
   m_Layer: 5
-  m_Name: Button (4)
+  m_Name: LvUpBtn5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1031,19 +1019,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 248824138}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1087317911}
-        m_TargetAssemblyTypeName: DefenceManager, Assembly-CSharp
-        m_MethodName: SetLevel
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &248824138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1095,7 +1071,7 @@ GameObject:
   - component: {fileID: 266076207}
   - component: {fileID: 266076206}
   m_Layer: 5
-  m_Name: Button
+  m_Name: LvUpBtn1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1165,19 +1141,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 266076207}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1087317911}
-        m_TargetAssemblyTypeName: DefenceManager, Assembly-CSharp
-        m_MethodName: SetLevel
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &266076207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1572,19 +1536,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 557189286}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1087317911}
-        m_TargetAssemblyTypeName: DefenceManager, Assembly-CSharp
-        m_MethodName: CrtUnit
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &557189286
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1850,6 +1802,7 @@ MonoBehaviour:
   - {fileID: 1615531258}
   enemyPref: {fileID: 2659535454145375260, guid: e1f40676be962464c97846fae65facc1, type: 3}
   number: 0
+  count: 0
 --- !u!4 &818419745
 Transform:
   m_ObjectHideFlags: 0
@@ -2125,16 +2078,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98c5d8f1c54c8cd4cad016d907820090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  oLife: {fileID: 1789275072}
-  tLevel:
-  - {fileID: 1716050581}
-  - {fileID: 193456157}
-  - {fileID: 1822706924}
-  - {fileID: 213410895}
-  - {fileID: 1630267765}
-  tWave: {fileID: 316466945}
-  tPrice: {fileID: 1547579455}
-  tGold: {fileID: 993428706}
+  mapMgr: {fileID: 0}
 --- !u!114 &1087317913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2283,7 +2227,7 @@ GameObject:
   - component: {fileID: 1154639555}
   - component: {fileID: 1154639554}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: LvUpBtn3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2353,19 +2297,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1154639555}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1087317911}
-        m_TargetAssemblyTypeName: DefenceManager, Assembly-CSharp
-        m_MethodName: SetLevel
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1154639555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2493,7 +2425,7 @@ GameObject:
   - component: {fileID: 1392138170}
   - component: {fileID: 1392138169}
   m_Layer: 5
-  m_Name: Button (3)
+  m_Name: LvUpBtn4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2563,19 +2495,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1392138170}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1087317911}
-        m_TargetAssemblyTypeName: DefenceManager, Assembly-CSharp
-        m_MethodName: SetLevel
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1392138170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2710,7 +2630,7 @@ GameObject:
   - component: {fileID: 1547579456}
   - component: {fileID: 1547579455}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: PriceTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2929,7 +2849,7 @@ GameObject:
   - component: {fileID: 1630267766}
   - component: {fileID: 1630267765}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: LevelTxt5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3066,7 +2986,7 @@ GameObject:
   - component: {fileID: 1716050582}
   - component: {fileID: 1716050581}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: LevelTxt1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3360,12 +3280,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePref: {fileID: 8924432712783959700, guid: 9f4f7cfe52959f34db48b85131fb5766, type: 3}
   unitPref: {fileID: 3815845118671856006, guid: 5d9baa35bb6b7cb4dbcc7b77e1ed1d87, type: 3}
-  spr:
-  - {fileID: 21300000, guid: 867629ac13e7f7d4aaeec081a300dbca, type: 3}
-  - {fileID: 21300000, guid: c298ffaaaad718444b15261d556e5e07, type: 3}
-  - {fileID: 21300000, guid: eb7eb5946b479ad4c8f94c4185161150, type: 3}
-  - {fileID: 21300000, guid: 70cf916bcc234b14580d7d603885bf77, type: 3}
-  - {fileID: 21300000, guid: 62942f614b56aef4fa72f0b6d02f6ccf, type: 3}
 --- !u!1 &1822706922
 GameObject:
   m_ObjectHideFlags: 0
@@ -3378,7 +3292,7 @@ GameObject:
   - component: {fileID: 1822706925}
   - component: {fileID: 1822706924}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: LevelTxt3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

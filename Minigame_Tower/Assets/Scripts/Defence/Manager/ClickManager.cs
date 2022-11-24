@@ -68,7 +68,7 @@ public class ClickManager : MonoBehaviour
             if (unit[0].type == unit[1].type && unit[0].star == unit[1].star && unit[0].star < 6)
             {
                 unit[1].Merge();
-                DefenceManager.Instance.SetUnitCnt(-1);
+                DefenceManager.Inst.SetUnitCnt(-1);
             }
             else
             {

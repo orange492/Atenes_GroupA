@@ -33,6 +33,10 @@ public class Unit : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (!DefenceManager.Inst.isGame)
+        {
+            return;
+        }
         timer += Time.deltaTime;
         if(timer > 3 - star * 0.5)
         {
@@ -99,17 +103,17 @@ public class Unit : MonoBehaviour
     {
         if (type == 2)
         {
-            int damage = DefenceManager.Instance.level[type] * 10;
-            DefenceManager.Instance.Gold += damage;
+            int damage = DefenceManager.Inst.level[type] * 10;
+            DefenceManager.Inst.Gold += damage;
             ObjectPooler.SpawnFromPool<DamageText>("DmgTxt", this.transform.position).Init(this.transform, damage, 1);
         }
         if(type==4)
         {
-            DefenceManager.Instance.Shoot(this.transform, type, MapManager.Instance.CheckGir(index));
+            DefenceManager.Inst.Shoot(this.transform, type, DefenceManager.Inst.mapMgr.CheckGir(index));
         }
         else
         {
-            DefenceManager.Instance.Shoot(this.transform, type);
+            DefenceManager.Inst.Shoot(this.transform, type);
         }
     }
 }
