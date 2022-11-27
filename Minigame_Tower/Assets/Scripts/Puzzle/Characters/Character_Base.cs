@@ -47,7 +47,7 @@ public class Character_Base : MonoBehaviour
             {
                 animalType = value;
                 Block block = GetComponentInParent<Block>();
-                block.BlockCheck();
+               block.BlockCheck();
                 block.GargolyeBlockCheck();
             }
             animalType = value;
@@ -102,7 +102,9 @@ public class Character_Base : MonoBehaviour
     {
         if ((transform.localPosition - UnityEngine.Vector3.zero).magnitude > 0.025f)
         {
-            transform.localPosition = UnityEngine.Vector3.MoveTowards(transform.localPosition, UnityEngine.Vector3.zero, Time.deltaTime * moveSpeed);
+
+            //transform.localPosition = UnityEngine.Vector3.MoveTowards(transform.localPosition, UnityEngine.Vector3.zero, Time.deltaTime * moveSpeed);
+            transform.localPosition += ChangeSpeed() * Time.deltaTime * moveSpeed;
         }
         else
         {
@@ -118,6 +120,11 @@ public class Character_Base : MonoBehaviour
 
     }
 
+    public UnityEngine.Vector3 ChangeSpeed()
+    {
+        UnityEngine.Vector3 movedir= UnityEngine.Vector3.zero- transform.localPosition;
+        return movedir;
+    }
 
 
 
