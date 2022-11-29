@@ -64,12 +64,11 @@ public class TowerManager : SingletonPuzzle<TowerManager>
         if (!init)
         {
             floor.Add(new sFloor(1, 0, "10웨이브"));
-            floor.Add(new sFloor(1, 1, "20웨이브"));
-            floor.Add(new sFloor(1, 2, "30웨이브"));
+            floor.Add(new sFloor(2, 0, "500라이프")); //블랙잭 노멀모드
             floor.Add(new sFloor(3, 0, "500점"));
-            floor.Add(new sFloor(1, 3, "40웨이브"));
-            floor.Add(new sFloor(2, 0, "500라이프")); //블랙잭 노멀모드 
+            floor.Add(new sFloor(1, 1, "20웨이브"));
             floor.Add(new sFloor(5, 0, "300라이프")); //블랙잭 하드모드
+            floor.Add(new sFloor(3, 0, "1000점"));
             SetSave();
             init = true;
         }
