@@ -31,8 +31,7 @@ public class DefenceManager : SingletonPuzzle<DefenceManager>
         set
         {
             wave = value;
-            // if((TowerManager.Instance.difficulty+1)*10 < wave)
-            if (1 < wave)
+            if((TowerManager.Inst.GetDifficulty()+1)*10 < wave)
             {
                 TowerManager.Inst.Clear();
                 Init();

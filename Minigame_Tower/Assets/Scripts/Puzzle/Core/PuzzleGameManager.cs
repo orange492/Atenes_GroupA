@@ -27,6 +27,7 @@ public class PuzzleGameManager : SingletonPuzzle<PuzzleGameManager>
         remainScore = FindObjectOfType<RemainScore>();
         remainTime = FindObjectOfType<RemainTime>();
         gameOverPanel = FindObjectOfType<GameOverPanel>();
+        Debug.Log(gameOverPanel);
     }
 
 }

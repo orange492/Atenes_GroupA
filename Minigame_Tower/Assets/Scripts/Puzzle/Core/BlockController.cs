@@ -84,6 +84,10 @@ public class BlockController : MonoBehaviour
         set
         {
             mode = value;
+            if (mode == GameMode.Normal)
+            {
+                AllBlockAction();
+            }
         }
     }
 
@@ -788,6 +792,7 @@ public class BlockController : MonoBehaviour
                 blocks[i][X].transform.GetChild(1).localPosition = Vector3.up * downSize * 1.25f;
 
                 blocks[i][X].transform.GetChild(1).GetComponent<Character_Base>().SetAnimalType(-1);
+                blocks[i][X].transform.GetChild(1).GetComponent<Character_Base>().ChangeSpeed();
             }
         }
         //downSizeIndex = 0;
