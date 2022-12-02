@@ -103,8 +103,8 @@ public class Character_Base : MonoBehaviour
         if ((transform.localPosition - UnityEngine.Vector3.zero).magnitude > 0.025f)
         {
 
-            //transform.localPosition = UnityEngine.Vector3.MoveTowards(transform.localPosition, UnityEngine.Vector3.zero, Time.deltaTime * moveSpeed);
-            transform.localPosition += ChangeSpeed() * Time.deltaTime * moveSpeed;
+            transform.localPosition = UnityEngine.Vector3.MoveTowards(transform.localPosition, UnityEngine.Vector3.zero, Time.deltaTime * moveSpeed);
+      
         }
         else
         {
@@ -120,10 +120,12 @@ public class Character_Base : MonoBehaviour
 
     }
 
-    public UnityEngine.Vector3 ChangeSpeed()
+    public void ChangeSpeed()
     {
+        moveSpeed = 5.0f;
         UnityEngine.Vector3 movedir= UnityEngine.Vector3.zero- transform.localPosition;
-        return movedir;
+        moveSpeed *= -movedir.y;
+        
     }
 
 

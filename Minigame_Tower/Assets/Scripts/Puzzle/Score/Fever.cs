@@ -48,7 +48,7 @@ public class Fever : MonoBehaviour
         if (isFevering)
         {
 
-            slider.value -= Time.deltaTime * 200.0f;
+            slider.value -= Time.deltaTime * 100.0f;
             if (slider.value <= 0)
             {
                 IsFevering = false;
