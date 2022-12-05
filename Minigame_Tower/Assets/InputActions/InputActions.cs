@@ -120,9 +120,113 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Shooting"",
+            ""id"": ""26433034-954d-481f-ade8-fa391ec37357"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""f0df02d9-4276-4b52-879c-3bf5eb57ac7f"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Fire"",
+                    ""type"": ""Button"",
+                    ""id"": ""f3d95a1e-4924-409d-9205-4ac099ad992d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""9692a68a-c6b7-44c2-a7e9-fcef5a24a9df"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""648b23ef-eaf1-4568-b0b4-d37d071f25ab"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""8e8e0283-9a33-4644-9239-3646de7d3227"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""db3e3a6d-420e-4d80-8e70-d6b75d74ee30"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""5c865020-2b51-4509-b131-a25e96b5b949"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""22273644-01e5-4117-8464-50e95f3b3a00"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""Keyboard"",
+            ""bindingGroup"": ""Keyboard"",
+            ""devices"": [
+                {
+                    ""devicePath"": ""<Keyboard>"",
+                    ""isOptional"": true,
+                    ""isOR"": false
+                }
+            ]
+        }
+    ]
 }");
         // Touch
         m_Touch = asset.FindActionMap("Touch", throwIfNotFound: true);
@@ -131,6 +235,10 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         // Defence
         m_Defence = asset.FindActionMap("Defence", throwIfNotFound: true);
         m_Defence_Click = m_Defence.FindAction("Click", throwIfNotFound: true);
+        // Shooting
+        m_Shooting = asset.FindActionMap("Shooting", throwIfNotFound: true);
+        m_Shooting_Move = m_Shooting.FindAction("Move", throwIfNotFound: true);
+        m_Shooting_Fire = m_Shooting.FindAction("Fire", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -260,6 +368,56 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         }
     }
     public DefenceActions @Defence => new DefenceActions(this);
+
+    // Shooting
+    private readonly InputActionMap m_Shooting;
+    private IShootingActions m_ShootingActionsCallbackInterface;
+    private readonly InputAction m_Shooting_Move;
+    private readonly InputAction m_Shooting_Fire;
+    public struct ShootingActions
+    {
+        private @InputActions m_Wrapper;
+        public ShootingActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Shooting_Move;
+        public InputAction @Fire => m_Wrapper.m_Shooting_Fire;
+        public InputActionMap Get() { return m_Wrapper.m_Shooting; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ShootingActions set) { return set.Get(); }
+        public void SetCallbacks(IShootingActions instance)
+        {
+            if (m_Wrapper.m_ShootingActionsCallbackInterface != null)
+            {
+                @Move.started -= m_Wrapper.m_ShootingActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_ShootingActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_ShootingActionsCallbackInterface.OnMove;
+                @Fire.started -= m_Wrapper.m_ShootingActionsCallbackInterface.OnFire;
+                @Fire.performed -= m_Wrapper.m_ShootingActionsCallbackInterface.OnFire;
+                @Fire.canceled -= m_Wrapper.m_ShootingActionsCallbackInterface.OnFire;
+            }
+            m_Wrapper.m_ShootingActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
+                @Fire.started += instance.OnFire;
+                @Fire.performed += instance.OnFire;
+                @Fire.canceled += instance.OnFire;
+            }
+        }
+    }
+    public ShootingActions @Shooting => new ShootingActions(this);
+    private int m_KeyboardSchemeIndex = -1;
+    public InputControlScheme KeyboardScheme
+    {
+        get
+        {
+            if (m_KeyboardSchemeIndex == -1) m_KeyboardSchemeIndex = asset.FindControlSchemeIndex("Keyboard");
+            return asset.controlSchemes[m_KeyboardSchemeIndex];
+        }
+    }
     public interface ITouchActions
     {
         void OnTouch(InputAction.CallbackContext context);
@@ -268,5 +426,10 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     public interface IDefenceActions
     {
         void OnClick(InputAction.CallbackContext context);
+    }
+    public interface IShootingActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnFire(InputAction.CallbackContext context);
     }
 }
