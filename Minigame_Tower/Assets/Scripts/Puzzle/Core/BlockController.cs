@@ -641,7 +641,7 @@ public class BlockController : MonoBehaviour
                             CharacterDestroyAndAnimation(X, Y + i);
                             GargoyledCheck(X, Y + i);
                         }
-                        blocksComponents[Y][X].BombCreate(0.2f);
+                        blocksComponents[Y][X].StartCoroutine(blocksComponents[Y][X].BombCreate(0.2f));
                         AddScore(100);
                         onComboChange?.Invoke();
 
