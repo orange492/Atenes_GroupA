@@ -44,6 +44,33 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""210640ce-d282-45f3-adc8-454defb31b34"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""55305566-465c-4bc7-8060-b38185872deb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Test2"",
+                    ""type"": ""Button"",
+                    ""id"": ""e8f6318c-b6e9-4473-acfc-6fc04235a69a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -82,12 +109,78 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""74fa5f6c-75fe-4e6b-8b4a-4e27e3efdb45"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d5db956c-a8fb-41c4-8210-62df52319fd3"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5ca09e71-aa29-48f0-a8ba-7aef3a8e3f84"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""10d53526-31a7-4c54-b515-ab22c458e1d6"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""76c3577c-5898-45e4-8a84-a6d4c02ad64d"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ce3e9c0b-26e4-465d-964d-a7050313a661"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""5da06918-4a27-4d2e-9bb4-3d95f3f3bddf"",
                     ""path"": ""<Keyboard>/5"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Test"",
+                    ""action"": ""Test2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -232,6 +325,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         m_Touch = asset.FindActionMap("Touch", throwIfNotFound: true);
         m_Touch_Touch = m_Touch.FindAction("Touch", throwIfNotFound: true);
         m_Touch_Test = m_Touch.FindAction("Test", throwIfNotFound: true);
+        m_Touch_Up = m_Touch.FindAction("Up", throwIfNotFound: true);
+        m_Touch_Down = m_Touch.FindAction("Down", throwIfNotFound: true);
+        m_Touch_Test2 = m_Touch.FindAction("Test2", throwIfNotFound: true);
         // Defence
         m_Defence = asset.FindActionMap("Defence", throwIfNotFound: true);
         m_Defence_Click = m_Defence.FindAction("Click", throwIfNotFound: true);
@@ -300,12 +396,18 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     private ITouchActions m_TouchActionsCallbackInterface;
     private readonly InputAction m_Touch_Touch;
     private readonly InputAction m_Touch_Test;
+    private readonly InputAction m_Touch_Up;
+    private readonly InputAction m_Touch_Down;
+    private readonly InputAction m_Touch_Test2;
     public struct TouchActions
     {
         private @InputActions m_Wrapper;
         public TouchActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Touch => m_Wrapper.m_Touch_Touch;
         public InputAction @Test => m_Wrapper.m_Touch_Test;
+        public InputAction @Up => m_Wrapper.m_Touch_Up;
+        public InputAction @Down => m_Wrapper.m_Touch_Down;
+        public InputAction @Test2 => m_Wrapper.m_Touch_Test2;
         public InputActionMap Get() { return m_Wrapper.m_Touch; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -321,6 +423,15 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Test.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnTest;
                 @Test.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnTest;
                 @Test.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnTest;
+                @Up.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnUp;
+                @Up.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnUp;
+                @Up.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnUp;
+                @Down.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnDown;
+                @Down.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnDown;
+                @Down.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnDown;
+                @Test2.started -= m_Wrapper.m_TouchActionsCallbackInterface.OnTest2;
+                @Test2.performed -= m_Wrapper.m_TouchActionsCallbackInterface.OnTest2;
+                @Test2.canceled -= m_Wrapper.m_TouchActionsCallbackInterface.OnTest2;
             }
             m_Wrapper.m_TouchActionsCallbackInterface = instance;
             if (instance != null)
@@ -331,6 +442,15 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Test.started += instance.OnTest;
                 @Test.performed += instance.OnTest;
                 @Test.canceled += instance.OnTest;
+                @Up.started += instance.OnUp;
+                @Up.performed += instance.OnUp;
+                @Up.canceled += instance.OnUp;
+                @Down.started += instance.OnDown;
+                @Down.performed += instance.OnDown;
+                @Down.canceled += instance.OnDown;
+                @Test2.started += instance.OnTest2;
+                @Test2.performed += instance.OnTest2;
+                @Test2.canceled += instance.OnTest2;
             }
         }
     }
@@ -422,6 +542,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     {
         void OnTouch(InputAction.CallbackContext context);
         void OnTest(InputAction.CallbackContext context);
+        void OnUp(InputAction.CallbackContext context);
+        void OnDown(InputAction.CallbackContext context);
+        void OnTest2(InputAction.CallbackContext context);
     }
     public interface IDefenceActions
     {
