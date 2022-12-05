@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,6 +21,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public float speed = 1.0f;
 
+ 
     /// <summary>
     /// 총알 발사 시간 간격
     /// </summary>
@@ -93,10 +95,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private Transform firePositionRoot;
 
-    /// <summary>
-    /// 총알이 발사될 때 보일 플래시 이팩트 게임 오브젝트
-    /// </summary>
-    private GameObject flash;
+ 
 
     /// <summary>
     /// 총알이 한번에 어려발 발사될 때 총알간의 사이 각도
@@ -239,6 +238,11 @@ public class Player : MonoBehaviour
         StopCoroutine(fireCoroutine);   // 총을 쏘던 중이면 더이상 쏘지 않게 처리
     }
 
+
+   
+  
+
+
     /// <summary>
     /// 입력 막기. 액션맵을 비활성화하고 입력 이벤트에 연결된 함수들 제거
     /// </summary>
@@ -291,23 +295,13 @@ public class Player : MonoBehaviour
                 // Instantiate(생성할 프리팹);    // 프리팹이 (0,0,0)위치에 (0,0,0)회전에 (1,1,1)스케일로 만들어짐 
                 // Instantiate(생성할 프리팹, 생성할 위치, 생성될 때의 회전)
             }
-            shootAudio.Play();
-            flash.SetActive(true);      // flash 켜고
-            StartCoroutine(FlashOff()); // 0.1초 후에 flash를 끄는 코루틴 실행
+          
 
             yield return new WaitForSeconds(fireInterval);  // 총알 발사 시간 간격만큼 대기
         }
     }
 
-    /// <summary>
-    /// 0.1초 후에 flash를 끄는 코루틴
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator FlashOff()
-    {
-        yield return new WaitForSeconds(0.1f);  // 0.1초 대기
-        flash.SetActive(false); // flash 끄기
-    }
+   
 
     // 입력 처리용 함수 ----------------------------------------------------------------------------------
 
@@ -348,10 +342,7 @@ public class Player : MonoBehaviour
         StopCoroutine(fireCoroutine);   // 코루틴 정지
     }
 
-    /// <summary>
-    /// 이동 부스트 발동용 입력 처리 함수(Shift눌렀을 때)
-    /// </summary>
-    /// <param name="context"></param>
+
 
 
     // 유니티 이벤트 함수들 --------------------------------------------------------------------------------
@@ -374,7 +365,7 @@ public class Player : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         shootAudio = GetComponent<AudioSource>();
 
-        //firePositionRoot = transform.GetChild(0);   // 발사 트랜스폼 찾기
+        firePositionRoot = transform.GetChild(0);   // 발사 트랜스폼 찾기
         //flash = transform.GetChild(1).gameObject;   // flash 가져오기
         //flash.SetActive(false);                     // flash 비활성화
 
