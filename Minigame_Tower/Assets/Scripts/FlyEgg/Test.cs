@@ -16,13 +16,13 @@ public class Test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 dir =  Camera.main.ScreenToWorldPoint(inputActions.Input.Pos.ReadValue<Vector2>())- transform.position ; // ³Ê°¡ ¿øÇÏ´Â ÁöÁ¡ ÁÂÇ¥
-     
-        dir = Vector3.Slerp(transform.up, dir, 0.1f);
-        Debug.Log(dir);
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward) * Quaternion.Euler(0, 0, -90.0f);
-        transform.rotation = rotation;
+        Vector3 dir =  Camera.main.ScreenToWorldPoint(inputActions.Input.Pos.ReadValue<Vector2>())- transform.position ; // ë„ˆê°€ ì›í•˜ëŠ” ì§€ì  ì¢Œí‘œ
+
+        //dir = Vector3.Slerp(transform.up, dir, 0.1f);
+        float angle = Vector3.SignedAngle(Vector3.up, dir - transform.up, -Vector3.forward);
+        //Debug.Log(dir);
+        //Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward) * Quaternion.Euler(0, 0, -90.0f);
+        transform.Rotate(Vector3.forward, angle);
     }
 
     private void OnEnable()
