@@ -7,6 +7,7 @@ TagManager:
   - Block
   - Board
   - Bullet
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -41,11 +42,26 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: BackGround
+    uniqueID: 3476657873
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: BackGround
-    uniqueID: 3476657873
+  - name: InGroundTools
+    uniqueID: 746432451
+    locked: 0
+  - name: Ground
+    uniqueID: 827227007
+    locked: 0
+  - name: Tools
+    uniqueID: 3939347593
+    locked: 0
+  - name: Egg
+    uniqueID: 4237288257
+    locked: 0
+  - name: Detach
+    uniqueID: 2696092277
     locked: 0
   - name: Block
     uniqueID: 523683211
