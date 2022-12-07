@@ -5,12 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Block
-<<<<<<< Updated upstream
-=======
   - Board
   - Bullet
-  - Ground
->>>>>>> Stashed changes
   layers:
   - Default
   - TransparentFX
@@ -18,7 +14,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 
@@ -45,11 +41,11 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: BackGround
-    uniqueID: 3476657873
-    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BackGround
+    uniqueID: 3476657873
     locked: 0
   - name: Block
     uniqueID: 523683211
@@ -59,19 +55,4 @@ TagManager:
     locked: 0
   - name: Effect
     uniqueID: 88339203
-    locked: 0
-  - name: InGroundTools
-    uniqueID: 367987611
-    locked: 0
-  - name: Ground
-    uniqueID: 195471489
-    locked: 0
-  - name: Tools
-    uniqueID: 2572761675
-    locked: 0
-  - name: Egg
-    uniqueID: 3148187931
-    locked: 0
-  - name: Detach
-    uniqueID: 4108977527
     locked: 0
