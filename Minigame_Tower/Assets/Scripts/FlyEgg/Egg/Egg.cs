@@ -12,8 +12,6 @@ public class Egg : MonoBehaviour
     Rigidbody2D rigid;
    
 
-    Transform tools;
-
     public Action onParachuteSeparate;
 
 
@@ -24,18 +22,17 @@ public class Egg : MonoBehaviour
     }
     private void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
-        tools = transform.GetChild(0).transform;
+        rigid = transform.GetChild(0).GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
-  
+        
     }
 
     private void FixedUpdate()
     {
-        
+        transform.position = transform.GetChild(0).position;
     }
 
 
@@ -50,7 +47,7 @@ public class Egg : MonoBehaviour
         if (rigid.velocity.magnitude > 10.0f)
         {
             
-            Debug.Log("¾ËÀÌ ±úÁ³À½");
+            Debug.Log("ì•Œì´ ê¹¨ì¡ŒìŒ");
             //Mathf.Abs(rigid.velocity.x) + Mathf.Abs(rigid.velocity.y);
         }
         

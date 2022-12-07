@@ -20,8 +20,6 @@ public class Propeller : MonoBehaviour
     Egg egg;
 
 
-    Vector3 movingPos = Vector3.zero;
-
 
     private void Awake()
     {
@@ -62,17 +60,8 @@ public class Propeller : MonoBehaviour
             
         }
 
-        movingPos -= egg.transform.position;
-        Vector3 dir = -movingPos;
+        
 
-        dir = Vector3.Slerp(transform.right, dir, 0.1f);
-        Debug.Log(dir);
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward) * Quaternion.Euler(0, 0, 0);
-        transform.rotation = rotation;
-
-     
-        movingPos = egg.transform.position;
 
         propellar.Rotate(transform.forward, propellerRotateSpeed);
         egg.EggMove(propellerRotateSpeed * transform.up / force, ForceMode2D.Force);
