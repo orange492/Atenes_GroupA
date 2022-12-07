@@ -49,7 +49,7 @@ public class SlingShot : MonoBehaviour
 
         if (isEggOnSlingShot)
         {
-            egg.transform.position = net.position + Vector3.up * 0.5f;
+            egg.Rigid.position = net.position + Vector3.up * 0.5f;
             egg.Rigid.velocity = Vector2.zero;
         }
         else
