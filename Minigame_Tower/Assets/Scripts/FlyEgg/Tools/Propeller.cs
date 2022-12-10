@@ -15,7 +15,7 @@ public class Propeller : MonoBehaviour
 
     Transform propellar;
     float propellerRotateSpeed = 1.0f;
-    float force = 4.3f;
+    public float force = 4.3f;
     public float rotateSpeed = 1.0f;
     Egg egg;
 
@@ -56,7 +56,7 @@ public class Propeller : MonoBehaviour
             {
                 propellerRotateSpeed = 15.0f;
             }
-            transform.Rotate(Vector3.forward, 0 - transform.rotation.z);
+            
             
         }
 

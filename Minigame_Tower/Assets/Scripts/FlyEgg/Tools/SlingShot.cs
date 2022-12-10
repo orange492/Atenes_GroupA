@@ -8,6 +8,8 @@ public class SlingShot : MonoBehaviour
     LineRenderer rightLine;
     LineRenderer leftLine;
     Transform net;
+    Transform netPosRight;
+    Transform netPosLeft;
     Egg egg;
 
     PlayerInputActions inputActions;
@@ -16,7 +18,7 @@ public class SlingShot : MonoBehaviour
     Vector2 offClickPostion;
     Vector3 netDir;
     Vector3 zeroPos;
-    public float force = 1.0f;
+    public float force = 10.0f;
 
 
     public bool isEggOnSlingShot = true;
@@ -25,11 +27,14 @@ public class SlingShot : MonoBehaviour
     {
         egg = transform.GetComponent<Egg>();
         inputActions = new PlayerInputActions();
-        rightLine = transform.GetChild(2).GetComponent<LineRenderer>();
         leftLine = transform.GetChild(3).GetComponent<LineRenderer>();
+        rightLine = transform.GetChild(2).GetComponent<LineRenderer>();
         net = transform.GetChild(4).transform;
         zeroPos = transform.GetChild(5).transform.position;
         egg = FindObjectOfType<Egg>();
+
+        netPosRight = net.GetChild(0).transform;
+        netPosLeft = net.GetChild(1).transform;
 
     }
 
@@ -49,7 +54,7 @@ public class SlingShot : MonoBehaviour
 
         if (isEggOnSlingShot)
         {
-            egg.Rigid.position = net.position + Vector3.up * 0.5f;
+            egg.Rigid.position = net.position + Vector3.up * 0.1f;
             egg.Rigid.velocity = Vector2.zero;
         }
         else
@@ -64,8 +69,8 @@ public class SlingShot : MonoBehaviour
             }
         }
 
-        leftLine.SetPosition(0, net.position - transform.position);
-        rightLine.SetPosition(1, net.position - transform.position);
+        leftLine.SetPosition(0, netPosRight.position - transform.position);
+        rightLine.SetPosition(1, netPosLeft.position - transform.position);
     }
 
     private void OnEnable()
@@ -98,6 +103,7 @@ public class SlingShot : MonoBehaviour
             isClicked = false;
             isEggOnSlingShot = false;
             egg.EggMove((zeroPos - (Vector3)offClickPostion)*force);
+            egg.EggRotate((zeroPos - (Vector3)offClickPostion).magnitude);
             SetNetDir();
         }
     }

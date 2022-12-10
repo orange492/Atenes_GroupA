@@ -22,7 +22,7 @@ public class Egg : MonoBehaviour
     }
     private void Awake()
     {
-        rigid = transform.GetChild(0).GetComponent<Rigidbody2D>();
+        rigid = GetComponent<Rigidbody2D>();
     }
 
     private void Update()
@@ -32,7 +32,6 @@ public class Egg : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position = transform.GetChild(0).position;
     }
 
 
@@ -44,7 +43,7 @@ public class Egg : MonoBehaviour
         {
             onParachuteSeparate?.Invoke();
         }
-        if (rigid.velocity.magnitude > 10.0f)
+        if (rigid.velocity.magnitude > 7.0f)
         {
             
             Debug.Log("알이 깨졌음");
@@ -53,9 +52,14 @@ public class Egg : MonoBehaviour
         
     }
 
-    public void EggMove(UnityEngine.Vector2 moveDir,ForceMode2D forceMode2D=ForceMode2D.Impulse)
+    public void EggMove(UnityEngine.Vector2 moveDir,ForceMode2D forceMode2D=ForceMode2D.Force)
     {
         rigid.AddForce(moveDir,forceMode2D);
+    }
+
+    public void EggRotate(float force)
+    {
+        rigid.AddTorque(force,ForceMode2D.Force);
     }
 
 
