@@ -8,6 +8,9 @@ TagManager:
   - Board
   - Bullet
   - Ground
+  - Button
+  - Trash
+  - Line
   layers:
   - Default
   - TransparentFX
