@@ -20,6 +20,7 @@ public class SlingShot : MonoBehaviour
     Vector3 zeroPos;
     public float force = 10.0f;
 
+    EdgeCollider2D edgeCollider2;
 
     public bool isEggOnSlingShot = true;
     public bool isClicked;
@@ -35,6 +36,7 @@ public class SlingShot : MonoBehaviour
 
         netPosRight = net.GetChild(0).transform;
         netPosLeft = net.GetChild(1).transform;
+
 
     }
 
