@@ -355,6 +355,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5229596411162163108, guid: 657896b3d95838c40bf0a2f96f9bb6d8, type: 3}
+      propertyPath: m_Color.b
+      value: 0.42745098
+      objectReference: {fileID: 0}
+    - target: {fileID: 5229596411162163108, guid: 657896b3d95838c40bf0a2f96f9bb6d8, type: 3}
+      propertyPath: m_Color.g
+      value: 0.003921569
+      objectReference: {fileID: 0}
+    - target: {fileID: 5229596411162163108, guid: 657896b3d95838c40bf0a2f96f9bb6d8, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5229596411162163111, guid: 657896b3d95838c40bf0a2f96f9bb6d8, type: 3}
       propertyPath: m_Name
       value: Ground
@@ -369,7 +381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5229596411162163115, guid: 657896b3d95838c40bf0a2f96f9bb6d8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.45
+      value: -8.97
       objectReference: {fileID: 0}
     - target: {fileID: 5229596411162163115, guid: 657896b3d95838c40bf0a2f96f9bb6d8, type: 3}
       propertyPath: m_LocalPosition.z

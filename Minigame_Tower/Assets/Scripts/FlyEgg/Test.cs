@@ -7,10 +7,17 @@ using static PlayerInputActions;
 public class Test : MonoBehaviour
 {
     PlayerInputActions inputActions;
+    SpriteRenderer spriteRenderer;
     // Start is called before the first frame update
     private void Awake()
     {
         inputActions = new PlayerInputActions();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    private void Start()
+    {
+       
     }
 
     // Update is called once per frame
