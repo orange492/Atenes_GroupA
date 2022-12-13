@@ -52,7 +52,7 @@ public class RemainTime : MonoBehaviour
     private void Start()
     {
         blockController = FindObjectOfType<BlockController>();
-        
+
     }
 
 

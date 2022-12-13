@@ -13,6 +13,7 @@ public class GameOverPanel : MonoBehaviour
     TextMeshProUGUI GameOverText;
     TextMeshProUGUI resultText;
     Button retryButton;
+    Button toMainButton;
     Transform gameOverPanel;
 
     private void Awake()
@@ -22,6 +23,15 @@ public class GameOverPanel : MonoBehaviour
         resultText = gameOverPanel.GetChild(1).GetComponent<TextMeshProUGUI>();
         retryButton = gameOverPanel.GetChild(2).GetComponent<Button>();
         retryButton.onClick.AddListener(OnRetry);
+        toMainButton = gameOverPanel.GetChild(3).GetComponent<Button>();
+        toMainButton.onClick.AddListener(OnToMain);
+        retryButton.gameObject.SetActive(false);
+        toMainButton.gameObject.SetActive(false);
+    }
+
+    private void OnToMain()
+    {
+        TowerManager.Inst.Clear();
     }
 
     private void OnRetry()
@@ -49,11 +59,15 @@ public class GameOverPanel : MonoBehaviour
         if (!PuzzleGameManager.Inst.RemainScore.IsClear)
         {
             resultText.text = $"남은 점수:{PuzzleGameManager.Inst.RemainScore.RemainScoreReturn()}점";
+            retryButton.gameObject.SetActive(true);
+            
+            TowerManager.Inst.GameOver();
         }
         else
         {
             GameOverText.text = "GameClear!";
             resultText.text = $"남은 시간: {(int)PuzzleGameManager.Inst.RemainTime.RemainTimeProperty}초";
+            toMainButton.gameObject.SetActive(true);
         }
     }
 }

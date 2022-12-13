@@ -22,11 +22,16 @@ public class ItemButton : MonoBehaviour
     TextMeshProUGUI bombRemainText;
     TextMeshProUGUI resetRemainText;
     TextMeshProUGUI feverRemainText;
-    public int bombRemain = 2;
-    public int resetRemain = 2;
-    public int feverRemain = 2;
+    int bombRemain=0;
+    int resetRemain=0;
+    int feverRemain=0;
     Fever fever;
 
+    public int BombRemain
+    {
+        get => bombRemain;
+        set => bombRemain = value;
+    }
 
 
     BlockController blockController;
@@ -44,9 +49,6 @@ public class ItemButton : MonoBehaviour
         resetButton.onClick.AddListener(OnClick_Reset);
         feverButton.onClick.AddListener(OnClick_Fever);
 
-        bombRemainText.text = bombRemain.ToString();
-        resetRemainText.text = resetRemain.ToString();
-        feverRemainText.text = feverRemain.ToString();
 
 
         image = transform.GetChild(0).GetComponent<Image>();
@@ -58,6 +60,27 @@ public class ItemButton : MonoBehaviour
     {
         blockController = FindObjectOfType<BlockController>();
         fever = FindObjectOfType<Fever>();
+        if (TowerManager.Inst.GetDifficulty() == 0)
+        {
+           bombRemain=3;
+           resetRemain=3;
+           feverRemain=3;
+        }
+        if (TowerManager.Inst.GetDifficulty() == 1)
+        {
+            bombRemain = 2;
+            resetRemain = 2;
+            feverRemain = 2;
+        } 
+        if (TowerManager.Inst.GetDifficulty() == 2) 
+        {
+            bombRemain = 1;
+            resetRemain = 1;
+            feverRemain = 1;
+        }
+        bombRemainText.text = bombRemain.ToString();
+        resetRemainText.text = resetRemain.ToString();
+        feverRemainText.text = feverRemain.ToString();
 
     }
 
