@@ -89,19 +89,36 @@ public class Block : MonoBehaviour
         GameObject obj = Instantiate(characterPrefab, transform.position, transform.rotation, transform);
 
         Character_Base character_Base = obj.GetComponent<Character_Base>();
-
-        if (Random.Range(0.0f, 1.0f) < 0.1)
+        if (TowerManager.Inst.GetDifficulty() == 0)
         {
-            character_Base.Init(Character_Base.CharaterType.Gargoyle, -3, sprites[sprites.Length-1]);
-            charaterType = CharacterType.Gargoyle;
+            int animalType = Random.Range(0, sprites.Length - 2);
+            character_Base.Init(Character_Base.CharaterType.Animal, animalType, sprites[animalType]);
+            charaterType = CharacterType.Animal;
+        }
+        else if (TowerManager.Inst.GetDifficulty() == 1)
+        {
+            int animalType = Random.Range(0, sprites.Length - 1);
+            character_Base.Init(Character_Base.CharaterType.Animal, animalType, sprites[animalType]);
+            charaterType = CharacterType.Animal;
         }
         else
         {
-            
-            int animalType = Random.Range(0, sprites.Length-1);
-            character_Base.Init(Character_Base.CharaterType.Animal,animalType, sprites[animalType]);
-            charaterType = CharacterType.Animal;
+
+            if (Random.Range(0.0f, 1.0f) < 0.1)
+            {
+                character_Base.Init(Character_Base.CharaterType.Gargoyle, -3, sprites[sprites.Length - 1]);
+                charaterType = CharacterType.Gargoyle;
+            }
+            else
+            {
+
+                int animalType = Random.Range(0, sprites.Length - 1);
+                character_Base.Init(Character_Base.CharaterType.Animal, animalType, sprites[animalType]);
+                charaterType = CharacterType.Animal;
+            }
         }
+
+
     }
 
 

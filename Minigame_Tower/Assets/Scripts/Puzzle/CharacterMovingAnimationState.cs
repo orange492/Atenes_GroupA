@@ -11,7 +11,7 @@ public class CharacterMovingAnimationState : StateMachineBehaviour
     {
         blockController = FindObjectOfType<BlockController>();
         touchManager = FindObjectOfType<TouchManager>();
-        //blockController.Mode = BlockController.GameMode.Checking;
+        blockController.Mode = BlockController.GameMode.Checking;
         Debug.Log("이동애니메이션체킹");
 
     }
