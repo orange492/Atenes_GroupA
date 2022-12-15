@@ -11,6 +11,7 @@ TagManager:
   - Button
   - Trash
   - Line
+  - Egg
   layers:
   - Default
   - TransparentFX
@@ -53,6 +54,9 @@ TagManager:
     locked: 0
   - name: InGroundTools
     uniqueID: 746432451
+    locked: 0
+  - name: Trap
+    uniqueID: 3589326437
     locked: 0
   - name: Ground
     uniqueID: 827227007
