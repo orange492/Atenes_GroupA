@@ -14,6 +14,8 @@ public class SlingShot : MonoBehaviour
 
     PlayerInputActions inputActions;
 
+    float groundHight;
+
     Vector2 onClickPosition;
     Vector2 offClickPostion;
     Vector3 netDir;
@@ -21,6 +23,7 @@ public class SlingShot : MonoBehaviour
     public float force = 10.0f;
 
     EdgeCollider2D edgeCollider2;
+    Transform ground;
 
     public bool isEggOnSlingShot = true;
     public bool isClicked;
@@ -31,13 +34,18 @@ public class SlingShot : MonoBehaviour
         leftLine = transform.GetChild(3).GetComponent<LineRenderer>();
         rightLine = transform.GetChild(2).GetComponent<LineRenderer>();
         net = transform.GetChild(4).transform;
-        zeroPos = transform.GetChild(5).transform.position;
+        zeroPos = transform.GetChild(5).transform.localPosition;
         egg = FindObjectOfType<Egg>();
 
         netPosRight = net.GetChild(0).transform;
         netPosLeft = net.GetChild(1).transform;
+        
 
+    }
 
+    private void Start()
+    {
+        
     }
 
 
@@ -47,9 +55,9 @@ public class SlingShot : MonoBehaviour
         if (isClicked && isEggOnSlingShot)
         {
             onClickPosition = Camera.main.ScreenToWorldPoint(inputActions.Input.Pos.ReadValue<Vector2>());
-            if (onClickPosition.y < -4.0f)
+            if (onClickPosition.y < -9.5f)
             {
-                onClickPosition.y = -4.0f;
+                onClickPosition.y = -9.5f;
             }
             net.position = onClickPosition;
         }
@@ -61,9 +69,9 @@ public class SlingShot : MonoBehaviour
         }
         else
         {
-            if ((netDir - net.position).sqrMagnitude > 0.025f)
+            if ((netDir - net.localPosition).sqrMagnitude > 0.025f)
             {
-                 net.position += (netDir - net.position).normalized * Time.deltaTime * 30.0f;
+                 net.localPosition += (netDir - net.localPosition).normalized * Time.deltaTime * 15.0f;
             }
             else
             {
@@ -105,13 +113,18 @@ public class SlingShot : MonoBehaviour
             isClicked = false;
             isEggOnSlingShot = false;
             egg.EggMove((zeroPos - (Vector3)offClickPostion)*force);
-            egg.EggRotate((zeroPos - (Vector3)offClickPostion).magnitude);
+            float plusMinus = 1.0f;
+            if (zeroPos.x - offClickPostion.x >0)
+            {
+                plusMinus *= -1.0f;
+            }
+            egg.EggRotate((zeroPos - (Vector3)offClickPostion).magnitude*plusMinus);
             SetNetDir();
         }
     }
 
     void SetNetDir()
     {
-        netDir = zeroPos - net.position*0.8f;
+        netDir = zeroPos - net.localPosition*0.8f;
     }
 }

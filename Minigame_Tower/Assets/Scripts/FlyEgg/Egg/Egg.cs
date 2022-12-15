@@ -5,15 +5,19 @@ using System.Numerics;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using Vector3 = UnityEngine.Vector3;
 
 public class Egg : MonoBehaviour
 {
 
     Rigidbody2D rigid;
-   
+    float mag = 0.0f;
 
     public Action onParachuteSeparate;
+    Vector3 eggPos=Vector3.zero;
+    Vector3 movingPos=Vector3.zero;
 
+    public Vector3 MovingPos => movingPos;
 
     public Rigidbody2D Rigid
     {
@@ -32,6 +36,10 @@ public class Egg : MonoBehaviour
 
     private void FixedUpdate()
     {
+        mag = rigid.velocity.magnitude;
+        eggPos -= transform.position;
+        movingPos = -eggPos;
+        eggPos = transform.position;
     }
 
 
@@ -43,7 +51,7 @@ public class Egg : MonoBehaviour
         {
             onParachuteSeparate?.Invoke();
         }
-        if (rigid.velocity.magnitude > 7.0f)
+        if (mag > 15.0f)
         {
             
             Debug.Log("알이 깨졌음");

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class Line : MonoBehaviour
 {
@@ -18,6 +19,11 @@ public class Line : MonoBehaviour
     Trash trash;
     DrawButton drawButton;
     Vector3 offSet;
+
+    float length;
+    Mesh mesh;
+
+    public int LineIndex => lineIndex;
 
     public bool IsDrawingObject
     {
@@ -43,6 +49,7 @@ public class Line : MonoBehaviour
         rigid.gravityScale = 0;
         trash = FindObjectOfType<Trash>();
         drawButton = FindObjectOfType<DrawButton>();
+        mesh = GetComponent<Mesh>();
     }
 
     private void Update()
@@ -78,7 +85,7 @@ public class Line : MonoBehaviour
             line.positionCount++;
             DrawLine();
             //edgeCollider2D.points = linePositions.ToArray();
-            polygonCollider2.points = linePositions.ToArray();
+            //polygonCollider2.points = linePositions.ToArray();
             lineIndex++;
         }
     }
@@ -99,19 +106,50 @@ public class Line : MonoBehaviour
             linePositions.Add(mousePos);
             line.SetPosition(lineIndex, mousePos);
         }
-
-
     }
 
     public void EndDraw()
     {
+        if (line.positionCount < 2)
+        {
+            Destroy(this.gameObject);
+        }
         line.positionCount--;
+        line.positionCount--;
+        Debug.Log(line.positionCount);
+        linePositions.RemoveAt(linePositions.Count - 1);
+
+        if (line.positionCount < 3)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            polygonCollider2.points = linePositions.ToArray();
+            polygonCollider2.isTrigger = false;
+        }
+        length = GetLineLength();
+      mesh=  polygonCollider2.CreateMesh(true,true);
+
+       
+
+        MeshFilter mf = GetComponent<MeshFilter>();
+        mf.mesh = mesh;
+        Debug.Log(length);
+    }
+
+    public void RemoveLastDraw()
+    {
+        lineIndex--;
         line.positionCount--;
         linePositions.RemoveAt(linePositions.Count - 1);
-        //    edgeCollider2D.points = linePositions.ToArray();
-        polygonCollider2.points = linePositions.ToArray();
-        polygonCollider2.isTrigger = false;
+        //edgeCollider2D.points = linePositions.ToArray();
+        //polygonCollider2.points = linePositions.ToArray();
     }
+
+
+
+  
 
   
 
@@ -175,5 +213,23 @@ Input.mousePosition.y);
             trash.MaterialChange();
         }
     }
+
+    float GetLineLength()
+    {
+        float length=0.0f;
+        
+        for (int i = 0; i < line.positionCount-1; i++)
+        {
+           length += (line.GetPosition(i) - line.GetPosition(i+1)).magnitude;
+        }
+        length += (line.GetPosition(0) - line.GetPosition(line.positionCount - 1)).magnitude;
+
+       
+        return length;
+    }
+
+  
+
+   
 
 }

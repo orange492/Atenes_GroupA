@@ -29,10 +29,16 @@ public class DrawButton : MonoBehaviour
 
     private void OffDrawMode()
     {
-        DrawEndButtonShutDown();
-        line.IsDrawingObject = false;
-        isDrawMode = false;
-        line.EndDraw();
+     
+
+            DrawEndButtonShutDown();
+            line.IsDrawingObject = false;
+            isDrawMode = false;
+            line.EndDraw();
+    
+     
+      
+    
     }
 
     private void OnDrawMode()

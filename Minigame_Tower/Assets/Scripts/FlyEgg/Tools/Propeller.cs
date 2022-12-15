@@ -11,13 +11,19 @@ using Quaternion = UnityEngine.Quaternion;
 
 public class Propeller : MonoBehaviour
 {
-    public bool isButtonDowning;
+    bool machineOn = false;
 
     Transform propellar;
     float propellerRotateSpeed = 1.0f;
     public float force = 4.3f;
     public float rotateSpeed = 1.0f;
     Egg egg;
+
+    public bool MachineOn
+    {
+        get => machineOn;
+        set => machineOn = value;
+    }
 
 
 
@@ -28,57 +34,32 @@ public class Propeller : MonoBehaviour
     private void Start()
     {
         egg = FindObjectOfType<Egg>();
-
+        
     }
 
     void FixedUpdate()
     {
-        if (!isButtonDowning)
-        {
-            propellerRotateSpeed -= Time.fixedDeltaTime * 3.0f;
-            if (propellerRotateSpeed < 0.0f)
-            {
-                propellerRotateSpeed = 0.0f;
-            }
-            
-            //float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            //Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-            //transform.rotation = rotation;
-            
-
-            //transform.rotation = Quaternion.LookRotation(dir);
-            
-        }
-        else
+        
+        if(machineOn)
         {
             propellerRotateSpeed += 5 * Time.fixedDeltaTime;
             if (propellerRotateSpeed > 15.0f)
             {
                 propellerRotateSpeed = 15.0f;
             }
-            
-            
         }
-
-        
-
-
+        else
+        {
+                propellerRotateSpeed -= Time.fixedDeltaTime * 3.0f;
+                if (propellerRotateSpeed < 0.0f)
+                {
+                    propellerRotateSpeed = 0.0f;
+                }
+        }
         propellar.Rotate(transform.forward, propellerRotateSpeed);
         egg.EggMove(propellerRotateSpeed * transform.up / force, ForceMode2D.Force);
     }
 
 
-    private void Update()
-    {
-        
-    }
-    public void PointerDown()
-    {
-        isButtonDowning = true;
-    }
 
-    public void PointerUp()
-    {
-        isButtonDowning = false;
-    }
 }
