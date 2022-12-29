@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using System;
+
+/*
+난이도 : TowerManager.Inst.GetDifficulty()
+클리어했을 때 : TowerManager.Inst.Clear();
+실패했을 때 : TowerManager.Inst.GameOver();
+*/
 
 public class TowerManager : SingletonPuzzle<TowerManager>
 {
@@ -13,17 +20,26 @@ public class TowerManager : SingletonPuzzle<TowerManager>
      {1, "DefenceScene"},
      {2, "Test_Table"}, // 블랙잭 노멀모드
      {3, "Test_Puzzle"},
-     {4, "JumpScene"},
-     {5, "Test_Hard"} //블랙잭 하드모드
+     {4, "Test_Hard"}, //블랙잭 하드모드
+     {5, "Rhythm"}
     };
-    Dictionary<int, string> gmaeName = new Dictionary<int, string>()
+    Dictionary<int, string> gameName = new Dictionary<int, string>()
     {
      {0, "미니게임 타워"},
      {1, "디펜스 게임"},
      {2, "블랙잭 게임"},
      {3, "퍼즐 게임"},
-     {4, "점프 게임"},
-     {5, "블랙잭 게임(하드)"},
+     {4, "블랙잭 게임(하드)"},
+     {5, "리듬 게임"},
+    };
+    Dictionary<int, bool> isVertical = new Dictionary<int, bool>()
+    {
+     {0, true},
+     {1, true},
+     {2, false},
+     {3, true},
+     {4, false},
+     {5, false},
     };
     [SerializeField]
     GameObject pFloor;
@@ -37,6 +53,7 @@ public class TowerManager : SingletonPuzzle<TowerManager>
     GameObject oGameOver;
     [SerializeField]
     GameObject oCloseBtn;
+    CanvasScaler canvasScaler;
     bool init = false;
 
     public struct sFloor
@@ -44,11 +61,13 @@ public class TowerManager : SingletonPuzzle<TowerManager>
         public int game;
         public int difficulty;
         public string goal;
-        public sFloor(int _game, int _diff, string _goal)
+        public bool vertical;
+        public sFloor(int _game, int _diff, string _goal, Dictionary<int, bool> _vertical)
         {
             game = _game;
             difficulty = _diff;
             goal = _goal;
+            vertical = _vertical[_game];
         }
     }
     List<sFloor> floor = new List<sFloor>();
@@ -56,6 +75,10 @@ public class TowerManager : SingletonPuzzle<TowerManager>
 
     protected override void Initialize()
     {
+        canvasScaler = gameObject.GetComponent<CanvasScaler>();
+        canvasScaler.matchWidthOrHeight = 0f;
+        oPopup.GetComponent<RectTransform>().offsetMin = new Vector3(0, 0, 0);
+
         if (SceneManager.GetActiveScene().name != scene[0])
         {
             return;
@@ -63,12 +86,13 @@ public class TowerManager : SingletonPuzzle<TowerManager>
 
         if (!init)
         {
-            floor.Add(new sFloor(1, 0, "10웨이브"));
-            floor.Add(new sFloor(2, 0, "500라이프")); //블랙잭 노멀모드
-            floor.Add(new sFloor(3, 0, "500점"));
-            floor.Add(new sFloor(1, 1, "20웨이브"));
-            floor.Add(new sFloor(5, 0, "300라이프")); //블랙잭 하드모드
-            floor.Add(new sFloor(3, 0, "1000점"));
+            floor.Add(new sFloor(1, 0, "10웨이브", isVertical));
+            floor.Add(new sFloor(2, 0, "500라이프", isVertical)); //블랙잭 노멀모드
+            floor.Add(new sFloor(3, 0, "500점", isVertical));
+            floor.Add(new sFloor(5, 0, "신나는 음악", isVertical));
+            floor.Add(new sFloor(1, 1, "20웨이브", isVertical));
+            floor.Add(new sFloor(4, 0, "300라이프", isVertical)); //블랙잭 하드모드
+            floor.Add(new sFloor(3, 0, "1000점", isVertical));
             SetSave();
             init = true;
         }
@@ -88,6 +112,11 @@ public class TowerManager : SingletonPuzzle<TowerManager>
 
     public void GameOver()
     {
+        if(PlayerPrefs.GetInt("isVertical")==0)
+        {
+            canvasScaler.matchWidthOrHeight = 0.5f;
+            oPopup.GetComponent<RectTransform>().offsetMin = new Vector3(0,-400,0);
+        }
         oGameOver.SetActive(true);
         oCloseBtn.SetActive(true);
         OpenPopup(true);
@@ -113,6 +142,7 @@ public class TowerManager : SingletonPuzzle<TowerManager>
     {
         PlayerPrefs.SetInt("currentFloor", index);
         PlayerPrefs.SetInt("difficulty", floor[index].difficulty);
+        PlayerPrefs.SetInt("isVertical", Convert.ToInt32(floor[index].vertical));
         MoveScene(floor[index].game);
     }
 
@@ -155,7 +185,7 @@ public class TowerManager : SingletonPuzzle<TowerManager>
         while (index < PlayerPrefs.GetInt("height"))
         {
             Floor temp = Instantiate(pFloor, tower).GetComponent<Floor>();
-            temp.Init(index, sGame[floor[index].game], gmaeName[floor[index].game], floor[index].goal, PlayerPrefs.GetInt(index.ToString() + "clear"));
+            temp.Init(index, sGame[floor[index].game], gameName[floor[index].game], floor[index].goal, PlayerPrefs.GetInt(index.ToString() + "clear"));
             temp.transform.SetSiblingIndex(0);
             index++;
         }

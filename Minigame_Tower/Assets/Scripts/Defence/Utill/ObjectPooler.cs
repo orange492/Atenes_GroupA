@@ -147,10 +147,10 @@ public class ObjectPooler : MonoBehaviour
 				ArrangePool(obj);
 			}
 
-			// OnDisable에 ReturnToPool 구현여부와 중복구현 검사
+			//OnDisable에 ReturnToPool 구현여부와 중복구현 검사
 			if (poolDictionary[pool.tag].Count <= 0)
 				Debug.LogError($"{pool.tag}{INFO}");
-			else if (poolDictionary[pool.tag].Count != pool.size)
+			if (poolDictionary[pool.tag].Count != pool.size)
 				Debug.LogError($"{pool.tag}에 ReturnToPool이 중복됩니다");
 		}
 	}

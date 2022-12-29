@@ -29,8 +29,7 @@ public class NoteSpawner : MonoBehaviour
 
     public void CreateNote(int value)
     {
-        Note note = Instantiate(pNote, tSpawnPoint[value]).GetComponent<Note>();
-        note.Init(this, index, value);
+        Note note = ObjectPooler.SpawnFromPool<Note>("Note", tSpawnPoint[value].position).Init(this, index, value);
         noteDic[value].Add(index, note);
         index++;
     }

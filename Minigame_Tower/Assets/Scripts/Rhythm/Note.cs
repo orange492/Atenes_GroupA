@@ -11,15 +11,21 @@ public class Note : MonoBehaviour
     int loca;
     float scrollingSpeed = 10f;
 
-    public void Init(NoteSpawner noteSpawner, int index, int location)
+    public Note Init(NoteSpawner noteSpawner, int index, int location)
     {
         ns = noteSpawner;
         id = index;
         loca = location;
+        return this;
     }
     void Start()
     {
         
+    }
+
+    void OnDisable()
+    {
+        ObjectPooler.ReturnToPool(gameObject);
     }
 
     // Update is called once per frame
@@ -33,9 +39,9 @@ public class Note : MonoBehaviour
                 Remove();
                 return;
             }
-            Manager_Rhythm.Inst.SetJudgeTxt(loca, 0);
             miss = true;
             MissDistance -= 2;
+            Manager_Rhythm.Inst.MissNote(loca);
         }
     }
 
