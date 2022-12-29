@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.TextCore.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,9 +11,13 @@ public class DrawButton : MonoBehaviour
     public GameObject linePrefab;
     Button drawButton;
     Button drawEndButton;
+    Button drawExitButton;
     Line line;
     CanvasGroup drawEndButtonCanvasGroup;
     bool isDrawMode = false;
+    Shop shop;
+
+
 
     public bool IsDrawMode => isDrawMode;
 
@@ -24,21 +29,33 @@ public class DrawButton : MonoBehaviour
         drawEndButton = transform.GetChild(1).GetComponent<Button>();
         drawEndButton.onClick.AddListener(OffDrawMode);
         drawEndButtonCanvasGroup = transform.GetChild(1).GetComponent<CanvasGroup>();
+        drawExitButton = transform.GetChild(2).GetComponent<Button>();
+        drawExitButton.onClick.AddListener(ExitDrawMode);
         DrawEndButtonShutDown();
+    }
+
+    void Start()
+    {
+        shop = FindObjectOfType<Shop>();
+    }
+
+    private void ExitDrawMode()
+    {
+        if (isDrawMode)
+        {
+            OffDrawMode();
+        }
+        shop.ShopOpenButtonActivate();
+        transform.gameObject.SetActive(false);
+        
     }
 
     private void OffDrawMode()
     {
-     
-
             DrawEndButtonShutDown();
             line.IsDrawingObject = false;
             isDrawMode = false;
             line.EndDraw();
-    
-     
-      
-    
     }
 
     private void OnDrawMode()
@@ -66,14 +83,6 @@ public class DrawButton : MonoBehaviour
         drawEndButtonCanvasGroup.blocksRaycasts = true;
     }
 
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
