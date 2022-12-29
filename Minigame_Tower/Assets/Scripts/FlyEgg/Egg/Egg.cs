@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ public class Egg : MonoBehaviour
 
     Rigidbody2D rigid;
     float mag = 0.0f;
-
+    DG.Tweening.Sequence scaleSquence;
     public Action onParachuteSeparate;
     Vector3 eggPos=Vector3.zero;
     Vector3 movingPos=Vector3.zero;
@@ -27,6 +28,14 @@ public class Egg : MonoBehaviour
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
+        scaleSquence = DOTween.Sequence().SetAutoKill(false).Pause();
+        scaleSquence.Append(transform.DOScale(0.1f,0.2f));
+        scaleSquence.Append(transform.DOScale(1.0f, 0.2f));
+        scaleSquence.OnComplete(() => { scaleSquence.Rewind(); });
     }
 
     private void Update()
@@ -68,6 +77,14 @@ public class Egg : MonoBehaviour
     public void EggRotate(float force)
     {
         rigid.AddTorque(force,ForceMode2D.Force);
+    }
+
+    public void ScaleEffect()
+    {
+        if (!scaleSquence.IsPlaying())
+        {
+            scaleSquence.Play();
+        }
     }
 
 

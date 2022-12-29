@@ -220,7 +220,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 686b31d2cf00aea46ba2b50dbfadb4b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 10
 --- !u!1 &1300294860
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,6 +417,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Sky
       objectReference: {fileID: 0}
+    - target: {fileID: 3071996615622618008, guid: c323d73a710ec7544ac7220982d12d0d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3071996615622618014, guid: c323d73a710ec7544ac7220982d12d0d, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -471,6 +474,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8806947670698894907, guid: 04b73b6f638584c4c9a5af3d79187f17, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: cc823ed0021f7474d8a3f020ac56001e, type: 2}
     - target: {fileID: 8806947670897352967, guid: 04b73b6f638584c4c9a5af3d79187f17, type: 3}
       propertyPath: m_RootOrder
       value: 2

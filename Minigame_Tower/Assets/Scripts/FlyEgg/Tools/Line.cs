@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Line : MonoBehaviour
 {
@@ -23,7 +24,13 @@ public class Line : MonoBehaviour
     float length;
     Mesh mesh;
 
+    float price=0.0f;
+
+    Shop shop;
+
     public int LineIndex => lineIndex;
+
+    bool movingMode = false;
 
     public bool IsDrawingObject
     {
@@ -49,7 +56,11 @@ public class Line : MonoBehaviour
         rigid.gravityScale = 0;
         trash = FindObjectOfType<Trash>();
         drawButton = FindObjectOfType<DrawButton>();
-        mesh = GetComponent<Mesh>();
+    }
+
+    private void Start()
+    {
+        shop = FindObjectOfType<Shop>();
     }
 
     private void Update()
@@ -116,7 +127,7 @@ public class Line : MonoBehaviour
         }
         line.positionCount--;
         line.positionCount--;
-        Debug.Log(line.positionCount);
+        //Debug.Log(line.positionCount);
         linePositions.RemoveAt(linePositions.Count - 1);
 
         if (line.positionCount < 3)
@@ -127,15 +138,28 @@ public class Line : MonoBehaviour
         {
             polygonCollider2.points = linePositions.ToArray();
             polygonCollider2.isTrigger = false;
+            length = GetLineLength();
+            mesh = polygonCollider2.CreateMesh(true, true);
+
+
+
+            MeshFilter mf = GetComponent<MeshFilter>();
+            mf.mesh = mesh;
+            price = ((float)(int)(length * 10.0f))*0.01f;
+            Debug.Log(price);
+            if (shop.MoneyRemain < price)
+            {
+                shop.MoneyLack();
+                Destroy(this.gameObject);
+            }
+            else
+            {
+            shop.Purchase(price);
+            }
         }
-        length = GetLineLength();
-      mesh=  polygonCollider2.CreateMesh(true,true);
 
-       
-
-        MeshFilter mf = GetComponent<MeshFilter>();
-        mf.mesh = mesh;
-        Debug.Log(length);
+        
+   
     }
 
     public void RemoveLastDraw()
@@ -164,9 +188,9 @@ public class Line : MonoBehaviour
         polygonCollider2.isTrigger = true;
         rigid.velocity = Vector2.zero;
         rigid.freezeRotation = true;
-        Vector2 mousePosition = new Vector2(Input.mousePosition.x,
-Input.mousePosition.y);
-        Vector2 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector3 mousePosition = new Vector3(Input.mousePosition.x,
+Input.mousePosition.y,-0.1f);
+        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
         offSet = transform.position - (Vector3)objPosition;
     }
 
@@ -177,10 +201,13 @@ Input.mousePosition.y);
         {
             return;
         }
-        
+        movingMode = true;
         polygonCollider2.isTrigger = false;
         rigid.velocity = Vector2.zero;
         rigid.freezeRotation = false;
+
+        StartCoroutine(ModeChange());
+        
     }
     void OnMouseDrag()
     {
@@ -188,29 +215,44 @@ Input.mousePosition.y);
         {
             return;
         }
-        Vector2 mousePosition = new Vector2(Input.mousePosition.x,
-Input.mousePosition.y);
-        Vector2 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        transform.position = objPosition + (Vector2)offSet;
+        Vector3 mousePosition = new Vector3(Input.mousePosition.x,
+Input.mousePosition.y,-0.1f);
+        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        transform.position = objPosition + offSet;
         rigid.velocity = Vector2.zero;
         rigid.freezeRotation = true;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+
+
+
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag("Trash"))
+        if (movingMode)
         {
-            Destroy(this.gameObject);
-            trash.MaterialChange();
+            if (collision.transform.CompareTag("Trash"))
+            {
+                movingMode = false;
+                shop.Purchase(-price);
+                shop.MoneyRefund();
+                Destroy(this.gameObject);
+                trash.MaterialChange();
+            }
         }
     }
-
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.transform.CompareTag("Trash"))
+        if (movingMode)
         {
-            Destroy(this.gameObject);
-            trash.MaterialChange();
+            if (collision.transform.CompareTag("Trash"))
+            {
+                movingMode = false;
+                shop.Purchase(-price);
+                shop.MoneyRefund();
+                Destroy(this.gameObject);
+                trash.MaterialChange();
+            }
         }
     }
 
@@ -228,6 +270,11 @@ Input.mousePosition.y);
         return length;
     }
 
+   IEnumerator ModeChange()
+    {
+        yield return new WaitForSeconds(0.1f);
+        movingMode = false;
+    }
   
 
    

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71bdb0d82cc05b447a018170b9f6729d, type: 3}
+  m_Name: 04 Radar
+  m_EditorClassIdentifier: 
+  id: 4
+  itemName: Radar
+  modelPrefab: {fileID: 6887933738301798627, guid: 5a893d31c70af7b439b40cfe64ad87fc, type: 3}
+  itemIcon: {fileID: 21300000, guid: 0a88b111a4166a74b8365ead011e1b73, type: 3}
+  value: 20
+  isNeedPosition: 0
+  buttonPrefab: {fileID: 6102298282571011522, guid: 29e2c4599e42fe94eacafeccca60e477, type: 3}
+  itemDescription: 
