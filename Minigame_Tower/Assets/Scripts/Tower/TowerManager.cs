@@ -75,6 +75,7 @@ public class TowerManager : SingletonPuzzle<TowerManager>
 
     protected override void Initialize()
     {
+        Sound_Rhythum.Inst.Clear();
         canvasScaler = gameObject.GetComponent<CanvasScaler>();
         canvasScaler.matchWidthOrHeight = 0f;
         oPopup.GetComponent<RectTransform>().offsetMin = new Vector3(0, 0, 0);

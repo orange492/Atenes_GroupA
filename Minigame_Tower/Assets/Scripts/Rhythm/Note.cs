@@ -9,10 +9,11 @@ public class Note : MonoBehaviour
     NoteSpawner ns;
     int id;
     int loca;
-    float scrollingSpeed = 10f;
+    float scrollingSpeed;
 
     public Note Init(NoteSpawner noteSpawner, int index, int location)
     {
+        scrollingSpeed = Manager_Rhythm.SPEED;
         ns = noteSpawner;
         id = index;
         loca = location;

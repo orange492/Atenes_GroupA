@@ -12,6 +12,7 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
     const float MAX_HP = 100;
     const float DECREASE_HP = 10;
     const float TIMER = 0.5f;
+    public const float SPEED = 10f;
 
     Dictionary<int, string> judgeTxt = new Dictionary<int, string>
     {
@@ -21,16 +22,25 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
         { 3, "Perfect" }
     };
 
+    enum MODE
+    {
+        NONE,
+        PLAY,
+        EDIT
+    }
+
     TextMeshProUGUI comboTxt;
     TextMeshProUGUI[] JudgeTxt = new TextMeshProUGUI[2];
     Slider hpBar;
 
     GameObject oCombo;
+    GameObject oEditCanvas;
     NoteSpawner noteSpawner;
     Player_Rhythm player;
+    Button editButton;
     float maxHp;
     float currentHp;
-    bool isPlay;
+    MODE mode;
 
 
     int combo;
@@ -42,6 +52,10 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
         {
             return;
         }
+        editButton = GameObject.Find("EditButton").GetComponent<Button>();
+        editButton.onClick.AddListener(OpenEditCanvas);
+        oEditCanvas = GameObject.Find("NoteCanvas");
+        oEditCanvas.SetActive(false);
         comboTxt = GameObject.Find("NumberTxt").GetComponent<TextMeshProUGUI>();
         JudgeTxt[0] = GameObject.Find("UpTxt").GetComponent<TextMeshProUGUI>();
         JudgeTxt[1] = GameObject.Find("DownTxt").GetComponent<TextMeshProUGUI>();
@@ -62,7 +76,7 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
         currentHp = maxHp;
         ResetCombo();
         SetHpBar();
-        isPlay = true;
+        mode = MODE.PLAY;
     }
 
     void Start()
@@ -96,36 +110,46 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
 
     public void ClickKey(int loca)
     {
-        if(!isPlay)
+        if (mode != MODE.NONE)
         {
-            return;
-        }  
-        
-        player.ClickKey(loca);
-        foreach (Note Value in noteSpawner.noteDic[player.loca].Values)
-        {
-            if (Mathf.Abs(player.player.position.x - Value.transform.position.x) < 0.3f)
+
+            player.ClickKey(loca);
+            foreach (Note Value in noteSpawner.noteDic[player.loca].Values)
             {
-                SetJudgeTxt(loca, 3);
-                SetCombo();
-                Value.Remove();
-                break;
-            }
-            else if (Mathf.Abs(player.player.position.x - Value.transform.position.x) < 0.6f)
-            {
-                SetJudgeTxt(loca, 2);
-                SetCombo();
-                Value.Remove();
-                break;
-            }
-            else if (Mathf.Abs(player.player.position.x - Value.transform.position.x) < 0.9f)
-            {
-                SetJudgeTxt(loca, 1);
-                ResetCombo();
-                Value.Remove();
-                break;
+                if (Mathf.Abs(player.player.position.x - Value.transform.position.x) < 0.3f)
+                {
+                    SetJudgeTxt(loca, 3);
+                    SetCombo();
+                    Value.Remove();
+                    break;
+                }
+                else if (Mathf.Abs(player.player.position.x - Value.transform.position.x) < 0.6f)
+                {
+                    SetJudgeTxt(loca, 2);
+                    SetCombo();
+                    Value.Remove();
+                    break;
+                }
+                else if (Mathf.Abs(player.player.position.x - Value.transform.position.x) < 0.9f)
+                {
+                    SetJudgeTxt(loca, 1);
+                    ResetCombo();
+                    Value.Remove();
+                    break;
+                }
             }
         }
+        //else if(mode == MODE.EDIT)
+        //{
+        //    if(loca==0)
+        //    {
+        //        Sound_Rhythum.Inst.startTime--;
+        //    }
+        //    else
+        //    {
+        //        Sound_Rhythum.Inst.startTime++;
+        //    }
+        //}
     }
 
     public void SetJudgeTxt(int loca, int judgement)
@@ -157,6 +181,8 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
         if (hpBar.value <= 0)
         {
             TowerManager.Inst.GameOver();
+            mode = MODE.NONE;
+            Sound_Rhythum.Inst.Clear();
         }
 #endif
     }
@@ -167,5 +193,11 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
         ResetCombo();
         currentHp -= DECREASE_HP;
         SetHpBar();
+    }
+
+    public void OpenEditCanvas()
+    {
+        Sound_Rhythum.Inst.Clear();
+        oEditCanvas.SetActive(true);
     }
 }
