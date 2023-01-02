@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71bdb0d82cc05b447a018170b9f6729d, type: 3}
+  m_Name: 02 Propeller
+  m_EditorClassIdentifier: 
+  id: 2
+  itemName: Propeller
+  modelPrefab: {fileID: 2114291641236053080, guid: 916018ca791afbd4f8831c16da0a1010, type: 3}
+  itemIcon: {fileID: 21300000, guid: fe2843a3afe09f9459f33001423f4836, type: 3}
+  value: 50
+  isNeedPosition: 1
+  buttonPrefab: {fileID: 8606440335406546328, guid: 88bac7ba71fe7104b8d5120239b22c7a, type: 3}
+  itemDescription: 

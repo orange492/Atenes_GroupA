@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public class DefenceManager : SingletonPuzzle<DefenceManager>
 {
@@ -12,6 +14,7 @@ public class DefenceManager : SingletonPuzzle<DefenceManager>
     TextMeshProUGUI tWave;
     TextMeshProUGUI tPrice;
     TextMeshProUGUI tGold;
+    Button imgg;
 
     public bool isGame { get; set; }
 
@@ -73,7 +76,7 @@ public class DefenceManager : SingletonPuzzle<DefenceManager>
     }
 
     protected override void Initialize()
-    {
+    { 
         if (SceneManager.GetActiveScene().name != "DefenceScene")
         {
             return;

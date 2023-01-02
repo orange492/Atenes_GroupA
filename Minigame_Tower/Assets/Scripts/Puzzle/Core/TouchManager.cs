@@ -88,9 +88,9 @@ public class TouchManager : MonoBehaviour
             targetObject = hitInformation.transform.gameObject;
         }
 
-        if (targetObject == touchedObject && itemButton.IsClicked && itemButton.bombRemain > 0 && touchedObject.transform.GetChild(1).GetComponent < Character_Bomb >()== null)
+        if (targetObject == touchedObject && itemButton.IsClicked && itemButton.BombRemain > 0 && touchedObject.transform.GetChild(1).GetComponent < Character_Bomb >()== null)
         {
-            itemButton.bombRemain--;
+            itemButton.BombRemain--;
             itemButton.BombRemainToText();
             Block targetBlock= targetObject.GetComponent<Block>();
             targetBlock.DestroyCharacter();

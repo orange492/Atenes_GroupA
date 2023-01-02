@@ -25,7 +25,7 @@ public class RemainScore : MonoBehaviour
         }
 
     }
-    float clearScore = 10000;
+    float clearScore=0;
 
 
 
@@ -38,7 +38,19 @@ public class RemainScore : MonoBehaviour
     {
         blockController = FindObjectOfType<BlockController>();
         blockController.onScoreChange += RemainScoreUpdate;
-        slider.maxValue = clearScore;
+        if (TowerManager.Inst.GetDifficulty() == 0)
+        {
+            clearScore = 2500;
+        }
+        if (TowerManager.Inst.GetDifficulty() == 1)
+        {
+            clearScore = 5000;
+        }
+        if (TowerManager.Inst.GetDifficulty() == 2)
+        {
+            clearScore = 10000;
+        }
+        slider.maxValue = clearScore; 
     }
 
     

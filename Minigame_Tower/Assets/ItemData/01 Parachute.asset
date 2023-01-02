@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71bdb0d82cc05b447a018170b9f6729d, type: 3}
+  m_Name: 01 Parachute
+  m_EditorClassIdentifier: 
+  id: 1
+  itemName: Parachute
+  modelPrefab: {fileID: 7910207528493391657, guid: 4b8ade59c26494b448bde7416dd3839b, type: 3}
+  itemIcon: {fileID: 21300000, guid: a58d6f7642fa84c46a16c4f2f259fb08, type: 3}
+  value: 10
+  maxStackCount: 1
+  buttonPrefab: {fileID: 2938124791875153384, guid: 5f272144f001fcc4b8e3a8bbf61314de, type: 3}
+  itemDescription: 

@@ -7,6 +7,13 @@ TagManager:
   - Block
   - Board
   - Bullet
+  - Ground
+  - Button
+  - Trash
+  - Line
+  - Egg
+  - Trap
+  - Mouse
   layers:
   - Default
   - TransparentFX
@@ -15,7 +22,7 @@ TagManager:
   - Water
   - UI
   - Player
-  - 
+  - Trap
   - 
   - 
   - 
@@ -47,11 +54,32 @@ TagManager:
   - name: BackGround
     uniqueID: 3476657873
     locked: 0
+  - name: InGroundTools
+    uniqueID: 746432451
+    locked: 0
+  - name: Trap
+    uniqueID: 3589326437
+    locked: 0
+  - name: Ground
+    uniqueID: 827227007
+    locked: 0
+  - name: Tools
+    uniqueID: 3939347593
+    locked: 0
+  - name: Egg
+    uniqueID: 4237288257
+    locked: 0
+  - name: Detach
+    uniqueID: 2696092277
+    locked: 0
   - name: Block
     uniqueID: 523683211
     locked: 0
   - name: Character
     uniqueID: 1797531741
+    locked: 0
+  - name: Panel
+    uniqueID: 1106987297
     locked: 0
   - name: Effect
     uniqueID: 88339203
