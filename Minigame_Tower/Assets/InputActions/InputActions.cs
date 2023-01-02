@@ -142,6 +142,15 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Boom"",
+                    ""type"": ""Button"",
+                    ""id"": ""3750cf6f-5cfa-4bd9-ab40-913d074a323b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -159,7 +168,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""up"",
                     ""id"": ""648b23ef-eaf1-4568-b0b4-d37d071f25ab"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -170,7 +179,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""down"",
                     ""id"": ""8e8e0283-9a33-4644-9239-3646de7d3227"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""path"": ""<Keyboard>/downArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -181,7 +190,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""left"",
                     ""id"": ""db3e3a6d-420e-4d80-8e70-d6b75d74ee30"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/leftArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -192,7 +201,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""right"",
                     ""id"": ""5c865020-2b51-4509-b131-a25e96b5b949"",
-                    ""path"": ""<Keyboard>/d"",
+                    ""path"": ""<Keyboard>/rightArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
@@ -203,11 +212,22 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""22273644-01e5-4117-8464-50e95f3b3a00"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/z"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
                     ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6a6a466a-c8d2-4b5e-a249-d2dec0ba38f0"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Boom"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -239,6 +259,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         m_Shooting = asset.FindActionMap("Shooting", throwIfNotFound: true);
         m_Shooting_Move = m_Shooting.FindAction("Move", throwIfNotFound: true);
         m_Shooting_Fire = m_Shooting.FindAction("Fire", throwIfNotFound: true);
+        m_Shooting_Boom = m_Shooting.FindAction("Boom", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -374,12 +395,14 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     private IShootingActions m_ShootingActionsCallbackInterface;
     private readonly InputAction m_Shooting_Move;
     private readonly InputAction m_Shooting_Fire;
+    private readonly InputAction m_Shooting_Boom;
     public struct ShootingActions
     {
         private @InputActions m_Wrapper;
         public ShootingActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Shooting_Move;
         public InputAction @Fire => m_Wrapper.m_Shooting_Fire;
+        public InputAction @Boom => m_Wrapper.m_Shooting_Boom;
         public InputActionMap Get() { return m_Wrapper.m_Shooting; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -395,6 +418,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Fire.started -= m_Wrapper.m_ShootingActionsCallbackInterface.OnFire;
                 @Fire.performed -= m_Wrapper.m_ShootingActionsCallbackInterface.OnFire;
                 @Fire.canceled -= m_Wrapper.m_ShootingActionsCallbackInterface.OnFire;
+                @Boom.started -= m_Wrapper.m_ShootingActionsCallbackInterface.OnBoom;
+                @Boom.performed -= m_Wrapper.m_ShootingActionsCallbackInterface.OnBoom;
+                @Boom.canceled -= m_Wrapper.m_ShootingActionsCallbackInterface.OnBoom;
             }
             m_Wrapper.m_ShootingActionsCallbackInterface = instance;
             if (instance != null)
@@ -405,6 +431,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Fire.started += instance.OnFire;
                 @Fire.performed += instance.OnFire;
                 @Fire.canceled += instance.OnFire;
+                @Boom.started += instance.OnBoom;
+                @Boom.performed += instance.OnBoom;
+                @Boom.canceled += instance.OnBoom;
             }
         }
     }
@@ -431,5 +460,6 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnBoom(InputAction.CallbackContext context);
     }
 }
