@@ -19,11 +19,15 @@ public class Propeller : MonoBehaviour
     public float rotateSpeed = 1.0f;
     Egg egg;
 
+    Vector3 offSet;
+    ToolSlot toolSlot;
     public bool MachineOn
     {
         get => machineOn;
         set => machineOn = value;
     }
+
+    bool isDeadOn = false;
 
 
 
@@ -34,30 +38,91 @@ public class Propeller : MonoBehaviour
     private void Start()
     {
         egg = FindObjectOfType<Egg>();
-        
+
     }
 
     void FixedUpdate()
     {
-        
-        if(machineOn)
+        if (!egg.IsDead)
         {
-            propellerRotateSpeed += 5 * Time.fixedDeltaTime;
-            if (propellerRotateSpeed > 15.0f)
+            if (machineOn)
             {
-                propellerRotateSpeed = 15.0f;
+                propellerRotateSpeed += 5 * Time.fixedDeltaTime;
+                if (propellerRotateSpeed > 15.0f)
+                {
+                    propellerRotateSpeed = 15.0f;
+                }
             }
-        }
-        else
-        {
+            else
+            {
                 propellerRotateSpeed -= Time.fixedDeltaTime * 3.0f;
                 if (propellerRotateSpeed < 0.0f)
                 {
                     propellerRotateSpeed = 0.0f;
                 }
+            }
+            propellar.Rotate(transform.forward, propellerRotateSpeed);
+            egg.EggMove(propellerRotateSpeed * transform.up / force, ForceMode2D.Force);
         }
-        propellar.Rotate(transform.forward, propellerRotateSpeed);
-        egg.EggMove(propellerRotateSpeed * transform.up / force, ForceMode2D.Force);
+        else
+        {
+            if (!isDeadOn)
+            {
+                RigidOn();
+                isDeadOn = true;
+                
+            }
+        }
+    }
+
+    private void OnMouseDown()
+    {
+        toolSlot = transform.parent.GetComponent<ToolSlot>();
+        if (toolSlot != null)
+        {
+            Vector3 mousePosition = new Vector3(Input.mousePosition.x,
+    Input.mousePosition.y, -0.1f);
+            Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            offSet = transform.position - (Vector3)objPosition;
+        }
+    }
+
+
+    private void OnMouseUp()
+    {
+        if (toolSlot != null)
+        {
+            transform.position = transform.parent.position;
+        }
+    }
+    void OnMouseDrag()
+    {
+        Vector3 mousePosition = new Vector3(Input.mousePosition.x,
+Input.mousePosition.y, -0.1f);
+        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+        transform.position = objPosition + offSet;
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+
+        if (collision.transform.CompareTag("Trash"))
+        {
+            Debug.Log("in");
+             if (toolSlot != null)
+            {
+                toolSlot.DestroyItem();
+            }
+        }
+
+    }
+
+    public void RigidOn()
+    {
+        transform.GetComponent<CapsuleCollider2D>().isTrigger = false;
+        transform.GetComponent<Rigidbody2D>().isKinematic = false;
+        transform.GetComponent<Rigidbody2D>().velocity = egg.LastVelocity;
+
     }
 
 

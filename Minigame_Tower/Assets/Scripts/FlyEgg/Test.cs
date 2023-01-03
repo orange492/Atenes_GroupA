@@ -6,17 +6,16 @@ using static PlayerInputActions;
 
 public class Test : MonoBehaviour
 {
-    PlayerInputActions inputActions;
-    SpriteRenderer spriteRenderer;
-    // Start is called before the first frame update
+    Rigidbody2D rigid;
+
     private void Awake()
     {
-        inputActions = new PlayerInputActions();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        rigid = GetComponent<Rigidbody2D>();
     }
 
     private void Start()
     {
+<<<<<<< Updated upstream
        
     }
 
@@ -35,5 +34,8 @@ public class Test : MonoBehaviour
     private void OnEnable()
     {
         inputActions.Input.Enable();
+=======
+        rigid.velocity = Vector2.up * 1000.0f;
+>>>>>>> Stashed changes
     }
 }

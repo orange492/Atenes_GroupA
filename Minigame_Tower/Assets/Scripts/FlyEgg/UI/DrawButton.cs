@@ -31,6 +31,7 @@ public class DrawButton : MonoBehaviour
         drawEndButtonCanvasGroup = transform.GetChild(1).GetComponent<CanvasGroup>();
         drawExitButton = transform.GetChild(2).GetComponent<Button>();
         drawExitButton.onClick.AddListener(ExitDrawMode);
+        
         DrawEndButtonShutDown();
     }
 

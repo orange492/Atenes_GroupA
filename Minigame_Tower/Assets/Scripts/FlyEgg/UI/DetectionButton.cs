@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class DetectionButton : MonoBehaviour
 {
     Button detectionButton;
-    Detection detection;
+    public Detection detection;
     
 
     private void Awake()
@@ -17,7 +17,6 @@ public class DetectionButton : MonoBehaviour
     }
     private void Start()
     {
-        detection = FindObjectOfType<Detection>();
     }
 
     private void OnDetect()

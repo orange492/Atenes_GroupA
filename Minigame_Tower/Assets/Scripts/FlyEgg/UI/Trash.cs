@@ -17,7 +17,8 @@ public class Trash : MonoBehaviour
 
     private void Update()
     {
-        transform.position = (Vector2)Camera.main.transform.position + new Vector2(13.5f, -7.2f);
+        transform.position = (Vector2)Camera.main.transform.position + new Vector2(16.0f, -8.2f)*Camera.main.orthographicSize*0.1f;
+        transform.localScale = new Vector3(Camera.main.orthographicSize*0.1f, Camera.main.orthographicSize*0.1f, 0);
     }
 
     void OnTriggerEnter2D(Collider2D other)
