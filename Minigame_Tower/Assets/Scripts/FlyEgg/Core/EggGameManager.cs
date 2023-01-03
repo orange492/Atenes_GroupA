@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class EggGameManager : SingletonPuzzle<EggGameManager>
 {
-  
+    enum Modes
+    {
+
+    }
 
     /// <summary>
     /// 아이템 데이터를 관리하는 메니저

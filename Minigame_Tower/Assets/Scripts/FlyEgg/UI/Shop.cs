@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
+using UnityEditor.Purchasing;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,17 +22,51 @@ public class Shop : MonoBehaviour
     TextMeshProUGUI[] prices;
     TextMeshProUGUI moneyRemainText;
 
+    public GameObject parachuteBackPack;
+
+    TextMeshProUGUI warningText;
+
+    float lastItemValue;
+    public float LastItemValue
+    {
+        get => lastItemValue;
+        set => lastItemValue = value;
+    }
+
     DG.Tweening.Sequence moneyLackSequence;
     DG.Tweening.Sequence moneyRefundSequence;
-
+    DG.Tweening.Sequence warningTextSequence;
+    ToolSlot[] toolSlots;
     int slingShotCount = 0;
+    int radarCount = 0;
+    int parachuteCount = 0;
+
+    Canvas canvas;
+
+    Tools tools;
 
     Color defaultColor;
     Color cannotPurchaseColor;
 
+    MouseFollow mouseFollow;
+
+    GameObject lastItem;
+
+    public GameObject LastItem
+    {
+     get=> lastItem;
+        set => lastItem = value;
+    }
+
+    float moneyRemain = 10000.0f;
 
 
-    float moneyRemain = 40.0f;
+    bool isOnChangeMode = false;
+    public bool IsOnChangeMode
+    {
+        get => isOnChangeMode;
+        set => isOnChangeMode = value;
+    }
 
 
     public float MoneyRemain => moneyRemain;
@@ -49,10 +84,23 @@ public class Shop : MonoBehaviour
         purchaseButtons = new Button[8];
         moneyRemainText = transform.GetChild(3).GetComponent<TextMeshProUGUI>();
         moneyRemainText.text = $"${moneyRemain:F2}";
+        warningText = transform.GetChild(4).GetComponent<TextMeshProUGUI>();
+        warningText.color = Color.clear;
 
     }
     private void Start()
     {
+        canvas = FindObjectOfType<Canvas>();
+        mouseFollow = FindObjectOfType<MouseFollow>();
+        tools = FindObjectOfType<Tools>();
+
+        toolSlots = new ToolSlot[8];
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            toolSlots[i] = tools.transform.GetChild(i).GetComponent<ToolSlot>();
+            toolSlots[i].SlotIndex = i;
+
+        }
         for (int i = 0; i < 8; i++)
         {
             purchaseButtons[i] = shopInside.transform.GetChild(0).GetChild(i).GetComponent<Button>();
@@ -89,6 +137,10 @@ public class Shop : MonoBehaviour
         drawButton.gameObject.SetActive(false);
 
         purchaseButtons[0].onClick.AddListener(PurchaseSlingShot);
+        purchaseButtons[1].onClick.AddListener(purchaseParachute);
+        purchaseButtons[2].onClick.AddListener(PurchasePropeller);
+        purchaseButtons[3].onClick.AddListener(PurchaseRocket);
+        purchaseButtons[4].onClick.AddListener(PurchaseDetection);
 
         moneyLackSequence = DOTween.Sequence().SetAutoKill(false).Pause();
         moneyLackSequence.Append(moneyRemainText.DOColor(Color.red, 0.1f));
@@ -100,28 +152,32 @@ public class Shop : MonoBehaviour
         moneyRefundSequence.Append(moneyRemainText.DOColor(Color.white, 0.1f));
         moneyRefundSequence.OnComplete(() => { moneyRefundSequence.Rewind(); });
 
+
         defaultColor = purchaseButtons[0].transform.GetComponent<Image>().color;
         cannotPurchaseColor = new Color(255, 0, 0, 208);
 
     }
     private void PurchaseSlingShot()
     {
-        if (moneyRemain < items[0].value)
+        if (!isOnChangeMode)
         {
-            MoneyLack();
-            return;
-        }
+            if (moneyRemain < items[0].value)
+            {
+                MoneyLack();
+                return;
+            }
 
-        if (slingShotCount > 0)
-        {
-            return;
-        }
+            if (slingShotCount > 0)
+            {
+                return;
+            }
 
-        GameObject slingshot= Instantiate(items[0].modelPrefab);
-        slingshot.transform.position = new Vector3(0, -1.0f, 0);
-        Purchase(items[0].value);
-        slingShotCount++;
-        purchaseButtons[0].transform.GetComponent<Image>().color = cannotPurchaseColor;
+            GameObject slingshot = Instantiate(items[0].modelPrefab);
+            slingshot.transform.position = new Vector3(0, -1.0f, 0);
+            Purchase(items[0].value);
+            slingShotCount++;
+            purchaseButtons[0].transform.GetComponent<Image>().color = cannotPurchaseColor;
+        }
     }
 
     public void SellSlingShot()
@@ -129,6 +185,136 @@ public class Shop : MonoBehaviour
         slingShotCount--;
         Purchase(-items[0].value);
         purchaseButtons[0].transform.GetComponent<Image>().color = defaultColor;
+    }
+
+    void PurchasePropeller()
+    {
+        if (!IsOnChangeMode)
+        {
+            if (moneyRemain < items[2].value)
+            {
+                MoneyLack();
+                return;
+            }
+            IsOnChangeMode = true;
+            GameObject propeller = Instantiate(items[(int)ItemIDCode.Propeller].modelPrefab, mouseFollow.transform);
+            GameObject propellerButton = Instantiate(items[(int)ItemIDCode.Propeller].buttonPrefab, canvas.transform.GetChild(0).transform);
+            LastItem = propellerButton;
+            UI_Propellar uI_Propellar = propellerButton.GetComponent<UI_Propellar>();
+            uI_Propellar.propeller = propeller.GetComponent<Propeller>();
+            propellerButton.SetActive(false);
+            lastItemValue = items[(int)ItemIDCode.Propeller].value;
+            Purchase(items[2].value);
+            ShopClose();
+        }
+    }
+
+    void PurchaseRocket()
+    {
+        if (!IsOnChangeMode)
+        {
+            if (moneyRemain < items[3].value)
+            {
+                MoneyLack();
+                return;
+            }
+            IsOnChangeMode = true;
+            GameObject rocket = Instantiate(items[(int)ItemIDCode.Rocket].modelPrefab, mouseFollow.transform);
+            GameObject rocketButton = Instantiate(items[(int)ItemIDCode.Rocket].buttonPrefab, canvas.transform.GetChild(0).transform);
+            LastItem = rocketButton;
+            UI_Rocket uI_rocket = rocketButton.GetComponent<UI_Rocket>();
+            uI_rocket.rocket = rocket.GetComponent<Rocket>();
+            rocketButton.SetActive(false); 
+            lastItemValue = items[(int)ItemIDCode.Rocket].value;
+            Purchase(items[3].value);
+            ShopClose();
+        }
+    }
+
+    void PurchaseDetection()
+    {
+        if (moneyRemain < items[4].value)
+        {
+            MoneyLack();
+            return;
+        }
+        if (radarCount > 0)
+        {
+            radarCount--;
+            toolSlots[0].DestroyItem();
+            Purchase(-items[(int)ItemIDCode.Radar].value);
+            tools.SlotUse(0, false);
+            purchaseButtons[4].transform.GetComponent<Image>().color = defaultColor;
+            return;
+        }
+
+        if (toolSlots[0].IsSlotUsed)
+        {
+            warningTextOn("레이더 슬롯이 사용중입니다!");
+            return;
+        }
+        GameObject radar = Instantiate(items[(int)ItemIDCode.Radar].modelPrefab, tools.transform.GetChild(0));
+        GameObject radarbutton = Instantiate(items[(int)ItemIDCode.Radar].buttonPrefab,canvas.transform.GetChild(0).GetChild(0).transform);
+        radarbutton.GetComponent<DetectionButton>().detection = radar.GetComponent<Detection>();
+        tools.SlotUse(0); 
+        toolSlots[0].button = radarbutton;
+        radarCount++;
+        purchaseButtons[4].transform.GetComponent<Image>().color = cannotPurchaseColor;
+        Purchase(items[(int)ItemIDCode.Radar].value);
+    }
+
+    void purchaseParachute()
+    {
+        if (moneyRemain < items[1].value)
+        {
+            MoneyLack();
+            return;
+        }
+        if (parachuteCount > 0)
+        {
+            parachuteCount--;
+            toolSlots[2].DestroyItem();
+            Purchase(-items[(int)ItemIDCode.Parachute].value);
+            tools.SlotUse(2,false);
+            purchaseButtons[1].transform.GetComponent<Image>().color = defaultColor;
+            return;
+        }
+        if (toolSlots[2].IsSlotUsed)
+        {
+            warningTextOn("낙하산 슬롯이 사용중입니다!");
+            return;
+        }
+
+        GameObject parachute = Instantiate(items[(int)ItemIDCode.Parachute].modelPrefab, tools.transform.GetChild(2));
+        Instantiate(parachuteBackPack, tools.transform.GetChild(2));
+        GameObject parachuteButton = Instantiate(items[(int)ItemIDCode.Parachute].buttonPrefab,canvas.transform.GetChild(0).GetChild(2).transform);
+        //parachuteButton.GetComponent<UI_Parachute>().pa = parachute.GetComponent<Parachute>();
+        tools.SlotUse(2);
+        toolSlots[2].button = parachuteButton;
+        parachuteCount++;
+        purchaseButtons[1].transform.GetComponent<Image>().color = cannotPurchaseColor;
+        Purchase(items[(int)ItemIDCode.Parachute].value);
+    }
+
+  
+
+    void warningTextOn(string text)
+    {
+        StopAllCoroutines();
+        warningText.text = text;
+        warningText.color = Color.red;
+        StartCoroutine(warningTextOff());
+    }
+
+    IEnumerator warningTextOff()
+    {
+        yield return new WaitForSeconds(1.0f);
+        warningText.color = Color.clear;
+    }
+
+    public void LastItemNull()
+    {
+        lastItem = null;
     }
 
 
