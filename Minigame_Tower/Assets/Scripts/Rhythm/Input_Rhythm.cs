@@ -20,6 +20,8 @@ public class Input_Rhythm : MonoBehaviour
         inputActions.Touch.Test2.performed += Test2Click; 
         inputActions.Touch.Up.performed += UpClick; 
         inputActions.Touch.Down.performed += DownClick; 
+        inputActions.Touch.Touch.performed += Touch; 
+        inputActions.Touch.Touch.canceled += UnTouch; 
     }
 
     private void OnDisable()
@@ -28,7 +30,17 @@ public class Input_Rhythm : MonoBehaviour
         inputActions.Touch.Test2.performed -= Test2Click;
         inputActions.Touch.Up.performed -= UpClick;
         inputActions.Touch.Down.performed -= DownClick;
+        inputActions.Touch.Touch.performed -= Touch;
+        inputActions.Touch.Touch.canceled -= UnTouch;
         inputActions.Touch.Disable();
+    }
+    private void Touch(InputAction.CallbackContext content)
+    {
+        Manager_Rhythm.Inst.Click();
+    }
+    private void UnTouch(InputAction.CallbackContext content)
+    {
+        Manager_Rhythm.Inst.UnClick();
     }
     private void TestClick(InputAction.CallbackContext content)
     {

@@ -29,6 +29,7 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
         EDIT
     }
 
+    Editor_Rhythm editor_Rhythm;
     TextMeshProUGUI comboTxt;
     TextMeshProUGUI[] JudgeTxt = new TextMeshProUGUI[2];
     Slider hpBar;
@@ -52,6 +53,7 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
         {
             return;
         }
+        editor_Rhythm = FindObjectOfType<Editor_Rhythm>();
         editButton = GameObject.Find("EditButton").GetComponent<Button>();
         editButton.onClick.AddListener(OpenEditCanvas);
         oEditCanvas = GameObject.Find("NoteCanvas");
@@ -103,6 +105,18 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
             }
         }
     }
+
+    public void Click()
+    {
+        editor_Rhythm.Click();
+    }
+
+    public void UnClick()
+    {
+        editor_Rhythm.UnClick();
+    }
+
+
     public void CreateNote(int value)
     {
         noteSpawner.CreateNote(value);

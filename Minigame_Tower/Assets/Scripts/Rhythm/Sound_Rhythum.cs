@@ -20,12 +20,13 @@ public class Sound_Rhythum : SingletonPuzzle<Sound_Rhythum>
 
     MusicState musicState;
     public int bpm { get; set; } = 98;
-    public float startTime { get; set; } = 1.1f; // -1.6f;
+    public float startTime { get; set; } = 0.6f; // -1.6f;
 
     public void Start()
     {
+        audioSource.clip = ClipMusic;
         musicState = MusicState.Play;
-        audioSource.PlayOneShot(ClipMusic);
+        audioSource.Play();
     }
 
     public void PlayNoteSound()
@@ -36,7 +37,7 @@ public class Sound_Rhythum : SingletonPuzzle<Sound_Rhythum>
     public void PlayMusicSound()
     {
         musicState = MusicState.Play;
-        audioSource.PlayOneShot(ClipMusic);
+        audioSource.Play();
     }
     public void Clear()
     {
@@ -64,23 +65,60 @@ public class Sound_Rhythum : SingletonPuzzle<Sound_Rhythum>
         }
         else if (musicState==MusicState.Pause)
         {
-            ResumeMusic();
+            ResumeMusic(); // 음악 재실행
             return true;
         }
         else
         {
-            PauseMusic();
+            PauseMusic(); // 음악 일시정지
             return false;
+        }
+    }
+
+    public void ChangeTime(float time)
+    {
+        if (time > audioSource.clip.length)
+        {
+            audioSource.time = audioSource.clip.length;
+        }
+        else if (time < 0)
+        {
+            audioSource.time = 0;
+        }
+        else
+        {
+            audioSource.time = time;
         }
     }
 
     public bool IsPlaying()
     {
-        return audioSource.isPlaying;
-    }
-    public float MusicLength()
-    {
-        return ClipMusic.length;
+        return audioSource.isPlaying; // 음악이 재생 중인지 체크
     }
 
+    public float MusicTime()
+    {
+        return audioSource.time;
+    }
+
+    public float MusicLength()
+    {
+        return ClipMusic.length; // 음악의 길이 체크
+
+        //{
+        //    rectTransform = GetComponent<RectTransform>();
+        //    rectTransform.anchoredPosition = new Vector2(0, 0);
+        //
+        //
+        //    textMesh.font = Resources.Load<TMP_FontAsset>("Fonts/Arial");
+        //}
+    }
+    //void PlayAudioClipFromTime(AudioClip clip, float time) // 음악 시간 조정
+    //{
+    //    audioSource.clip = clip;
+    //    audioSource.time = time;
+    //    audioSource.Play();
+    //}
+    ///  JNL-101K
+    ///  // What would like the script look like?
 }
