@@ -7,17 +7,31 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using Vector3 = UnityEngine.Vector3;
+using Vector2 = UnityEngine.Vector2;
 
 public class Egg : MonoBehaviour
 {
 
     Rigidbody2D rigid;
     float mag = 0.0f;
+    public float Mag => mag;
     DG.Tweening.Sequence scaleSquence;
     public Action onParachuteSeparate;
     Vector3 eggPos=Vector3.zero;
     Vector3 movingPos=Vector3.zero;
 
+  UnityEngine.Vector2 lastVelocity;
+
+    public Vector2 LastVelocity => lastVelocity;
+
+    bool isDead = false;
+
+    
+
+    public bool IsDead => isDead;
+
+    [SerializeField]
+    GameObject eggDie;
     public Vector3 MovingPos => movingPos;
 
     public Rigidbody2D Rigid
@@ -49,6 +63,7 @@ public class Egg : MonoBehaviour
         eggPos -= transform.position;
         movingPos = -eggPos;
         eggPos = transform.position;
+        
     }
 
 
@@ -62,11 +77,27 @@ public class Egg : MonoBehaviour
         }
         if (mag > 15.0f)
         {
-            
-            Debug.Log("알이 깨졌음");
-            //Mathf.Abs(rigid.velocity.x) + Mathf.Abs(rigid.velocity.y);
+            Die();
         }
         
+    }
+
+    void Die()
+    {
+      GameObject obj=  Instantiate(eggDie, transform.position, transform.rotation);
+        for (int i = 0; i < eggDie.transform.childCount; i++)
+        {
+            Rigidbody2D rigiddieegg = obj.transform.GetChild(i).GetComponent<Rigidbody2D>();
+            Debug.Log(rigiddieegg.transform.name);
+            rigiddieegg.velocity =new UnityEngine.Vector2(rigid.velocity.x,-MathF.Abs(rigid.velocity.y));
+            Debug.Log(rigiddieegg.velocity);
+            
+        }
+        lastVelocity = new UnityEngine.Vector2(rigid.velocity.x, -MathF.Abs(rigid.velocity.y));
+
+        isDead = true;
+        //Mathf.Abs(rigid.velocity.x) + Mathf.Abs(rigid.velocity.y);
+        Destroy(this.gameObject);
     }
 
     public void EggMove(UnityEngine.Vector2 moveDir,ForceMode2D forceMode2D=ForceMode2D.Force)
@@ -85,6 +116,11 @@ public class Egg : MonoBehaviour
         {
             scaleSquence.Play();
         }
+    }
+
+    public void RigidBodyOff()
+    {
+        rigid.isKinematic = true;
     }
 
 

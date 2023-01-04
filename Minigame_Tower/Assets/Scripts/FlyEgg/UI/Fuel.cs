@@ -10,8 +10,8 @@ public class Fuel : MonoBehaviour
     TextMeshProUGUI fuelText;
 
     
-    float maxFuel=1000.0f;
-    float currentFuel = 1000.0f;
+    float maxFuel=10000.0f;
+    float currentFuel = 10000.0f;
 
     public float CurrentFuel
     {

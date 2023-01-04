@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class CameraFollow : MonoBehaviour
 {
     float moveSpeed = 3.0f;
+    Egg egg;
     Transform target;
     Vector3 offset = Vector3.zero;
     SlingShot slingShot;
@@ -28,17 +29,19 @@ public class CameraFollow : MonoBehaviour
 
     private void Awake()
     {
+       
         cameraMain=GetComponent<Camera>();
         inputActions = new PlayerInputActions();
-        target = FindObjectOfType<Egg>().transform;
-        offset = transform.position - target.position;
-        slingShot = FindObjectOfType<SlingShot>();
+        
         pos = transform.position;
         inputActions.Input.Scroll.performed += x => scroll = x.ReadValue<float>();
     }
     private void Start()
     {
-
+        egg = FindObjectOfType<Egg>();
+        target = egg.transform;
+        offset = transform.position - target.position;
+        slingShot = FindObjectOfType<SlingShot>();
     }
 
     private void OnEnable()
@@ -53,20 +56,24 @@ public class CameraFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        FollowMouse();
+        //FollowMouse();
+        FollowEgg();
 
     }
 
     void FollowEgg()
     {
-        if (slingShot == null || !slingShot.isEggOnSlingShot)
+        if (!egg.IsDead)
         {
-            //transform.position = Vector3.Lerp(transform.position, target.position + offset, moveSpeed * Time.deltaTime);
-            transform.position = target.position + offset;
-        }
-        else
-        {
-            transform.position = pos;
+            if (slingShot == null || !slingShot.isEggOnSlingShot)
+            {
+                //transform.position = Vector3.Lerp(transform.position, target.position + offset, moveSpeed * Time.deltaTime);
+                transform.position = target.position + offset;
+            }
+            else
+            {
+                transform.position = pos;
+            }
         }
     }
 
