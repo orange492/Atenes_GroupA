@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class UI_Parachute : MonoBehaviour
 {
     Button parachuteButton;
@@ -22,17 +23,24 @@ public class UI_Parachute : MonoBehaviour
 
     private void OnParachute()
     {
-        if (!isParachuted)
+        if (EggGameManager.Inst.mode != EggGameManager.Mode.Play)
         {
-            onParachute?.Invoke();
-            isParachuted = true;
+            return;
         }
-        else
+        if (!egg.IsDead)
         {
-            if (!isParachuteSeparate)
+            if (!isParachuted)
             {
-                isParachuteSeparate = true;
-                egg.onParachuteSeparate?.Invoke();
+                onParachute?.Invoke();
+                isParachuted = true;
+            }
+            else
+            {
+                if (!isParachuteSeparate)
+                {
+                    isParachuteSeparate = true;
+                    egg.onParachuteSeparate?.Invoke();
+                }
             }
         }
         

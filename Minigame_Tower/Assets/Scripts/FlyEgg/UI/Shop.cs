@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Sirenix.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,6 +22,8 @@ public class Shop : MonoBehaviour
     TextMeshProUGUI[] names;
     TextMeshProUGUI[] prices;
     TextMeshProUGUI moneyRemainText;
+
+
 
     public GameObject parachuteBackPack;
 
@@ -60,8 +63,45 @@ public class Shop : MonoBehaviour
 
     float moneyRemain = 10000.0f;
 
+    bool isOnDrawMode = false;
+
+    public bool IsOnDrawMode
+    {
+        get => isOnDrawMode;
+        set
+        {
+            isOnDrawMode = value;
+            if (isOnDrawMode)
+            {
+                EggGameManager.Inst.mode = EggGameManager.Mode.Editting;
+            }
+            else
+            {
+                EggGameManager.Inst.mode = EggGameManager.Mode.ReadyToPlay;
+            }
+        }
+    }
+
 
     bool isOnChangeMode = false;
+
+    bool isItemOnMouse = false;
+    public bool IsItemOnMouse
+    {
+        get => isItemOnMouse;
+        set { 
+            isItemOnMouse = value;
+            if (isItemOnMouse)
+            {
+                EggGameManager.Inst.mode = EggGameManager.Mode.Editting;
+            }
+            else
+            {
+                EggGameManager.Inst.mode = EggGameManager.Mode.ReadyToPlay;
+            }
+        }
+       
+    }
     public bool IsOnChangeMode
     {
         get => isOnChangeMode;
@@ -93,7 +133,7 @@ public class Shop : MonoBehaviour
         canvas = FindObjectOfType<Canvas>();
         mouseFollow = FindObjectOfType<MouseFollow>();
         tools = FindObjectOfType<Tools>();
-
+        EggGameManager.Inst.onModeChange += ModeChange;
         toolSlots = new ToolSlot[8];
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -157,6 +197,20 @@ public class Shop : MonoBehaviour
         cannotPurchaseColor = new Color(255, 0, 0, 208);
 
     }
+
+    private void ModeChange(EggGameManager.Mode obj)
+    {
+        if (obj == EggGameManager.Mode.Play)
+        {
+            ShopClose();
+            shopOpenButton.gameObject.SetActive(false);
+        }
+        if (obj == EggGameManager.Mode.ReadyToPlay)
+        {
+            shopOpenButton.gameObject.SetActive(true) ;
+        }
+    }
+
     private void PurchaseSlingShot()
     {
         if (!isOnChangeMode)
@@ -169,6 +223,7 @@ public class Shop : MonoBehaviour
 
             if (slingShotCount > 0)
             {
+                SellSlingShot();
                 return;
             }
 
@@ -182,6 +237,7 @@ public class Shop : MonoBehaviour
 
     public void SellSlingShot()
     {
+        Destroy( FindObjectOfType<SlingShot>().gameObject);
         slingShotCount--;
         Purchase(-items[0].value);
         purchaseButtons[0].transform.GetComponent<Image>().color = defaultColor;
@@ -198,6 +254,7 @@ public class Shop : MonoBehaviour
             }
             IsOnChangeMode = true;
             GameObject propeller = Instantiate(items[(int)ItemIDCode.Propeller].modelPrefab, mouseFollow.transform);
+            
             GameObject propellerButton = Instantiate(items[(int)ItemIDCode.Propeller].buttonPrefab, canvas.transform.GetChild(0).transform);
             LastItem = propellerButton;
             UI_Propellar uI_Propellar = propellerButton.GetComponent<UI_Propellar>();
@@ -206,6 +263,7 @@ public class Shop : MonoBehaviour
             lastItemValue = items[(int)ItemIDCode.Propeller].value;
             Purchase(items[2].value);
             ShopClose();
+            IsItemOnMouse = true;
         }
     }
 
@@ -228,6 +286,7 @@ public class Shop : MonoBehaviour
             lastItemValue = items[(int)ItemIDCode.Rocket].value;
             Purchase(items[3].value);
             ShopClose();
+            IsItemOnMouse = true;
         }
     }
 
@@ -323,6 +382,7 @@ public class Shop : MonoBehaviour
         ShopClose();
         shopOpenButton.gameObject.SetActive(false);
         drawButton.gameObject.SetActive(true);
+        IsOnDrawMode = true ;
     }
 
     private void ShopClose()

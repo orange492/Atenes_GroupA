@@ -56,8 +56,15 @@ public class CameraFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //FollowMouse();
-        FollowEgg();
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.ReadyToPlay)
+        {
+            FollowMouse();
+        }
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Play)
+        {
+            FollowEgg();
+        }
+        
 
     }
 

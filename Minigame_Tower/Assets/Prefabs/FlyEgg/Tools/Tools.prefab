@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3561253164927574609}
   - component: {fileID: 977328988762267177}
-  m_Layer: 0
+  - component: {fileID: 1077798677}
+  m_Layer: 10
   m_Name: ToolSlot6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 261916229801484069}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: -0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -44,6 +45,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a17d4913f6422544c990845ff4307c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 0}
+--- !u!70 &1077798677
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 261916229801484069}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1.5}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
 --- !u!1 &1119428599121914116
 GameObject:
   m_ObjectHideFlags: 0
@@ -54,7 +72,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6779688559475842574}
   - component: {fileID: 6092187288145204371}
-  m_Layer: 0
+  - component: {fileID: 1597111890}
+  m_Layer: 10
   m_Name: ToolSlot3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +88,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1119428599121914116}
   m_LocalRotation: {x: -0, y: -0, z: 0.92387956, w: 0.38268346}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -88,6 +107,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a17d4913f6422544c990845ff4307c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 0}
+--- !u!70 &1597111890
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119428599121914116}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1.5}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
 --- !u!1 &4132088221520647653
 GameObject:
   m_ObjectHideFlags: 0
@@ -98,7 +134,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2111262797944359877}
   - component: {fileID: 5934112779922812145}
-  m_Layer: 0
+  - component: {fileID: 1509254190}
+  m_Layer: 10
   m_Name: ToolSlot1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +150,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4132088221520647653}
   m_LocalRotation: {x: -0, y: -0, z: 0.38268343, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -132,6 +169,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a17d4913f6422544c990845ff4307c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 0}
+--- !u!70 &1509254190
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4132088221520647653}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1.5}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
 --- !u!1 &4657996740335224326
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +196,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2523302836495346164}
   - component: {fileID: 7705862582614489503}
-  m_Layer: 0
+  - component: {fileID: 127261265}
+  m_Layer: 10
   m_Name: ToolSlot5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +212,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4657996740335224326}
   m_LocalRotation: {x: -0, y: -0, z: 0.9238796, w: -0.38268325}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -176,6 +231,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a17d4913f6422544c990845ff4307c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 0}
+--- !u!70 &127261265
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4657996740335224326}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1.5}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
 --- !u!1 &5910774110899803463
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,7 +258,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3999950550920794522}
   - component: {fileID: 3630457476880706289}
-  m_Layer: 0
+  - component: {fileID: 1495282436}
+  m_Layer: 10
   m_Name: ToolSlot7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,7 +274,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5910774110899803463}
   m_LocalRotation: {x: -0, y: -0, z: 0.3826836, w: -0.9238795}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -220,6 +293,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a17d4913f6422544c990845ff4307c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 0}
+--- !u!70 &1495282436
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5910774110899803463}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1.5}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
 --- !u!1 &7144705117644686135
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +320,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5242705399307402831}
   - component: {fileID: 4682194142993151191}
-  m_Layer: 0
+  - component: {fileID: 122781090}
+  m_Layer: 10
   m_Name: ToolSlot4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -245,7 +336,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7144705117644686135}
   m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -264,6 +355,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a17d4913f6422544c990845ff4307c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 0}
+--- !u!70 &122781090
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7144705117644686135}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1.5}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
 --- !u!1 &7557399438116343493
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +382,8 @@ GameObject:
   m_Component:
   - component: {fileID: 383229377619211625}
   - component: {fileID: 5389342447947573917}
-  m_Layer: 0
+  - component: {fileID: 1880856527}
+  m_Layer: 10
   m_Name: ToolSlot2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -289,7 +398,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7557399438116343493}
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -308,6 +417,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a17d4913f6422544c990845ff4307c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 0}
+--- !u!70 &1880856527
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7557399438116343493}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1.5}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
 --- !u!1 &7819804996161231954
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,7 +444,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2273668005083589525}
   - component: {fileID: 6075674829970707845}
-  m_Layer: 0
+  - component: {fileID: 1438930706}
+  m_Layer: 10
   m_Name: ToolSlot0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,7 +460,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7819804996161231954}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -352,6 +479,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a17d4913f6422544c990845ff4307c25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  button: {fileID: 0}
+--- !u!70 &1438930706
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7819804996161231954}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1.5}
+  m_Size: {x: 1, y: 2}
+  m_Direction: 0
 --- !u!1 &8064872758184087265
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,7 +506,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8064872758184087266}
   - component: {fileID: 8064872758184087267}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tools
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -404,4 +548,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e897cad0b5778894c90ad1cb0af5f1f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toolSlot: {fileID: 0}

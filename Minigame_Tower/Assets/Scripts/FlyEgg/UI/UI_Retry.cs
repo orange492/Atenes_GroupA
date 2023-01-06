@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class UI_Retry : MonoBehaviour
 {
     Button button;
+    public GameObject eggPrefab;
     private void Awake()
     {
         button = GetComponent<Button>();
@@ -16,6 +17,6 @@ public class UI_Retry : MonoBehaviour
 
     private void Retry()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        EggGameManager.Inst.mode =EggGameManager.Mode.ReadyToPlay;
     }
 }

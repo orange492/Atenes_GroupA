@@ -6,6 +6,7 @@ using UnityEditor.TextCore.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class DrawButton : MonoBehaviour
 {
     public GameObject linePrefab;
@@ -19,7 +20,15 @@ public class DrawButton : MonoBehaviour
 
 
 
-    public bool IsDrawMode => isDrawMode;
+    public bool IsDrawMode 
+    {
+        get => isDrawMode;
+        set
+        {
+            isDrawMode = value;
+        }
+    }
+            
 
 
     private void Awake()
@@ -47,15 +56,16 @@ public class DrawButton : MonoBehaviour
             OffDrawMode();
         }
         shop.ShopOpenButtonActivate();
+        shop.IsOnDrawMode = false;
         transform.gameObject.SetActive(false);
-        
+
     }
 
     private void OffDrawMode()
     {
             DrawEndButtonShutDown();
             line.IsDrawingObject = false;
-            isDrawMode = false;
+            IsDrawMode = false;
             line.EndDraw();
     }
 
@@ -65,7 +75,7 @@ public class DrawButton : MonoBehaviour
         {
             line = Instantiate(linePrefab).GetComponent<Line>();
             line.IsDrawingObject = true;
-            isDrawMode = true;
+            IsDrawMode = true;
             DrawEndButtonActive();
         }
     }

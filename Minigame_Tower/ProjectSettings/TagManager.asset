@@ -14,6 +14,10 @@ TagManager:
   - Egg
   - Trap
   - Mouse
+  - ShootingEnemy
+  - Enemy
+  - Meteorite
+  - Boss
   layers:
   - Default
   - TransparentFX
@@ -62,6 +66,9 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 827227007
+    locked: 0
+  - name: RocketFire
+    uniqueID: 2568624965
     locked: 0
   - name: Tools
     uniqueID: 3939347593

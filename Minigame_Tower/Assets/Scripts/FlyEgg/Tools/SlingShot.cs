@@ -48,7 +48,7 @@ public class SlingShot : MonoBehaviour
 
         netPosRight = net.GetChild(0).transform;
         netPosLeft = net.GetChild(1).transform;
-        
+
 
     }
 
@@ -62,37 +62,44 @@ public class SlingShot : MonoBehaviour
 
     private void Update()
     {
-        
-            if (isClicked && isEggOnSlingShot)
-            {
-                onClickPosition = Camera.main.ScreenToWorldPoint(inputActions.Input.Pos.ReadValue<Vector2>());
-                if (onClickPosition.y < -9.5f)
-                {
-                    onClickPosition.y = -9.5f;
-                }
-                net.position = onClickPosition;
-            }
 
-            if (isEggOnSlingShot)
+        if (isClicked && isEggOnSlingShot)
+        {
+            onClickPosition = Camera.main.ScreenToWorldPoint(inputActions.Input.Pos.ReadValue<Vector2>());
+            if (onClickPosition.y < -9.5f)
             {
-                egg.Rigid.position = net.position + Vector3.up * 0.1f;
-                egg.Rigid.velocity = Vector2.zero;
+                onClickPosition.y = -9.5f;
             }
-            else
+            net.position = onClickPosition;
+        }
+
+        if (isEggOnSlingShot)
+        {
+            egg.Rigid.position = net.position + Vector3.up * 0.1f;
+            egg.Rigid.velocity = Vector2.zero;
+        }
+        else
+        {
+            if ((netDir - net.localPosition).sqrMagnitude > 0.025f)
             {
-                if ((netDir - net.localPosition).sqrMagnitude > 0.025f)
-                {
-                    net.localPosition += (netDir - net.localPosition).normalized * Time.deltaTime * 20.0f;
+                if (((netDir - net.localPosition).normalized * Time.deltaTime * 60.0f).magnitude < ((netDir - net.localPosition) * Time.deltaTime * 60.0f).magnitude)
+                { 
+                    net.localPosition += (netDir - net.localPosition).normalized * Time.deltaTime * 60.0f;
                 }
                 else
                 {
-                    SetNetDir();
+                    net.localPosition += (netDir - net.localPosition) * Time.deltaTime * 60.0f;
                 }
             }
+            else
+            {
+                SetNetDir();
+            }
+        }
 
-        
-            leftLine.SetPosition(0, netPosRight.position - transform.position);
-            rightLine.SetPosition(1, netPosLeft.position - transform.position);
+
+        leftLine.SetPosition(0, netPosRight.position - transform.position);
+        rightLine.SetPosition(1, netPosLeft.position - transform.position);
     }
 
     private void OnEnable()
@@ -119,85 +126,33 @@ public class SlingShot : MonoBehaviour
     }
     private void OffClick(InputAction.CallbackContext obj)
     {
-       
-            if (isEggOnSlingShot)
+
+        if (isEggOnSlingShot)
+        {
+            offClickPostion = Camera.main.ScreenToWorldPoint(inputActions.Input.Pos.ReadValue<Vector2>());
+            isClicked = false;
+            isEggOnSlingShot = false;
+            egg.EggMove((zeroPosWorld - (Vector3)offClickPostion) * force);
+            float plusMinus = 1.0f;
+            if (zeroPos.x - offClickPostion.x > 0)
             {
-                offClickPostion = Camera.main.ScreenToWorldPoint(inputActions.Input.Pos.ReadValue<Vector2>());
-                isClicked = false;
-                isEggOnSlingShot = false;
-                egg.EggMove((zeroPosWorld - (Vector3)offClickPostion) * force);
-                float plusMinus = 1.0f;
-                if (zeroPos.x - offClickPostion.x > 0)
-                {
-                    plusMinus *= -1.0f;
-                }
-                egg.EggRotate((zeroPosWorld - (Vector3)offClickPostion).magnitude * plusMinus);
-                SetNetDir();
+                plusMinus *= -1.0f;
             }
-        
+            egg.EggRotate((zeroPosWorld - (Vector3)offClickPostion).magnitude * plusMinus);
+            SetNetDir();
+        }
+
     }
 
     void SetNetDir()
     {
-        netDir = zeroPos - net.localPosition*0.8f;
+        netDir = zeroPos - net.localPosition * 0.8f;
     }
 
 
-    private void OnMouseDown()
-    {
-        Vector3 mousePosition = new Vector3(Input.mousePosition.x,
-Input.mousePosition.y, -0.1f);
-        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        offSet = transform.position - (Vector3)objPosition;
-    }
+  
 
 
-    private void OnMouseUp()
-    {
-        movingMode = true;
-        StartCoroutine(ModeChange());
-    }
-    void OnMouseDrag()
-    {
-        Vector3 mousePosition = new Vector3(Input.mousePosition.x,
-Input.mousePosition.y, -0.1f);
-        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        transform.position = objPosition + offSet;
-    }
 
 
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (movingMode)
-        {
-            if (collision.transform.CompareTag("Trash"))
-            {
-                movingMode = false;
-                shop.SellSlingShot();
-                shop.MoneyRefund();
-                Destroy(this.gameObject);
-                trash.MaterialChange();
-            }
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (movingMode)
-        {
-            if (collision.transform.CompareTag("Trash"))
-            {
-                movingMode = false;
-                shop.SellSlingShot();
-                shop.MoneyRefund();
-                Destroy(this.gameObject);
-                trash.MaterialChange();
-            }
-        }
-    }
-
-    IEnumerator ModeChange()
-    {
-        yield return new WaitForSeconds(0.1f);
-        movingMode = false;
-    }
 }
