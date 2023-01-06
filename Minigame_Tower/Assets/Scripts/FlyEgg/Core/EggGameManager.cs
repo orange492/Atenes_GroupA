@@ -53,5 +53,6 @@ public class EggGameManager : SingletonPuzzle<EggGameManager>
         base.Initialize();
 
         itemData = GetComponent<ItemDataManager>();
+        mode = Mode.ReadyToPlay;
     }
 }

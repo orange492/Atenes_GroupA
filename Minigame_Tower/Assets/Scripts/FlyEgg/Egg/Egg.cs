@@ -27,6 +27,7 @@ public class Egg : MonoBehaviour
     bool isDead = false;
 
     
+    
 
     public bool IsDead => isDead;
 
@@ -50,7 +51,11 @@ public class Egg : MonoBehaviour
         scaleSquence.Append(transform.DOScale(0.1f,0.2f));
         scaleSquence.Append(transform.DOScale(1.0f, 0.2f));
         scaleSquence.OnComplete(() => { scaleSquence.Rewind(); });
+        EggGameManager.Inst.onModeChange += ModeChange;
+        rigid.isKinematic = true;
     }
+
+
 
     private void Update()
     {
@@ -71,17 +76,24 @@ public class Egg : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.CompareTag("Ground"))
-        {
-            onParachuteSeparate?.Invoke();
-        }
-        if (mag > 15.0f)
+     
+        if (mag > 20.0f)
         {
             Die();
         }
         
     }
-
+    private void ModeChange(EggGameManager.Mode obj)
+    {
+        if (obj == EggGameManager.Mode.Play)
+        {
+            rigid.isKinematic = false;
+        }
+        else
+        {
+            rigid.isKinematic = true;
+        }
+    }
     void Die()
     {
       GameObject obj=  Instantiate(eggDie, transform.position, transform.rotation);
@@ -96,6 +108,7 @@ public class Egg : MonoBehaviour
         lastVelocity = new UnityEngine.Vector2(rigid.velocity.x, -MathF.Abs(rigid.velocity.y));
 
         isDead = true;
+        EggGameManager.Inst.mode = EggGameManager.Mode.Die;
         //Mathf.Abs(rigid.velocity.x) + Mathf.Abs(rigid.velocity.y);
         Destroy(this.gameObject);
     }

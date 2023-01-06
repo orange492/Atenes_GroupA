@@ -204,10 +204,12 @@ public class Shop : MonoBehaviour
         {
             ShopClose();
             shopOpenButton.gameObject.SetActive(false);
+            transform.GetChild(3).gameObject.SetActive(false);
         }
         if (obj == EggGameManager.Mode.ReadyToPlay)
         {
-            shopOpenButton.gameObject.SetActive(true) ;
+            shopOpenButton.gameObject.SetActive(true);
+            transform.GetChild(3).gameObject.SetActive(true);
         }
     }
 

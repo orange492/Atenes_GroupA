@@ -185,6 +185,10 @@ public class Line : MonoBehaviour
         {
             return;
         }
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Play)
+        {
+            return;
+        }
         polygonCollider2.isTrigger = true;
         rigid.velocity = Vector2.zero;
         rigid.freezeRotation = true;
@@ -201,6 +205,10 @@ Input.mousePosition.y,-0.1f);
         {
             return;
         }
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Play)
+        {
+            return;
+        }
         movingMode = true;
         polygonCollider2.isTrigger = false;
         rigid.velocity = Vector2.zero;
@@ -212,6 +220,10 @@ Input.mousePosition.y,-0.1f);
     void OnMouseDrag()
     {
         if (drawButton.IsDrawMode)
+        {
+            return;
+        }
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Play)
         {
             return;
         }

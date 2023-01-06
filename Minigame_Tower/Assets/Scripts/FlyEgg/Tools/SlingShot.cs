@@ -96,8 +96,6 @@ public class SlingShot : MonoBehaviour
                 SetNetDir();
             }
         }
-
-
         leftLine.SetPosition(0, netPosRight.position - transform.position);
         rightLine.SetPosition(1, netPosLeft.position - transform.position);
     }
@@ -119,14 +117,18 @@ public class SlingShot : MonoBehaviour
 
     private void OnClick(InputAction.CallbackContext obj)
     {
+        if (EggGameManager.Inst.mode != EggGameManager.Mode.Play)
+        {
+            return;
+        }
         isClicked = true;
-
-
-
     }
     private void OffClick(InputAction.CallbackContext obj)
     {
-
+        if (EggGameManager.Inst.mode != EggGameManager.Mode.Play)
+        {
+            return;
+        }
         if (isEggOnSlingShot)
         {
             offClickPostion = Camera.main.ScreenToWorldPoint(inputActions.Input.Pos.ReadValue<Vector2>());

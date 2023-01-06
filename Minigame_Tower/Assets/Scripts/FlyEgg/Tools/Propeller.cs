@@ -87,7 +87,10 @@ public class Propeller : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        Debug.Log("프로펠러 온마우스");
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Play)
+        {
+            return;
+        }
         toolSlot = transform.parent.GetComponent<ToolSlot>(); // 클릭이 발생했는데 부모 툴슬롯이 있다면
         
         if (toolSlot != null&&!shop.IsItemOnMouse)
@@ -102,6 +105,10 @@ public class Propeller : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Play)
+        {
+            return;
+        }
         if (toolSlot != null&& !shop.IsItemOnMouse)
         {
             transform.position =new Vector3( transform.parent.position.x,transform.parent.position.y,-0.5f);
@@ -109,6 +116,10 @@ public class Propeller : MonoBehaviour
     }
     void OnMouseDrag()
     {
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Play)
+        {
+            return;
+        }
         if (toolSlot != null&& !shop.IsItemOnMouse)
         {
             Vector3 mousePosition = new Vector3(Input.mousePosition.x,

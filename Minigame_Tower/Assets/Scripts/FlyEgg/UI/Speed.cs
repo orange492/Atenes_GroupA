@@ -1,35 +1,32 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class Height : MonoBehaviour
+public class Speed : MonoBehaviour
 {
+    TextMeshProUGUI text;
     Egg egg;
-    Slider slider;
-
     private void Awake()
     {
-        slider = GetComponent<Slider>();
+        text = GetComponent<TextMeshProUGUI>();
     }
+
     private void Start()
     {
         egg = FindObjectOfType<Egg>();
         EggGameManager.Inst.onModeChange += ModeChange;
-        transform.parent.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
-
     private void ModeChange(EggGameManager.Mode obj)
     {
-        transform.parent.gameObject.SetActive(obj == EggGameManager.Mode.Play);
+        gameObject.SetActive(obj == EggGameManager.Mode.Play);
     }
-
     private void Update()
     {
-        if (!egg.IsDead)
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Play)
         {
-            slider.value = (egg.transform.position.y +4.45f)*0.1f;
+            text.text = $"{egg.Rigid.velocity.magnitude:F2}cm/s";
         }
     }
 }

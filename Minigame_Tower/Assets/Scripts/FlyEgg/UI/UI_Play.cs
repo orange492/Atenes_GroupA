@@ -9,6 +9,7 @@ public class UI_Play : MonoBehaviour
 {
     Button button;
     Shop shop;
+    CameraFollow cameraFollow;
     private void Awake()
     {
         button = GetComponent<Button>();
@@ -18,18 +19,20 @@ public class UI_Play : MonoBehaviour
     {
         shop = FindObjectOfType<Shop>();
         EggGameManager.Inst.onModeChange += ModeChange;
+        cameraFollow = FindObjectOfType<CameraFollow>();
     }
 
     private void ModeChange(EggGameManager.Mode obj)
     {
-     
-            gameObject.SetActive(obj == EggGameManager.Mode.ReadyToPlay);
+
+        gameObject.SetActive(obj == EggGameManager.Mode.ReadyToPlay);
 
     }
 
     private void Play()
-    {  
+    {
 
         EggGameManager.Inst.mode = EggGameManager.Mode.Play;
+        cameraFollow.SlinShotSet();
     }
 }

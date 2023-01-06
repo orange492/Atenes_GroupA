@@ -18,10 +18,7 @@ public class CameraFollow : MonoBehaviour
     Camera cameraMain;
 
 
-    enum PlayMode
-    {
-
-    }
+ 
 
     PlayerInputActions inputActions;
 
@@ -41,7 +38,6 @@ public class CameraFollow : MonoBehaviour
         egg = FindObjectOfType<Egg>();
         target = egg.transform;
         offset = transform.position - target.position;
-        slingShot = FindObjectOfType<SlingShot>();
     }
 
     private void OnEnable()
@@ -56,7 +52,9 @@ public class CameraFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (EggGameManager.Inst.mode == EggGameManager.Mode.ReadyToPlay)
+      
+        
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.ReadyToPlay||EggGameManager.Inst.mode==EggGameManager.Mode.Editting)
         {
             FollowMouse();
         }
@@ -108,5 +106,10 @@ public class CameraFollow : MonoBehaviour
 
         cameraMain.orthographicSize -= scroll * Time.deltaTime;
         cameraMain.orthographicSize = Mathf.Clamp(cameraMain.orthographicSize, 1.0f, 20.0f);
+    }
+
+    public void SlinShotSet()
+    {
+        slingShot = FindObjectOfType<SlingShot>();
     }
 }

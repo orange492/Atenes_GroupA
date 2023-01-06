@@ -67,6 +67,10 @@ public class Rocket : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Play)
+        {
+            return;
+        }
         toolSlot = transform.parent.GetComponent<ToolSlot>();
         if (toolSlot != null&& !shop.IsItemOnMouse)
         {
@@ -80,6 +84,10 @@ public class Rocket : MonoBehaviour
 
     private void OnMouseUp()
     {
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Play)
+        {
+            return;
+        }
         if (toolSlot != null && !shop.IsItemOnMouse)
         {
             transform.position = transform.parent.position;
@@ -87,6 +95,10 @@ public class Rocket : MonoBehaviour
     }
     void OnMouseDrag()
     {
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Play)
+        {
+            return;
+        }
         if (toolSlot != null && !shop.IsItemOnMouse)
         {
             Vector3 mousePosition = new Vector3(Input.mousePosition.x,
