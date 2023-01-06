@@ -9,6 +9,8 @@ public class ToolSlot : MonoBehaviour
     MouseFollow mouseFollow;
     Tools tools;
 
+
+
     bool isSlotUsed = false;
     public bool IsSlotUsed
     {
@@ -21,13 +23,14 @@ public class ToolSlot : MonoBehaviour
 
     float itemValue = 0.0f;
     public float ItemValue
-    {get => itemValue;
+    {
+        get => itemValue;
         set => itemValue = value;
-        }
+    }
 
     int slotIndex = -1;
 
-   public GameObject button;
+    public GameObject button;
 
     Canvas canvas;
     Transform controller;
@@ -43,7 +46,7 @@ public class ToolSlot : MonoBehaviour
         canvas = FindObjectOfType<Canvas>();
         controller = canvas.transform.GetChild(0).transform;
         shop = FindObjectOfType<Shop>();
-
+        
     }
 
 
@@ -63,6 +66,8 @@ public class ToolSlot : MonoBehaviour
                         {
                             item.transform.SetParent(this.transform, false);
                             isItemOn = true;
+                            item.transform.position = new Vector3(item.transform.position.x, item.transform.position.y, 0.5f);
+                            //transform.position = new Vector3(transform.position.x, transform.position.y, -0.5f);
                         }
                     }
 
@@ -73,6 +78,7 @@ public class ToolSlot : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
+        
         if (shop.IsOnChangeMode)
         {
             if (!isSlotUsed)
@@ -86,6 +92,8 @@ public class ToolSlot : MonoBehaviour
                         {
                             item.transform.SetParent(this.transform, false);
                             isItemOn = true;
+                            item.transform.position = new Vector3(item.transform.position.x, item.transform.position.y, 0.5f);
+                            //transform.position = new Vector3(transform.position.x, transform.position.y, -0.5f);
                         }
                     }
                 }
@@ -114,25 +122,31 @@ public class ToolSlot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (isItemOn&&!isSlotUsed)
+        Debug.Log("툴슬롯 온마우스");
+        if (isItemOn && !isSlotUsed)
         {
-            isSlotUsed = true;
+            GameObject item = transform.GetChild(0).gameObject;
+            item.transform.position = new Vector3(item.transform.position.x, item.transform.position.y, -0.5f);
+            isSlotUsed = true;        
             shop.IsOnChangeMode = false;
             button = shop.LastItem;
-            shop.LastItem.transform.SetParent(controller.transform.GetChild(slotIndex),false);
+            shop.LastItem.transform.SetParent(controller.transform.GetChild(slotIndex), false);
             shop.LastItem.SetActive(true);
             itemValue = shop.LastItemValue;
             shop.LastItemValue = 0.0f;
             shop.LastItemNull();
+            shop.IsItemOnMouse = false;
+            //transform.position = new Vector3(transform.position.x, transform.position.y, 0.5f);
         }
     }
 
     public void DestroyItem()
     {
         shop.Purchase(-itemValue);
-        for (int i = 0; i <transform.childCount; i++)
+        shop.MoneyRefund();
+        for (int i = 0; i < transform.childCount; i++)
         {
-        Destroy(transform.GetChild(i).gameObject);
+            Destroy(transform.GetChild(i).gameObject);
         }
         Destroy(button.gameObject);
         itemValue = 0.0f;

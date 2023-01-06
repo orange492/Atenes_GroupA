@@ -6,8 +6,8 @@ using static PlayerInputActions;
 
 public class Test : MonoBehaviour
 {
-    Rigidbody2D rigid;
 
+<<<<<<< Updated upstream
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -38,4 +38,6 @@ public class Test : MonoBehaviour
         rigid.velocity = Vector2.up * 1000.0f;
 >>>>>>> Stashed changes
     }
+=======
+>>>>>>> Stashed changes
 }

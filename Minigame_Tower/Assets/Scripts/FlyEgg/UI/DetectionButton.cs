@@ -21,6 +21,10 @@ public class DetectionButton : MonoBehaviour
 
     private void OnDetect()
     {
+        if(EggGameManager.Inst.mode != EggGameManager.Mode.Play)
+        {
+            return;
+        }
         if (!detection.IsOnDetective)
         {
             detection.IsOnDetective = true;

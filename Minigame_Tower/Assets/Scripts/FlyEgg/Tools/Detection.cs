@@ -13,11 +13,15 @@ public class Detection : MonoBehaviour
     float spreadSpeed = 20.0f;
     float detectiveArea = 20.0f;
 
+    Egg egg;
+
     public bool IsOnDetective
     {
         get => isOnDetective;
         set => isOnDetective = value;
     }
+
+    bool isDeadOn = false;
     private void Awake()
     {
         edgeCollider2 = GetComponent<EdgeCollider2D>();
@@ -28,22 +32,38 @@ public class Detection : MonoBehaviour
         lineRenderer.endWidth = 0.02f;
     }
 
+    private void Start()
+    {
+        egg = FindObjectOfType<Egg>();
+    }
+
     private void Update()
     {
-        
-        if (isOnDetective)
+        if (!egg.IsDead)
         {
-            if (edgeCollider2.edgeRadius < detectiveArea)
+            if (isOnDetective)
             {
-                edgeCollider2.edgeRadius += spreadSpeed * Time.deltaTime;
+                if (edgeCollider2.edgeRadius < detectiveArea)
+                {
+                    edgeCollider2.edgeRadius += spreadSpeed * Time.deltaTime;
+                }
+                else
+                {
+                    edgeCollider2.edgeRadius = 0.0f;
+                    isOnDetective = false;
+                }
             }
-            else
+            ColliderVisualize();
+        }
+        else
+        {
+            if (!isDeadOn)
             {
-                edgeCollider2.edgeRadius = 0.0f;
-                isOnDetective = false;
+                RigidOn();
+                isDeadOn = true;
+
             }
         }
-        ColliderVisualize();
     }
 
     void ColliderVisualize()
@@ -64,6 +84,14 @@ public class Detection : MonoBehaviour
             angle += 360f / segments;
         }
       
+    }
+
+    public void RigidOn()
+    {
+        transform.GetComponent<CapsuleCollider2D>().isTrigger = false;
+        transform.GetComponent<Rigidbody2D>().isKinematic = false;
+        transform.GetComponent<Rigidbody2D>().velocity = egg.LastVelocity;
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

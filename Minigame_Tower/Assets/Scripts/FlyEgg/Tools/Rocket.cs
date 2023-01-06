@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class Rocket : MonoBehaviour
 
     ToolSlot toolSlot;
     Vector3 offSet;
+
+    MouseFollow mouse;
 
     public bool MachineOn
     {
@@ -30,6 +33,8 @@ public class Rocket : MonoBehaviour
         }
     }
     bool isDeadOn = false;
+
+    Shop shop;
     [SerializeField]
     GameObject fire;
 
@@ -37,6 +42,8 @@ public class Rocket : MonoBehaviour
     {
         fire.SetActive(false);
         egg = FindObjectOfType<Egg>();
+        mouse = FindObjectOfType<MouseFollow>();
+        shop = FindObjectOfType<Shop>();
     }
 
     private void FixedUpdate()
@@ -61,7 +68,7 @@ public class Rocket : MonoBehaviour
     private void OnMouseDown()
     {
         toolSlot = transform.parent.GetComponent<ToolSlot>();
-        if (toolSlot != null)
+        if (toolSlot != null&& !shop.IsItemOnMouse)
         {
             Vector3 mousePosition = new Vector3(Input.mousePosition.x,
     Input.mousePosition.y, -0.1f);
@@ -73,17 +80,20 @@ public class Rocket : MonoBehaviour
 
     private void OnMouseUp()
     {
-        if (toolSlot != null)
+        if (toolSlot != null && !shop.IsItemOnMouse)
         {
             transform.position = transform.parent.position;
         }
     }
     void OnMouseDrag()
     {
-        Vector3 mousePosition = new Vector3(Input.mousePosition.x,
+        if (toolSlot != null && !shop.IsItemOnMouse)
+        {
+            Vector3 mousePosition = new Vector3(Input.mousePosition.x,
 Input.mousePosition.y, -0.1f);
-        Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
-        transform.position = objPosition + offSet;
+            Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
+            transform.position = objPosition + offSet;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -100,10 +110,8 @@ Input.mousePosition.y, -0.1f);
 
     }
     public void RigidOn()
-    { BoxCollider2D box = transform.GetComponent<BoxCollider2D>();
-        box.isTrigger = false;
-        box.size = new Vector2(0.5f, 0.31f);
-        box.offset = new Vector2(0, 0.5f);
+    {
+        transform.GetComponent<PolygonCollider2D>().isTrigger = false;
         transform.GetComponent<Rigidbody2D>().isKinematic = false;
         transform.GetComponent<Rigidbody2D>().velocity = egg.LastVelocity;
        

@@ -15,12 +15,11 @@ public class Nest : MonoBehaviour
     {
         if (collision.CompareTag("Egg"))
         {
-            if (egg.Mag < 15.0f)
+            if (egg.Mag < 5.0f)
             {
                 isGameClear = true;
                 egg.Rigid.velocity = Vector2.zero;
                 egg.Rigid.angularVelocity = 0.0f;
-                egg.transform.position = transform.position;
             }
         }
     }
@@ -29,6 +28,10 @@ public class Nest : MonoBehaviour
 
     private void Update()
     {
-        
+        if (isGameClear)
+        {
+
+            egg.transform.position = Vector3.Lerp(egg.transform.position, transform.position, Time.deltaTime);
+        }
     }
 }

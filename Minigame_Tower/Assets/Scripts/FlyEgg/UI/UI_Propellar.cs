@@ -26,7 +26,12 @@ public class UI_Propellar : MonoBehaviour
 
     private void MachineOnOff(bool toggleOn)
     {
-        if (toggleOn)
+        if (EggGameManager.Inst.mode != EggGameManager.Mode.Play)
+        {
+            toggle.isOn = false;
+            return;
+        }
+        if (toggleOn&&!egg.IsDead)
         {
             propeller.MachineOn = true;
             fuel.EnergyCost += 100.0f;
@@ -45,7 +50,7 @@ public class UI_Propellar : MonoBehaviour
 
     private void Update()
     {
-        if (fuel.CurrentFuel < 0.00025f)
+        if (fuel.CurrentFuel < 0.00025f || egg.IsDead)
         {
             toggle.isOn = false;
         }

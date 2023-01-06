@@ -22,9 +22,9 @@ public class ItemButton : MonoBehaviour
     TextMeshProUGUI bombRemainText;
     TextMeshProUGUI resetRemainText;
     TextMeshProUGUI feverRemainText;
-    int bombRemain=0;
-    int resetRemain=0;
-    int feverRemain=0;
+    int bombRemain = 0;
+    int resetRemain = 0;
+    int feverRemain = 0;
     Fever fever;
 
     public int BombRemain
@@ -62,17 +62,17 @@ public class ItemButton : MonoBehaviour
         fever = FindObjectOfType<Fever>();
         if (TowerManager.Inst.GetDifficulty() == 0)
         {
-           bombRemain=3;
-           resetRemain=3;
-           feverRemain=3;
+            bombRemain = 3;
+            resetRemain = 3;
+            feverRemain = 3;
         }
         if (TowerManager.Inst.GetDifficulty() == 1)
         {
             bombRemain = 2;
             resetRemain = 2;
             feverRemain = 2;
-        } 
-        if (TowerManager.Inst.GetDifficulty() == 2) 
+        }
+        if (TowerManager.Inst.GetDifficulty() == 2)
         {
             bombRemain = 1;
             resetRemain = 1;
@@ -92,7 +92,7 @@ public class ItemButton : MonoBehaviour
 
     private void OnClick_Bomb()
     {
-        if (bombRemain > 0&& blockController.Mode == BlockController.GameMode.Normal)
+        if (bombRemain > 0 && blockController.Mode == BlockController.GameMode.Normal)
         {
             isClicked = !isClicked;
             materialIndex++;
@@ -103,11 +103,11 @@ public class ItemButton : MonoBehaviour
 
     private void OnClick_Reset()
     {
-       
+
         if (resetRemain > 0 && blockController.Mode == BlockController.GameMode.Normal)
         {
             blockController.ResetAllBlock();
-                blockController.Mode = GameMode.Checking;
+            blockController.Mode = GameMode.Checking;
             Debug.Log("리셋체킹");
             blockController.CreateAllBlock();
             if (!blockController.AllBlockCheck())
@@ -128,7 +128,7 @@ public class ItemButton : MonoBehaviour
     {
         if (!fever.IsFevering)
         {
-        blockController.onFeverChange?.Invoke(1000);
+            blockController.onFeverChange?.Invoke(1000);
             feverRemain--;
             feverRemainText.text = feverRemain.ToString();
         }
