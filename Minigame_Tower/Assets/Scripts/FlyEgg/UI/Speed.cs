@@ -15,7 +15,6 @@ public class Speed : MonoBehaviour
     private void Start()
     {
         egg = FindObjectOfType<Egg>();
-        EggGameManager.Inst.onModeChange += ModeChange;
         gameObject.SetActive(false);
         if (EggGameManager.Inst != null)
         {

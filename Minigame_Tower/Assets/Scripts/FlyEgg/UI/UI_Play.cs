@@ -19,7 +19,6 @@ public class UI_Play : MonoBehaviour
     {
         shop = FindObjectOfType<Shop>();
 
-        EggGameManager.Inst.onModeChange += ModeChange;
 
         cameraFollow = FindObjectOfType<CameraFollow>(); 
         if (EggGameManager.Inst != null)

@@ -91,11 +91,13 @@ public class Line : MonoBehaviour
         if (obj != EggGameManager.Mode.Play)
         {
             rigid.isKinematic = true;
+            rigid.velocity = Vector3.zero;
+            rigid.angularVelocity = 0.0f;
         }
         else
         {
             rigid.isKinematic = false;
-            rigid.velocity = Vector3.zero;
+            
         }
     }
 
