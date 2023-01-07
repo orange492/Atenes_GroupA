@@ -11,7 +11,7 @@ public class Detection : MonoBehaviour
     float radius;
     bool isOnDetective = false;
     float spreadSpeed = 20.0f;
-    float detectiveArea = 20.0f;
+    float detectiveArea = 30.0f;
 
     Egg egg;
 

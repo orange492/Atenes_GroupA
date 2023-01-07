@@ -35,11 +35,6 @@ public class UI_Play : MonoBehaviour
         gameObject.SetActive(obj == EggGameManager.Mode.ReadyToPlay);
 
 
-
-        Debug.Log("reday");
-        gameObject.SetActive(obj == EggGameManager.Mode.ReadyToPlay);
-
-
     }
     private void OnEnable()
     {
