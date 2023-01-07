@@ -51,8 +51,7 @@ public class Egg : MonoBehaviour
         scaleSquence.Append(transform.DOScale(0.1f,0.2f));
         scaleSquence.Append(transform.DOScale(1.0f, 0.2f));
         scaleSquence.OnComplete(() => { scaleSquence.Rewind(); });
-
-        EggGameManager.Inst.onModeChange += ModeChange;
+        
 
         rigid.isKinematic = true; 
         if (EggGameManager.Inst != null)
