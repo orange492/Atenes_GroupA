@@ -20,7 +20,7 @@ public class DrawButton : MonoBehaviour
 
 
 
-    public bool IsDrawMode 
+    public bool IsDrawMode
     {
         get => isDrawMode;
         set
@@ -28,7 +28,7 @@ public class DrawButton : MonoBehaviour
             isDrawMode = value;
         }
     }
-            
+
 
 
     private void Awake()
@@ -40,7 +40,7 @@ public class DrawButton : MonoBehaviour
         drawEndButtonCanvasGroup = transform.GetChild(1).GetComponent<CanvasGroup>();
         drawExitButton = transform.GetChild(2).GetComponent<Button>();
         drawExitButton.onClick.AddListener(ExitDrawMode);
-        
+
         DrawEndButtonShutDown();
     }
 
@@ -63,10 +63,10 @@ public class DrawButton : MonoBehaviour
 
     private void OffDrawMode()
     {
-            DrawEndButtonShutDown();
-            line.IsDrawingObject = false;
-            IsDrawMode = false;
-            line.EndDraw();
+        DrawEndButtonShutDown();
+        line.IsDrawingObject = false;
+        IsDrawMode = false;
+        line.EndDraw();
     }
 
     private void OnDrawMode()

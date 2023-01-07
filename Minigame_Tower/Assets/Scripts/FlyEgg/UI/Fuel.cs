@@ -10,13 +10,14 @@ public class Fuel : MonoBehaviour
     TextMeshProUGUI fuelText;
 
     
-    float maxFuel=10000.0f;
-    float currentFuel = 10000.0f;
+    float maxFuel=500.0f;
+    public float currentFuel = 500.0f;
 
     public float CurrentFuel
     {
         get => currentFuel;
         set
+
         {
             currentFuel = value;
             currentFuel= Mathf.Clamp(currentFuel, 0.0f, maxFuel);

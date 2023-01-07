@@ -26,11 +26,9 @@ public class UI_Propellar : MonoBehaviour
 
     private void MachineOnOff(bool toggleOn)
     {
-        if (EggGameManager.Inst.mode != EggGameManager.Mode.Play)
-        {
-            toggle.isOn = false;
-            return;
-        }
+     
+
+
         if (toggleOn&&!egg.IsDead)
         {
             propeller.MachineOn = true;
@@ -45,6 +43,12 @@ public class UI_Propellar : MonoBehaviour
         if (fuel.CurrentFuel < 0.00025f)
         {
             toggle.isOn = false;
+        }
+
+        if (EggGameManager.Inst.mode != EggGameManager.Mode.Play)
+        {
+            toggle.isOn = false;
+            return;
         }
     }
 

@@ -11,21 +11,24 @@ public class Trash : MonoBehaviour
     Material[] materials;
     SpriteRenderer spriteRenderer;
 
-    
-    
+
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
-
     private void Start()
     {
-        EggGameManager.Inst.onModeChange += ModeChange;
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange += ModeChange;
+        }
     }
+
 
     private void ModeChange(EggGameManager.Mode obj)
     {
-        if (obj ==EggGameManager.Mode.Play)
+        if (obj == EggGameManager.Mode.Play)
         {
             gameObject.SetActive(false);
         }
@@ -33,18 +36,31 @@ public class Trash : MonoBehaviour
         {
             gameObject.SetActive(true);
         }
-        if (obj == EggGameManager.Mode.Editting) {
-            gameObject.SetActive(true) ;
+        if (obj == EggGameManager.Mode.Editting)
+        {
+            gameObject.SetActive(true);
+        }
+    }
+    private void OnEnable()
+    {
+      
+    }
+
+    private void OnDestroy()
+    {
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange -= ModeChange;
         }
     }
 
     private void Update()
     {
-        transform.position = (Vector2)Camera.main.transform.position + new Vector2(16.0f, -8.2f)*Camera.main.orthographicSize*0.1f;
-        transform.localScale = new Vector3(Camera.main.orthographicSize*0.1f, Camera.main.orthographicSize*0.1f, 0);
+        //transform.position = (Vector2)Camera.main.transform.position + new Vector2(16.0f, -8.2f)*Camera.main.orthographicSize*0.1f;
+        //transform.localScale = new Vector3(Camera.main.orthographicSize*0.1f, Camera.main.orthographicSize*0.1f, 0);
     }
 
-   
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -66,6 +82,6 @@ public class Trash : MonoBehaviour
     {
         spriteRenderer.material = materials[1];
     }
-    
+
 
 }

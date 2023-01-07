@@ -25,11 +25,7 @@ public class UI_Rocket : MonoBehaviour
 
     private void MachineOnOff(bool toggleOn)
     {
-        if (EggGameManager.Inst.mode != EggGameManager.Mode.Play)
-        {
-            toggle.isOn = false;
-            return;
-        }
+       
         if (toggleOn&&!egg.IsDead)
         {
             rocket.MachineOn = true;
@@ -44,6 +40,11 @@ public class UI_Rocket : MonoBehaviour
         if (fuel.CurrentFuel < 0.00025f)
         {
             toggle.isOn = false;
+        }
+        if (EggGameManager.Inst.mode != EggGameManager.Mode.Play)
+        {
+            toggle.isOn = false;
+            return;
         }
     }
 

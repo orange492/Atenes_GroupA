@@ -50,6 +50,14 @@ public class Egg : MonoBehaviour
         scaleSquence.Append(transform.DOScale(0.1f,0.2f));
         scaleSquence.Append(transform.DOScale(1.0f, 0.2f));
         scaleSquence.OnComplete(() => { scaleSquence.Rewind(); });
+<<<<<<< Updated upstream
+=======
+        rigid.isKinematic = true; 
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange += ModeChange;
+        }
+>>>>>>> Stashed changes
     }
 
     private void Update()
@@ -65,8 +73,18 @@ public class Egg : MonoBehaviour
         eggPos = transform.position;
         
     }
+    private void OnEnable()
+    {
+    
+    }
 
-
+    private void OnDestroy()
+    {
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange -= ModeChange;
+        }
+    }
 
 
     private void OnCollisionEnter2D(Collision2D collision)
