@@ -15,8 +15,6 @@ public class Height : MonoBehaviour
     private void Start()
     {
         egg = FindObjectOfType<Egg>();
-<<<<<<< Updated upstream
-=======
         transform.parent.gameObject.SetActive(false); 
         if (EggGameManager.Inst != null)
         {
@@ -36,7 +34,6 @@ public class Height : MonoBehaviour
     private void ModeChange(EggGameManager.Mode obj)
     {
         transform.parent.gameObject.SetActive(obj == EggGameManager.Mode.Play);
->>>>>>> Stashed changes
     }
 
     private void Update()

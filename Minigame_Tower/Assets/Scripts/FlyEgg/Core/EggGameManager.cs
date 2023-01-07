@@ -69,13 +69,11 @@ public class EggGameManager : SingletonPuzzle<EggGameManager>
         base.Initialize();
 
         itemData = GetComponent<ItemDataManager>();
-<<<<<<< Updated upstream
-=======
+
         shop = FindObjectOfType<Shop>();
         
         shop.MoneyRemain = money;
         mode = Mode.ReadyToPlay;
       
->>>>>>> Stashed changes
     }
 }

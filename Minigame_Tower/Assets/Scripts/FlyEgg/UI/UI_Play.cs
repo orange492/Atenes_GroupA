@@ -9,6 +9,7 @@ public class UI_Play : MonoBehaviour
 {
     Button button;
     Shop shop;
+    CameraFollow cameraFollow;
     private void Awake()
     {
         button = GetComponent<Button>();
@@ -17,26 +18,24 @@ public class UI_Play : MonoBehaviour
     private void Start()
     {
         shop = FindObjectOfType<Shop>();
-<<<<<<< Updated upstream
+
         EggGameManager.Inst.onModeChange += ModeChange;
-=======
         cameraFollow = FindObjectOfType<CameraFollow>(); 
         if (EggGameManager.Inst != null)
         {
             EggGameManager.Inst.onModeChange += ModeChange;
         }
->>>>>>> Stashed changes
     }
 
     private void ModeChange(EggGameManager.Mode obj)
     {
-<<<<<<< Updated upstream
+
      
             gameObject.SetActive(obj == EggGameManager.Mode.ReadyToPlay);
-=======
+
         Debug.Log("reday");
         gameObject.SetActive(obj == EggGameManager.Mode.ReadyToPlay);
->>>>>>> Stashed changes
+
 
     }
     private void OnEnable()
@@ -44,10 +43,7 @@ public class UI_Play : MonoBehaviour
      
     }
 
-<<<<<<< Updated upstream
-    private void Play()
-    {  
-=======
+
     private void OnDestroy()
     {
         if (EggGameManager.Inst != null)
@@ -55,10 +51,11 @@ public class UI_Play : MonoBehaviour
             EggGameManager.Inst.onModeChange -= ModeChange;
         }
     }
->>>>>>> Stashed changes
+
 
     private void Play()
     {
         EggGameManager.Inst.mode = EggGameManager.Mode.Play;
+        cameraFollow.SetSlingShot();
     }
 }

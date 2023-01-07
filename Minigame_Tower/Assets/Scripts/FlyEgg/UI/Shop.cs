@@ -1,5 +1,4 @@
 using DG.Tweening;
-using Sirenix.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class CameraFollow : MonoBehaviour
@@ -20,10 +21,7 @@ public class CameraFollow : MonoBehaviour
     Trash trash;
 
 
-    enum PlayMode
-    {
-
-    }
+  
 
     PlayerInputActions inputActions;
 
@@ -44,11 +42,7 @@ public class CameraFollow : MonoBehaviour
         trash = FindObjectOfType<Trash>();
         target = egg.transform;
         offset = transform.position - target.position;
-<<<<<<< Updated upstream
         slingShot = FindObjectOfType<SlingShot>();
-=======
-
->>>>>>> Stashed changes
     }
 
     private void OnEnable()
@@ -76,6 +70,10 @@ public class CameraFollow : MonoBehaviour
 
     }
 
+    public void SetSlingShot()
+    {
+        slingShot = FindObjectOfType<SlingShot>();
+    }
     void FollowEgg()
     {
         if (!egg.IsDead)
