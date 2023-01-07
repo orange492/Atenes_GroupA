@@ -1,5 +1,4 @@
 using DG.Tweening;
-using Sirenix.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -39,7 +38,6 @@ public class Shop : MonoBehaviour
     DG.Tweening.Sequence moneyLackSequence;
     DG.Tweening.Sequence moneyRefundSequence;
     DG.Tweening.Sequence warningTextSequence;
-    ToolSlot[] toolSlots;
     int slingShotCount = 0;
     int radarCount = 0;
     int parachuteCount = 0;
@@ -47,6 +45,7 @@ public class Shop : MonoBehaviour
     Canvas canvas;
 
     Tools tools;
+    ToolSlot[] toolSlots;
 
     Color defaultColor;
     Color cannotPurchaseColor;
@@ -61,7 +60,16 @@ public class Shop : MonoBehaviour
         set => lastItem = value;
     }
 
-    float moneyRemain = 10000.0f;
+    float moneyRemain;
+    public float MoneyRemain
+    {
+        get => moneyRemain;
+        set
+        {
+            moneyRemain = value;
+            moneyRemainText.text = $"${moneyRemain:F2}";
+        }
+    }
 
     bool isOnDrawMode = false;
 
@@ -109,7 +117,6 @@ public class Shop : MonoBehaviour
     }
 
 
-    public float MoneyRemain => moneyRemain;
 
     DrawButton drawButton;
     private void Awake()
@@ -127,30 +134,56 @@ public class Shop : MonoBehaviour
         warningText = transform.GetChild(4).GetComponent<TextMeshProUGUI>();
         warningText.color = Color.clear;
 
-    }
-    private void Start()
-    {
-        canvas = FindObjectOfType<Canvas>();
-        mouseFollow = FindObjectOfType<MouseFollow>();
-        tools = FindObjectOfType<Tools>();
-        EggGameManager.Inst.onModeChange += ModeChange;
-        toolSlots = new ToolSlot[8];
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            toolSlots[i] = tools.transform.GetChild(i).GetComponent<ToolSlot>();
-            toolSlots[i].SlotIndex = i;
-
-        }
         for (int i = 0; i < 8; i++)
         {
             purchaseButtons[i] = shopInside.transform.GetChild(0).GetChild(i).GetComponent<Button>();
         }
 
+        defaultColor = purchaseButtons[0].transform.GetComponent<Image>().color;
+        cannotPurchaseColor = new Color(255, 0, 0, 208);
+
+        purchaseButtons[0].onClick.AddListener(PurchaseSlingShot);
+        purchaseButtons[1].onClick.AddListener(PurchaseParachute);
+        purchaseButtons[2].onClick.AddListener(PurchasePropeller);
+        purchaseButtons[3].onClick.AddListener(PurchaseRocket);
+        purchaseButtons[4].onClick.AddListener(PurchaseDetection);
+        purchaseButtons[6].onClick.AddListener(OnDrawMode);
+
+        moneyLackSequence = DOTween.Sequence().SetAutoKill(false).Pause();
+        moneyLackSequence.Append(moneyRemainText.DOColor(Color.red, 0.1f));
+        moneyLackSequence.Append(moneyRemainText.DOColor(Color.white, 0.1f));
+        moneyLackSequence.OnComplete(() => { moneyLackSequence.Rewind(); });
+
+        moneyRefundSequence = DOTween.Sequence().SetAutoKill(false).Pause();
+        moneyRefundSequence.Append(moneyRemainText.DOColor(Color.blue, 0.1f));
+        moneyRefundSequence.Append(moneyRemainText.DOColor(Color.white, 0.1f));
+        moneyRefundSequence.OnComplete(() => { moneyRefundSequence.Rewind(); });
+    }
+    private void Start()
+    {
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange += ModeChange;
+        }
+        
+        mouseFollow = FindObjectOfType<MouseFollow>();
+
+        tools = FindObjectOfType<Tools>();
+        toolSlots = new ToolSlot[8];
+        for (int i = 0; i < tools.transform.childCount; i++)
+        {
+            toolSlots[i] = tools.transform.GetChild(i).GetComponent<ToolSlot>();
+            toolSlots[i].SlotIndex = i;
+        }
+        canvas = FindObjectOfType<Canvas>();
+
+
         items = new ItemData[5];
         for (int i = 0; i < 5; i++)
         {
-            items[i]=EggGameManager.Inst.ItemData[(uint)i];
+            items[i] = EggGameManager.Inst.ItemData[(uint)i];
         }
+
 
         images = new Image[8];
         names = new TextMeshProUGUI[8];
@@ -172,30 +205,25 @@ public class Shop : MonoBehaviour
 
         }
 
-        purchaseButtons[6].onClick.AddListener(OnDrawMode);
         drawButton = FindObjectOfType<DrawButton>();
         drawButton.gameObject.SetActive(false);
 
-        purchaseButtons[0].onClick.AddListener(PurchaseSlingShot);
-        purchaseButtons[1].onClick.AddListener(purchaseParachute);
-        purchaseButtons[2].onClick.AddListener(PurchasePropeller);
-        purchaseButtons[3].onClick.AddListener(PurchaseRocket);
-        purchaseButtons[4].onClick.AddListener(PurchaseDetection);
+        if (EggGameManager.Inst.isDetection)
+        {
+            moneyRemain += EggGameManager.Inst.ItemData[ItemIDCode.Radar].value;
+            PurchaseDetection();
+        }
+        if (EggGameManager.Inst.isSlingShot)
+        {
+            moneyRemain += EggGameManager.Inst.ItemData[ItemIDCode.SlingShot].value;
+            PurchaseSlingShot();
+        }
 
-        moneyLackSequence = DOTween.Sequence().SetAutoKill(false).Pause();
-        moneyLackSequence.Append(moneyRemainText.DOColor(Color.red, 0.1f));
-        moneyLackSequence.Append(moneyRemainText.DOColor(Color.white, 0.1f));
-        moneyLackSequence.OnComplete(() => { moneyLackSequence.Rewind(); });
-
-        moneyRefundSequence = DOTween.Sequence().SetAutoKill(false).Pause();
-        moneyRefundSequence.Append(moneyRemainText.DOColor(Color.blue, 0.1f));
-        moneyRefundSequence.Append(moneyRemainText.DOColor(Color.white, 0.1f));
-        moneyRefundSequence.OnComplete(() => { moneyRefundSequence.Rewind(); });
-
-
-        defaultColor = purchaseButtons[0].transform.GetComponent<Image>().color;
-        cannotPurchaseColor = new Color(255, 0, 0, 208);
-
+        if (EggGameManager.Inst.isParachute)
+        {
+            moneyRemain += EggGameManager.Inst.ItemData[ItemIDCode.Parachute].value;
+            PurchaseParachute();
+        }
     }
 
     private void ModeChange(EggGameManager.Mode obj)
@@ -213,11 +241,11 @@ public class Shop : MonoBehaviour
         }
     }
 
-    private void PurchaseSlingShot()
+    public void PurchaseSlingShot()
     {
         if (!isOnChangeMode)
         {
-            if (moneyRemain < items[0].value)
+            if (moneyRemain < EggGameManager.Inst.ItemData[(uint)0].value)
             {
                 MoneyLack();
                 return;
@@ -229,19 +257,34 @@ public class Shop : MonoBehaviour
                 return;
             }
 
-            GameObject slingshot = Instantiate(items[0].modelPrefab);
+            GameObject slingshot = Instantiate(EggGameManager.Inst.ItemData[(uint)0].modelPrefab);
             slingshot.transform.position = new Vector3(0, -1.0f, 0);
-            Purchase(items[0].value);
+            Purchase(EggGameManager.Inst.ItemData[(uint)0].value);
             slingShotCount++;
+            EggGameManager.Inst.isSlingShot = true;
             purchaseButtons[0].transform.GetComponent<Image>().color = cannotPurchaseColor;
         }
     }
+    private void OnEnable()
+    {
+      
+    }
 
+    private void OnDestroy()
+    {
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange -= ModeChange;
+
+            EggGameManager.Inst.Money = moneyRemain;
+        }
+    }
     public void SellSlingShot()
     {
         Destroy( FindObjectOfType<SlingShot>().gameObject);
         slingShotCount--;
         Purchase(-items[0].value);
+        EggGameManager.Inst.isSlingShot = false;
         purchaseButtons[0].transform.GetComponent<Image>().color = defaultColor;
     }
 
@@ -254,6 +297,13 @@ public class Shop : MonoBehaviour
                 MoneyLack();
                 return;
             }
+
+            if (tools.IsAllSlotUsed)
+            {
+                warningTextOn("모든 슬롯이 사용중입니다!");
+                return;
+            }
+
             IsOnChangeMode = true;
             GameObject propeller = Instantiate(items[(int)ItemIDCode.Propeller].modelPrefab, mouseFollow.transform);
             
@@ -278,6 +328,11 @@ public class Shop : MonoBehaviour
                 MoneyLack();
                 return;
             }
+            if (tools.IsAllSlotUsed)
+            {
+                warningTextOn("모든 슬롯이 사용중입니다!");
+                return;
+            }
             IsOnChangeMode = true;
             GameObject rocket = Instantiate(items[(int)ItemIDCode.Rocket].modelPrefab, mouseFollow.transform);
             GameObject rocketButton = Instantiate(items[(int)ItemIDCode.Rocket].buttonPrefab, canvas.transform.GetChild(0).transform);
@@ -292,9 +347,9 @@ public class Shop : MonoBehaviour
         }
     }
 
-    void PurchaseDetection()
+   public void PurchaseDetection()
     {
-        if (moneyRemain < items[4].value)
+        if (moneyRemain < EggGameManager.Inst.ItemData[ItemIDCode.Radar].value)
         {
             MoneyLack();
             return;
@@ -303,9 +358,10 @@ public class Shop : MonoBehaviour
         {
             radarCount--;
             toolSlots[0].DestroyItem();
-            Purchase(-items[(int)ItemIDCode.Radar].value);
+            Purchase(-EggGameManager.Inst.ItemData[ItemIDCode.Radar].value);
             tools.SlotUse(0, false);
             purchaseButtons[4].transform.GetComponent<Image>().color = defaultColor;
+            EggGameManager.Inst.isDetection = false;
             return;
         }
 
@@ -314,17 +370,18 @@ public class Shop : MonoBehaviour
             warningTextOn("레이더 슬롯이 사용중입니다!");
             return;
         }
-        GameObject radar = Instantiate(items[(int)ItemIDCode.Radar].modelPrefab, tools.transform.GetChild(0));
-        GameObject radarbutton = Instantiate(items[(int)ItemIDCode.Radar].buttonPrefab,canvas.transform.GetChild(0).GetChild(0).transform);
+        GameObject radar = Instantiate(EggGameManager.Inst.ItemData[ItemIDCode.Radar].modelPrefab, tools.transform.GetChild(0));
+        GameObject radarbutton = Instantiate(EggGameManager.Inst.ItemData[ItemIDCode.Radar].buttonPrefab,canvas.transform.GetChild(0).GetChild(0).transform);
         radarbutton.GetComponent<DetectionButton>().detection = radar.GetComponent<Detection>();
         tools.SlotUse(0); 
         toolSlots[0].button = radarbutton;
         radarCount++;
         purchaseButtons[4].transform.GetComponent<Image>().color = cannotPurchaseColor;
-        Purchase(items[(int)ItemIDCode.Radar].value);
+        Purchase(EggGameManager.Inst.ItemData[ItemIDCode.Radar].value);
+        EggGameManager.Inst.isDetection = true;
     }
 
-    void purchaseParachute()
+    public void PurchaseParachute()
     {
         if (moneyRemain < items[1].value)
         {
@@ -338,6 +395,7 @@ public class Shop : MonoBehaviour
             Purchase(-items[(int)ItemIDCode.Parachute].value);
             tools.SlotUse(2,false);
             purchaseButtons[1].transform.GetComponent<Image>().color = defaultColor;
+            EggGameManager.Inst.isParachute = false;
             return;
         }
         if (toolSlots[2].IsSlotUsed)
@@ -355,6 +413,7 @@ public class Shop : MonoBehaviour
         parachuteCount++;
         purchaseButtons[1].transform.GetComponent<Image>().color = cannotPurchaseColor;
         Purchase(items[(int)ItemIDCode.Parachute].value);
+        EggGameManager.Inst.isParachute = true;
     }
 
   
@@ -408,8 +467,7 @@ public class Shop : MonoBehaviour
 
     public void Purchase(float price)
     {
-        moneyRemain -= price;
-        moneyRemainText.text = $"${moneyRemain:F2}";
+        MoneyRemain -= price;
     }
 
    public void MoneyLack()

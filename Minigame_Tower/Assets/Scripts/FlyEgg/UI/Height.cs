@@ -18,8 +18,22 @@ public class Height : MonoBehaviour
         egg = FindObjectOfType<Egg>();
         EggGameManager.Inst.onModeChange += ModeChange;
         transform.parent.gameObject.SetActive(false);
-    }
 
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange += ModeChange;
+        }
+    }
+  
+
+    private void OnDestroy()
+    {
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange -= ModeChange;
+            Debug.Log("헤이트 디스트");
+        }
+    }
     private void ModeChange(EggGameManager.Mode obj)
     {
         transform.parent.gameObject.SetActive(obj == EggGameManager.Mode.Play);

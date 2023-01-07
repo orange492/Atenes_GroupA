@@ -39,8 +39,7 @@ public class Detection : MonoBehaviour
 
     private void Update()
     {
-        if (!egg.IsDead)
-        {
+      
             if (isOnDetective)
             {
                 if (edgeCollider2.edgeRadius < detectiveArea)
@@ -54,8 +53,8 @@ public class Detection : MonoBehaviour
                 }
             }
             ColliderVisualize();
-        }
-        else
+        
+       if(egg.IsDead)
         {
             if (!isDeadOn)
             {

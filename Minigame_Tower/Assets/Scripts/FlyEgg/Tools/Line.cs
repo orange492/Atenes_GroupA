@@ -24,7 +24,7 @@ public class Line : MonoBehaviour
     float length;
     Mesh mesh;
 
-    float price=0.0f;
+    float price = 0.0f;
 
     Shop shop;
 
@@ -54,13 +54,18 @@ public class Line : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         linePositions = new List<Vector2>();
         rigid.gravityScale = 0;
-        trash = FindObjectOfType<Trash>();
+        
         drawButton = FindObjectOfType<DrawButton>();
     }
 
     private void Start()
     {
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange += ModeChange;
+        }
         shop = FindObjectOfType<Shop>();
+        DontDestroyOnLoad(this.gameObject);
     }
 
     private void Update()
@@ -81,12 +86,35 @@ public class Line : MonoBehaviour
 
     }
 
+    void ModeChange(EggGameManager.Mode obj)
+    {
+        if (obj != EggGameManager.Mode.Play)
+        {
+            rigid.isKinematic = true;
+        }
+        else
+        {
+            rigid.isKinematic = false;
+            rigid.velocity = Vector3.zero;
+        }
+    }
+
 
     private void OnDisable()
     {
         inputActions.Input.Click.canceled -= OffClick;
         inputActions.Input.Click.performed -= OnClick;
         inputActions.Input.Disable();
+
+
+    }
+
+    private void OnDestroy()
+    {
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange -= ModeChange;
+        }
 
     }
     private void OffClick(InputAction.CallbackContext obj)
@@ -145,7 +173,7 @@ public class Line : MonoBehaviour
 
             MeshFilter mf = GetComponent<MeshFilter>();
             mf.mesh = mesh;
-            price = ((float)(int)(length * 10.0f))*0.01f;
+            price = ((float)(int)(length * 10.0f)) * 0.01f;
             Debug.Log(price);
             if (shop.MoneyRemain < price)
             {
@@ -154,12 +182,13 @@ public class Line : MonoBehaviour
             }
             else
             {
-            shop.Purchase(price);
+                shop.Purchase(price);
+                rigid.isKinematic = true;
             }
         }
 
-        
-   
+
+
     }
 
     public void RemoveLastDraw()
@@ -173,9 +202,9 @@ public class Line : MonoBehaviour
 
 
 
-  
 
-  
+
+
 
 
 
@@ -193,7 +222,7 @@ public class Line : MonoBehaviour
         rigid.velocity = Vector2.zero;
         rigid.freezeRotation = true;
         Vector3 mousePosition = new Vector3(Input.mousePosition.x,
-Input.mousePosition.y,-0.1f);
+Input.mousePosition.y, -0.1f);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
         offSet = transform.position - (Vector3)objPosition;
     }
@@ -215,7 +244,7 @@ Input.mousePosition.y,-0.1f);
         rigid.freezeRotation = false;
 
         StartCoroutine(ModeChange());
-        
+
     }
     void OnMouseDrag()
     {
@@ -228,7 +257,7 @@ Input.mousePosition.y,-0.1f);
             return;
         }
         Vector3 mousePosition = new Vector3(Input.mousePosition.x,
-Input.mousePosition.y,-0.1f);
+Input.mousePosition.y, -0.1f);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
         transform.position = objPosition + offSet;
         rigid.velocity = Vector2.zero;
@@ -245,9 +274,12 @@ Input.mousePosition.y,-0.1f);
         {
             if (collision.transform.CompareTag("Trash"))
             {
+                trash = FindObjectOfType<Trash>();
+                shop = FindObjectOfType<Shop>();
                 movingMode = false;
                 shop.Purchase(-price);
                 shop.MoneyRefund();
+                EggGameManager.Inst.lineList.Remove(this.gameObject);
                 Destroy(this.gameObject);
                 trash.MaterialChange();
             }
@@ -259,9 +291,12 @@ Input.mousePosition.y,-0.1f);
         {
             if (collision.transform.CompareTag("Trash"))
             {
+                trash = FindObjectOfType<Trash>();
+                shop = FindObjectOfType<Shop>();
                 movingMode = false;
                 shop.Purchase(-price);
                 shop.MoneyRefund();
+                EggGameManager.Inst.lineList.Remove(this.gameObject);
                 Destroy(this.gameObject);
                 trash.MaterialChange();
             }
@@ -270,25 +305,25 @@ Input.mousePosition.y,-0.1f);
 
     float GetLineLength()
     {
-        float length=0.0f;
-        
-        for (int i = 0; i < line.positionCount-1; i++)
+        float length = 0.0f;
+
+        for (int i = 0; i < line.positionCount - 1; i++)
         {
-           length += (line.GetPosition(i) - line.GetPosition(i+1)).magnitude;
+            length += (line.GetPosition(i) - line.GetPosition(i + 1)).magnitude;
         }
         length += (line.GetPosition(0) - line.GetPosition(line.positionCount - 1)).magnitude;
 
-       
+
         return length;
     }
 
-   IEnumerator ModeChange()
+    IEnumerator ModeChange()
     {
         yield return new WaitForSeconds(0.1f);
         movingMode = false;
     }
-  
 
-   
+
+
 
 }

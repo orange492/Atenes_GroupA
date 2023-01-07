@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class CameraFollow : MonoBehaviour
@@ -17,8 +18,9 @@ public class CameraFollow : MonoBehaviour
 
     Camera cameraMain;
 
+    Trash trash;
 
- 
+
 
     PlayerInputActions inputActions;
 
@@ -36,6 +38,7 @@ public class CameraFollow : MonoBehaviour
     private void Start()
     {
         egg = FindObjectOfType<Egg>();
+        trash = FindObjectOfType<Trash>();
         target = egg.transform;
         offset = transform.position - target.position;
     }
@@ -62,10 +65,15 @@ public class CameraFollow : MonoBehaviour
         {
             FollowEgg();
         }
-        
+       trash.transform.position = (Vector2)Camera.main.transform.position + new Vector2(16.0f, -8.2f) * Camera.main.orthographicSize * 0.1f;
+       trash.transform.localScale = new Vector3(Camera.main.orthographicSize * 0.1f, Camera.main.orthographicSize * 0.1f, 0);
 
     }
 
+    public void SetSlingShot()
+    {
+        slingShot = FindObjectOfType<SlingShot>();
+    }
     void FollowEgg()
     {
         if (!egg.IsDead)

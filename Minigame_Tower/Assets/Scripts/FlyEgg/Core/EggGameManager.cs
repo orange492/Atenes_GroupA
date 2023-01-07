@@ -17,6 +17,20 @@ public class EggGameManager : SingletonPuzzle<EggGameManager>
         Play
     }
 
+    public List<GameObject> lineList = new();
+
+    float money=10000.0f;
+    public float Money
+    {
+        get => money;
+        set 
+        {
+            money = value;
+            shop.MoneyRemain = money;
+        }
+
+    }
+
     /// <summary>
     /// 아이템 데이터를 관리하는 메니저
     /// </summary>
@@ -34,7 +48,7 @@ public class EggGameManager : SingletonPuzzle<EggGameManager>
     }
 
     public Action<Mode> onModeChange;
-
+    Shop shop;
 
     /// <summary>
     /// 아이템 데이터 메니저(읽기전용) 프로퍼티
@@ -42,6 +56,8 @@ public class EggGameManager : SingletonPuzzle<EggGameManager>
     public ItemDataManager ItemData => itemData;
 
     public bool isSlingShot;
+    public bool isDetection;
+    public bool isParachute;
 
     // 함수 ---------------------------------------------------------------------------------------
 
@@ -53,6 +69,14 @@ public class EggGameManager : SingletonPuzzle<EggGameManager>
         base.Initialize();
 
         itemData = GetComponent<ItemDataManager>();
+
         mode = Mode.ReadyToPlay;
+
+
+        shop = FindObjectOfType<Shop>();
+        
+        shop.MoneyRemain = money;
+        mode = Mode.ReadyToPlay;
+      
     }
 }

@@ -18,21 +18,50 @@ public class UI_Play : MonoBehaviour
     private void Start()
     {
         shop = FindObjectOfType<Shop>();
+
         EggGameManager.Inst.onModeChange += ModeChange;
-        cameraFollow = FindObjectOfType<CameraFollow>();
+
+        cameraFollow = FindObjectOfType<CameraFollow>(); 
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange += ModeChange;
+        }
+
     }
 
     private void ModeChange(EggGameManager.Mode obj)
     {
 
+
         gameObject.SetActive(obj == EggGameManager.Mode.ReadyToPlay);
 
+
+
+        Debug.Log("reday");
+        gameObject.SetActive(obj == EggGameManager.Mode.ReadyToPlay);
+
+
     }
+    private void OnEnable()
+    {
+     
+    }
+
+
+    private void OnDestroy()
+    {
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange -= ModeChange;
+        }
+    }
+
 
     private void Play()
     {
 
         EggGameManager.Inst.mode = EggGameManager.Mode.Play;
         cameraFollow.SlinShotSet();
+
     }
 }

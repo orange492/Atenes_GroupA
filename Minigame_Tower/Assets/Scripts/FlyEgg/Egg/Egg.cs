@@ -51,8 +51,15 @@ public class Egg : MonoBehaviour
         scaleSquence.Append(transform.DOScale(0.1f,0.2f));
         scaleSquence.Append(transform.DOScale(1.0f, 0.2f));
         scaleSquence.OnComplete(() => { scaleSquence.Rewind(); });
+
         EggGameManager.Inst.onModeChange += ModeChange;
-        rigid.isKinematic = true;
+
+        rigid.isKinematic = true; 
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange += ModeChange;
+        }
+
     }
 
 
@@ -70,8 +77,18 @@ public class Egg : MonoBehaviour
         eggPos = transform.position;
         
     }
+    private void OnEnable()
+    {
+    
+    }
 
-
+    private void OnDestroy()
+    {
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange -= ModeChange;
+        }
+    }
 
 
     private void OnCollisionEnter2D(Collision2D collision)
