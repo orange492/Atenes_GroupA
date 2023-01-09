@@ -21,7 +21,10 @@ public class TowerManager : SingletonPuzzle<TowerManager>
      {2, "Test_Table"}, // 블랙잭 노멀모드
      {3, "Test_Puzzle"},
      {4, "Test_Hard"}, //블랙잭 하드모드
-     {5, "Rhythm"}
+     {5, "Rhythm"},
+     {6, "EggLevel1" },
+     {7, "EggLevel2" },
+     {8, "EggLevel3" }
     };
     Dictionary<int, string> gameName = new Dictionary<int, string>()
     {
@@ -31,6 +34,9 @@ public class TowerManager : SingletonPuzzle<TowerManager>
      {3, "퍼즐 게임"},
      {4, "블랙잭 게임(하드)"},
      {5, "리듬 게임"},
+     {6, "에그 게임 lv1" },
+     {7, "에그 게임 lv2" },
+     {8, "에그 게임 lv3" }
     };
     Dictionary<int, bool> isVertical = new Dictionary<int, bool>()
     {
@@ -40,6 +46,10 @@ public class TowerManager : SingletonPuzzle<TowerManager>
      {3, true},
      {4, false},
      {5, false},
+     {6, false},
+     {7, false},
+     {8, false}
+
     };
     [SerializeField]
     GameObject pFloor;
@@ -93,6 +103,9 @@ public class TowerManager : SingletonPuzzle<TowerManager>
             floor.Add(new sFloor(1, 1, "20웨이브", isVertical));
             floor.Add(new sFloor(4, 0, "300라이프", isVertical)); //블랙잭 하드모드
             floor.Add(new sFloor(3, 0, "1000점", isVertical));
+            floor.Add(new sFloor(6, 0, "1레벨", isVertical));
+            floor.Add(new sFloor(7, 1, "2레벨", isVertical));
+            floor.Add(new sFloor(8, 2, "3레벨", isVertical));
             SetSave();
             init = true;
         }
