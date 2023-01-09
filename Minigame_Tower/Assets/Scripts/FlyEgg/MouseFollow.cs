@@ -22,4 +22,10 @@ public class MouseFollow : MonoBehaviour
         mousePos = new Vector3(mousePos.x, mousePos.y, 10);
         transform.position = mousePos;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.name);
+    }
+
 }

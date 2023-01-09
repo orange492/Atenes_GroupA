@@ -22,7 +22,7 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
         { 3, "Perfect" }
     };
 
-    enum MODE
+    public enum MODE
     {
         NONE,
         PLAY,
@@ -41,11 +41,16 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
     Button editButton;
     float maxHp;
     float currentHp;
-    MODE mode;
+    public MODE mode;
 
 
     int combo;
     float[] timer = new float[2];
+
+    Dictionary<int, int>[] NoteDic;
+    List<float>[] noteList = new List<float>[2];
+    int up = 0;
+    int down = 0;
 
     protected override void Initialize()
     {
@@ -57,7 +62,7 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
         editButton = GameObject.Find("EditButton").GetComponent<Button>();
         editButton.onClick.AddListener(OpenEditCanvas);
         oEditCanvas = GameObject.Find("NoteCanvas");
-        oEditCanvas.SetActive(false);
+        oEditCanvas.transform.root.gameObject.SetActive(false);
         comboTxt = GameObject.Find("NumberTxt").GetComponent<TextMeshProUGUI>();
         JudgeTxt[0] = GameObject.Find("UpTxt").GetComponent<TextMeshProUGUI>();
         JudgeTxt[1] = GameObject.Find("DownTxt").GetComponent<TextMeshProUGUI>();
@@ -79,11 +84,33 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
         ResetCombo();
         SetHpBar();
         mode = MODE.PLAY;
+        //OpenMap();
+        ChangeMapToTime();
+    }
+
+    void ChangeMapToTime()
+    {
+        editor_Rhythm.LoadGameData();
+        NoteDic = editor_Rhythm.NoteDic;
+        noteList[0] = new List<float>();
+        noteList[1] = new List<float>();
+        foreach (var item in NoteDic[0])
+        {
+            noteList[0].Add(-0.464f + ((item.Key - 4) * 0.149333f));
+        }
+        foreach (var item in NoteDic[1])
+        {
+            noteList[1].Add(-0.464f + ((item.Key - 4) * 0.149333f));
+        }
+        noteList[0].Sort();
+        noteList[1].Sort();
+        up = 0;
+        down = 0;
     }
 
     void Start()
     {
-       
+
     }
 
     void Update()
@@ -104,6 +131,27 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
                 timer[i] = -1;
             }
         }
+        if (mode == MODE.EDIT)
+            return;
+        if (noteList[0].Count != 0 && noteList[0].Count > up)
+        {
+            if (noteList[0][up] < Sound_Rhythum.Inst.MusicTime())
+            {
+                CreateNote(0);
+                up++;
+            }
+           
+        }
+        if (noteList[1].Count != 0 && noteList[1].Count > down)
+        {
+            if (noteList[1][down] < Sound_Rhythum.Inst.MusicTime())
+            {
+                CreateNote(1);
+                down++;
+            }
+        }
+
+
     }
 
     public void Click()
@@ -130,21 +178,21 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
             player.ClickKey(loca);
             foreach (Note Value in noteSpawner.noteDic[player.loca].Values)
             {
-                if (Mathf.Abs(player.player.position.x - Value.transform.position.x) < 0.3f)
+                if (Mathf.Abs(player.player.position.x - Value.transform.position.x) < 0.5f)
                 {
                     SetJudgeTxt(loca, 3);
                     SetCombo();
                     Value.Remove();
                     break;
                 }
-                else if (Mathf.Abs(player.player.position.x - Value.transform.position.x) < 0.6f)
+                else if (Mathf.Abs(player.player.position.x - Value.transform.position.x) < 0.10f)
                 {
                     SetJudgeTxt(loca, 2);
                     SetCombo();
                     Value.Remove();
                     break;
                 }
-                else if (Mathf.Abs(player.player.position.x - Value.transform.position.x) < 0.9f)
+                else if (Mathf.Abs(player.player.position.x - Value.transform.position.x) < 1.5f)
                 {
                     SetJudgeTxt(loca, 1);
                     ResetCombo();
@@ -211,7 +259,19 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
 
     public void OpenEditCanvas()
     {
+        mode = MODE.EDIT;
+        oEditCanvas.transform.root.gameObject.SetActive(true);
+        //oEditCanvas.transform.Translate(0, 10, 0);
+        TowerManager.Inst.OptionBtn(false);
+        //editor_Rhythm.isPlay = false;
         Sound_Rhythum.Inst.Clear();
-        oEditCanvas.SetActive(true);
+    }
+
+    public void OpenMap()
+    {
+        oEditCanvas.transform.root.gameObject.SetActive(true);
+        oEditCanvas.transform.Translate(0, -10, 0);
+        editor_Rhythm.Setting();
+        editor_Rhythm.isPlay = true;
     }
 }

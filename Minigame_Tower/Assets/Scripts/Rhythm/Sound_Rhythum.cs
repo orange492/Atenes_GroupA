@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Sound_Rhythum : SingletonPuzzle<Sound_Rhythum>
 {
-    [SerializeField]
     AudioSource audioSource;
-    [SerializeField]
     AudioClip ClipNote;
-    [SerializeField]
     AudioClip ClipMusic;
 
     enum MusicState
@@ -20,13 +18,31 @@ public class Sound_Rhythum : SingletonPuzzle<Sound_Rhythum>
 
     MusicState musicState;
     public int bpm { get; set; } = 98;
-    public float startTime { get; set; } = 0.6f; // -1.6f;
+    public float startTime { get; set; } = 5.4f; // -1.6f;
 
-    public void Start()
+    protected override void Initialize()
     {
+        audioSource = this.GetComponent<AudioSource>();
+        ClipNote = Resources.Load<AudioClip>("Rhythm/DM-CGS-21");
+        ClipMusic = Resources.Load<AudioClip>("Rhythm/Younha");
+
+        if (SceneManager.GetActiveScene().name != "Rhythm")
+        {
+            return;
+        }
+
         audioSource.clip = ClipMusic;
         musicState = MusicState.Play;
         audioSource.Play();
+    }
+
+    public string ClipName()
+    {
+        if (SceneManager.GetActiveScene().name != "Rhythm" || ClipMusic == null)
+        {
+            return null;
+        }
+        return ClipMusic.name;
     }
 
     public void PlayNoteSound()
@@ -43,6 +59,7 @@ public class Sound_Rhythum : SingletonPuzzle<Sound_Rhythum>
     {
         musicState = MusicState.Null;
         audioSource.Stop();
+        audioSource.time = 0;
     }
     public void PauseMusic()
     {
