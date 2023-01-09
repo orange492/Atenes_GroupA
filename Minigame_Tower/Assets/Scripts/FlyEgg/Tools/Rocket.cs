@@ -113,7 +113,6 @@ Input.mousePosition.y, -0.1f);
 
         if (collision.transform.CompareTag("Trash"))
         {
-            Debug.Log("in");
             if (toolSlot != null)
             {
                 toolSlot.DestroyItem();

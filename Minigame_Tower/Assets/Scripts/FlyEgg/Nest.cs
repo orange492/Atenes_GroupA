@@ -35,7 +35,6 @@ public class Nest : MonoBehaviour
                 egg.Rigid.velocity = Vector2.zero;
                 egg.Rigid.angularVelocity = 0.0f;
                 EggGameManager.Inst.mode = EggGameManager.Mode.Clear;
-                Debug.Log("22");
             }
         }
     }

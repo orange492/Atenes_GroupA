@@ -77,7 +77,9 @@ public class CameraFollow : MonoBehaviour
         }
         if (EggGameManager.Inst.mode == EggGameManager.Mode.Play)
         {
-            FollowEgg();
+            FollowEgg(); 
+            cameraMain.orthographicSize -= scroll * Time.deltaTime;
+            cameraMain.orthographicSize = Mathf.Clamp(cameraMain.orthographicSize, 1.0f, 20.0f);
         }
         if (EggGameManager.Inst.mode == EggGameManager.Mode.Intro)
         {
