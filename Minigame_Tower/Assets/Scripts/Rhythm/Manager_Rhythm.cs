@@ -1,11 +1,10 @@
 //#define TEST
 
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
 {
@@ -115,6 +114,10 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
 
     void Update()
     {
+        if (SceneManager.GetActiveScene().name != "Rhythm")
+        {
+            return;
+        }
         for (int i = 0; i < timer.Length; i++)
         {
             if (timer[i] > 0)
@@ -140,7 +143,7 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
                 CreateNote(0);
                 up++;
             }
-           
+
         }
         if (noteList[1].Count != 0 && noteList[1].Count > down)
         {
