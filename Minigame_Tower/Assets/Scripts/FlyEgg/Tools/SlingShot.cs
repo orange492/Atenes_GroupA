@@ -12,14 +12,10 @@ public class SlingShot : MonoBehaviour
     Transform netPosLeft;
     Egg egg;
 
-    bool movingMode = false;
 
     PlayerInputActions inputActions;
 
-    Trash trash;
-    Shop shop;
 
-    float groundHight;
 
     Vector2 onClickPosition;
     Vector2 offClickPostion;
@@ -54,50 +50,50 @@ public class SlingShot : MonoBehaviour
 
     private void Start()
     {
-        shop = FindObjectOfType<Shop>();
-        trash = FindObjectOfType<Trash>();
     }
 
 
 
     private void Update()
     {
-
-        if (isClicked && isEggOnSlingShot)
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Play || EggGameManager.Inst.mode == EggGameManager.Mode.Die)
         {
-            onClickPosition = Camera.main.ScreenToWorldPoint(inputActions.Input.Pos.ReadValue<Vector2>());
-            if (onClickPosition.y < -9.5f)
+            if (isClicked && isEggOnSlingShot)
             {
-                onClickPosition.y = -9.5f;
-            }
-            net.position = onClickPosition;
-        }
-
-        if (isEggOnSlingShot)
-        {
-            egg.Rigid.position = net.position + Vector3.up * 0.1f;
-            egg.Rigid.velocity = Vector2.zero;
-        }
-        else
-        {
-            if ((netDir - net.localPosition).sqrMagnitude > 0.025f)
-            {
-                if (((netDir - net.localPosition).normalized * Time.deltaTime * 60.0f).magnitude < ((netDir - net.localPosition) * Time.deltaTime * 60.0f).magnitude)
-                { 
-                    net.localPosition += (netDir - net.localPosition).normalized * Time.deltaTime * 60.0f;
-                }
-                else
+                onClickPosition = Camera.main.ScreenToWorldPoint(inputActions.Input.Pos.ReadValue<Vector2>());
+                if (onClickPosition.y < -9.5f)
                 {
-                    net.localPosition += (netDir - net.localPosition) * Time.deltaTime * 60.0f;
+                    onClickPosition.y = -9.5f;
                 }
+                net.position = onClickPosition;
+            }
+
+            if (isEggOnSlingShot)
+            {
+                egg.Rigid.position = net.position + Vector3.up * 0.1f;
+                egg.Rigid.velocity = Vector2.zero;
             }
             else
             {
-                SetNetDir();
+                if ((netDir - net.localPosition).sqrMagnitude > 0.025f)
+                {
+                    if (((netDir - net.localPosition).normalized * Time.deltaTime * 60.0f).magnitude < ((netDir - net.localPosition) * Time.deltaTime * 60.0f).magnitude)
+                    {
+                        net.localPosition += (netDir - net.localPosition).normalized * Time.deltaTime * 60.0f;
+                    }
+                    else
+                    {
+                        net.localPosition += (netDir - net.localPosition) * Time.deltaTime * 60.0f;
+                    }
+                }
+                else
+                {
+                    SetNetDir();
+                }
             }
+            leftLine.SetPosition(0, netPosRight.position - transform.position);
+            rightLine.SetPosition(1, netPosLeft.position - transform.position);
         }
-        leftLine.SetPosition(0, netPosRight.position - transform.position);
-        rightLine.SetPosition(1, netPosLeft.position - transform.position);
     }
 
     private void OnEnable()
@@ -152,7 +148,7 @@ public class SlingShot : MonoBehaviour
     }
 
 
-  
+
 
 
 

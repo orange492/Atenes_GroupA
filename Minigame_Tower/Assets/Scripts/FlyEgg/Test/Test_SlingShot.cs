@@ -16,6 +16,5 @@ public class Test_SlingShot : TestBase
     protected override void Test1(InputAction.CallbackContext _)
     {
        
-        slingShot.isEggOnSlingShot = true;
     }
 }

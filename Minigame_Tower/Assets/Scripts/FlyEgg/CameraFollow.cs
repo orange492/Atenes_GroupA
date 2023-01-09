@@ -12,7 +12,7 @@ public class CameraFollow : MonoBehaviour
     Vector3 offset = Vector3.zero;
     SlingShot slingShot;
     Vector3 pos;
-
+    float introSpeed = 30.0f;
     float mouseFollowRange = 15.0f;
 
 
@@ -20,7 +20,7 @@ public class CameraFollow : MonoBehaviour
 
     Trash trash;
 
-
+    Nest nest;
 
     PlayerInputActions inputActions;
 
@@ -41,6 +41,20 @@ public class CameraFollow : MonoBehaviour
         trash = FindObjectOfType<Trash>();
         target = egg.transform;
         offset = transform.position - target.position;
+        nest = FindObjectOfType<Nest>();
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Intro)
+        {
+            transform.position = nest.transform.position+new Vector3(0,0,-10.0f);
+        }
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Intro)
+        {
+            trash.gameObject.SetActive(false);
+        }
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.ReadyToPlay)
+        {
+           trash.gameObject.SetActive(true);
+        }
+
     }
 
     private void OnEnable()
@@ -64,6 +78,14 @@ public class CameraFollow : MonoBehaviour
         if (EggGameManager.Inst.mode == EggGameManager.Mode.Play)
         {
             FollowEgg();
+        }
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Intro)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target.position + new Vector3(0, 0, -10.0f), introSpeed * Time.deltaTime);
+            if ((transform.position - target.position - new Vector3(0, 0, -10.0f)).sqrMagnitude < 0.0025f)
+            {
+                EggGameManager.Inst.mode = EggGameManager.Mode.ReadyToPlay;
+            }
         }
        trash.transform.position = (Vector2)Camera.main.transform.position + new Vector2(16.0f, -8.2f) * Camera.main.orthographicSize * 0.1f;
        trash.transform.localScale = new Vector3(Camera.main.orthographicSize * 0.1f, Camera.main.orthographicSize * 0.1f, 0);
@@ -89,6 +111,8 @@ public class CameraFollow : MonoBehaviour
             }
         }
     }
+
+    
 
     void FollowMouse()
     {

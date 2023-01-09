@@ -25,7 +25,7 @@ public class Egg : MonoBehaviour
     public Vector2 LastVelocity => lastVelocity;
 
     bool isDead = false;
-
+    bool isCrashed = false;
     
     
 
@@ -74,7 +74,9 @@ public class Egg : MonoBehaviour
         eggPos -= transform.position;
         movingPos = -eggPos;
         eggPos = transform.position;
-        
+        if(!isCrashed)
+        lastVelocity = rigid.velocity;
+
     }
     private void OnEnable()
     {
@@ -95,6 +97,7 @@ public class Egg : MonoBehaviour
      
         if (mag > 20.0f)
         {
+            isCrashed = true;
             Die();
         }
         
@@ -117,11 +120,11 @@ public class Egg : MonoBehaviour
         {
             Rigidbody2D rigiddieegg = obj.transform.GetChild(i).GetComponent<Rigidbody2D>();
             Debug.Log(rigiddieegg.transform.name);
-            rigiddieegg.velocity =new UnityEngine.Vector2(rigid.velocity.x,-MathF.Abs(rigid.velocity.y));
+            rigiddieegg.velocity = lastVelocity;
             Debug.Log(rigiddieegg.velocity);
             
         }
-        lastVelocity = new UnityEngine.Vector2(rigid.velocity.x, -MathF.Abs(rigid.velocity.y));
+        
 
         isDead = true;
         EggGameManager.Inst.mode = EggGameManager.Mode.Die;

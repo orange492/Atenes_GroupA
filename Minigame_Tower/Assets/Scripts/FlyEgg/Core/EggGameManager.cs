@@ -14,19 +14,20 @@ public class EggGameManager : SingletonPuzzle<EggGameManager>
         ReadyToPlay,
         Editting,
         Die,
-        Play
+        Play,
+        Clear,
+        Intro
     }
 
     public List<GameObject> lineList = new();
 
-    float money=10000.0f;
+    float money=1000.0f;
     public float Money
     {
         get => money;
         set 
         {
             money = value;
-            shop.MoneyRemain = money;
         }
 
     }
@@ -59,8 +60,27 @@ public class EggGameManager : SingletonPuzzle<EggGameManager>
     public bool isDetection;
     public bool isParachute;
 
+    public enum item
+    {
+        None,
+        Propeller,
+        Rocket
+    }
+
+    public item[] SlotItems;
+
     // 함수 ---------------------------------------------------------------------------------------
 
+
+
+    private void Start()
+    {
+    
+            SlotItems = new item[8];
+            mode = Mode.Intro;
+ 
+     
+    }
     /// <summary>
     /// 게임 메니저가 새로 만들어지거나 씬이 로드 되었을 때 실행될 초기화 함수
     /// </summary>
@@ -70,10 +90,6 @@ public class EggGameManager : SingletonPuzzle<EggGameManager>
 
         itemData = GetComponent<ItemDataManager>();
         shop = FindObjectOfType<Shop>();
-        shop.MoneyRemain = money;
 
-        mode = Mode.ReadyToPlay;
-
-      
     }
 }

@@ -8,7 +8,7 @@ public class ParachuteBackPack : MonoBehaviour
 
     bool isOnParachute = false;
     UI_Parachute UI_Parachute;
-    float moveSpeed = 5.0f;
+    float moveSpeed = 10.0f;
     bool isDeadOn = false;
     Egg egg;
     private void Start()
@@ -31,10 +31,16 @@ public class ParachuteBackPack : MonoBehaviour
         {
             if (isOnParachute)
             {
-                if (transform.position.y > -4)
+                //if (transform.position.y > -4)
+                //{
+                //    transform.position -= moveSpeed * Time.deltaTime * Vector3.up;
+                //    transform.Rotate(Vector3.forward, 1.0f);
+                //}
+                if (!isDeadOn)
                 {
-                     transform.position -= moveSpeed * Time.deltaTime * Vector3.up;
-                     transform.Rotate(Vector3.forward, 1.0f);
+                    transform.GetComponent<CapsuleCollider2D>().isTrigger = false;
+                    transform.GetComponent<Rigidbody2D>().isKinematic = false;
+                    isDeadOn = true;
                 }
             }
         }

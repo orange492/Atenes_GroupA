@@ -12,7 +12,7 @@ public class Parachute : MonoBehaviour
     bool isParachuteOn = false;
     bool isParachuteSeparate = false;
 
-    float moveSpeed = 1.0f;
+    float moveSpeed = 2.0f;
     float rotateSpeed = 0.5f;
     float parachuteDownDegree = 55.0f;
 
@@ -62,29 +62,37 @@ public class Parachute : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (isParachuteOn)
+        if (!egg.IsDead)
         {
-            movingPos -= egg.transform.position;
-            transform.rotation = quaternion.Euler(0, 0, -(float)Math.Atan2(movingPos.x, movingPos.y));
-            if (egg.Rigid.velocity.magnitude > 5.0f)
+            if (isParachuteOn)
             {
-                float stretchScale = egg.Rigid.velocity.magnitude * 0.1f;
-                if (stretchScale < 1.0f)
+                movingPos -= egg.transform.position;
+                transform.rotation = quaternion.Euler(0, 0, -(float)Math.Atan2(movingPos.x, movingPos.y));
+                if (egg.Rigid.velocity.magnitude > 5.0f)
                 {
-                    stretchScale = 1.0f;
+                    float stretchScale = egg.Rigid.velocity.magnitude * 0.1f;
+                    if (stretchScale < 1.0f)
+                    {
+                        stretchScale = 1.0f;
+                    }
+                    if (stretchScale > 1.5f)
+                    {
+                        stretchScale = 1.5f;
+                    }
+                    transform.localScale = new Vector3(1 / stretchScale, 1 * stretchScale, 1);
                 }
-                if (stretchScale>1.5f)
+                else
                 {
-                    stretchScale = 1.5f;
+                    transform.localScale = Vector3.one;
                 }
-                transform.localScale = new Vector3(1/stretchScale, 1*stretchScale, 1);
+
+                movingPos = egg.transform.position;
             }
-            else
-            {
-                transform.localScale = Vector3.one;
-            }
-                 
-            movingPos = egg.transform.position;
+        }
+        else
+        {
+            transform.localScale = Vector3.one;
+            isParachuteSeparate = true; 
         }
 
     }

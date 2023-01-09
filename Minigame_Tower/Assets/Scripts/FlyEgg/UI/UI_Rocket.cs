@@ -29,12 +29,12 @@ public class UI_Rocket : MonoBehaviour
         if (toggleOn&&!egg.IsDead)
         {
             rocket.MachineOn = true;
-            fuel.EnergyCost += 10.0f;
+            fuel.EnergyCost += 30.0f;
         }
         else
         {
             rocket.MachineOn = false;
-            fuel.EnergyCost -= 10.0f;
+            fuel.EnergyCost -= 30.0f;
         }
 
         if (fuel.CurrentFuel < 0.00025f)

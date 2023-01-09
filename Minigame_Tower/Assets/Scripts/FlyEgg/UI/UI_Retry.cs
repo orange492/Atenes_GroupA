@@ -15,8 +15,29 @@ public class UI_Retry : MonoBehaviour
         
     }
 
+    private void Start()
+    {
+        gameObject.SetActive(false);
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange += ModeChange;
+        }
+    }
+    private void ModeChange(EggGameManager.Mode obj)
+    {
+        gameObject.SetActive(obj == EggGameManager.Mode.Play||obj == EggGameManager.Mode.Die);
+    }
+    private void OnDestroy()
+    {
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange -= ModeChange;
+        }
+    }
+
     private void Retry()
-    {;
+    {
+        EggGameManager.Inst.mode = EggGameManager.Mode.ReadyToPlay;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

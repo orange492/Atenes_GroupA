@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
+using System.Net.Sockets;
+using UnityEditor;
 using UnityEngine;
 
 public class ToolSlot : MonoBehaviour
@@ -46,7 +48,21 @@ public class ToolSlot : MonoBehaviour
         canvas = FindObjectOfType<Canvas>();
         controller = canvas.transform.GetChild(0).transform;
         shop = FindObjectOfType<Shop>();
-        
+        switch (EggGameManager.Inst.SlotItems[slotIndex])
+        {
+            case EggGameManager.item.None:
+                
+                break;
+            case EggGameManager.item.Propeller:
+                EquipPropeller();
+               
+                break;
+            case EggGameManager.item.Rocket:
+                EquipRocket();
+                break;
+            default:
+                break;
+        }
     }
 
 
@@ -78,7 +94,7 @@ public class ToolSlot : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        
+
         if (shop.IsOnChangeMode)
         {
             if (!isSlotUsed)
@@ -122,12 +138,11 @@ public class ToolSlot : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Debug.Log("툴슬롯 온마우스");
         if (isItemOn && !isSlotUsed)
         {
             GameObject item = transform.GetChild(0).gameObject;
             item.transform.position = new Vector3(item.transform.position.x, item.transform.position.y, -0.5f);
-            isSlotUsed = true;        
+            isSlotUsed = true;
             shop.IsOnChangeMode = false;
             button = shop.LastItem;
             shop.LastItem.transform.SetParent(controller.transform.GetChild(slotIndex), false);
@@ -137,6 +152,15 @@ public class ToolSlot : MonoBehaviour
             shop.LastItemNull();
             shop.IsItemOnMouse = false;
             //transform.position = new Vector3(transform.position.x, transform.position.y, 0.5f);
+            if (shop.Item == 1)
+            {
+                EggGameManager.Inst.SlotItems[slotIndex] = EggGameManager.item.Propeller;
+            }
+            if (shop.Item == 2)
+            {
+                EggGameManager.Inst.SlotItems[slotIndex] = EggGameManager.item.Rocket;
+            }
+            shop.Item = -1;
         }
     }
 
@@ -149,8 +173,30 @@ public class ToolSlot : MonoBehaviour
             Destroy(transform.GetChild(i).gameObject);
         }
         Destroy(button.gameObject);
+        EggGameManager.Inst.SlotItems[slotIndex] = EggGameManager.item.None;
         itemValue = 0.0f;
         isSlotUsed = false;
+    }
+
+    void EquipRocket()
+    {
+        Rocket rocket = Instantiate(EggGameManager.Inst.ItemData[ItemIDCode.Rocket].modelPrefab, transform).GetComponent<Rocket>();
+        UI_Rocket rocketButton = Instantiate(EggGameManager.Inst.ItemData[ItemIDCode.Rocket].buttonPrefab, controller.transform.GetChild(slotIndex), false).GetComponent<UI_Rocket>();
+        rocketButton.rocket = rocket;
+        button = rocketButton.gameObject;
+        itemValue = EggGameManager.Inst.ItemData[ItemIDCode.Rocket].value;
+        rocket.transform.position = new Vector3(rocket.transform.position.x, rocket.transform.position.y, -0.5f);
+        isSlotUsed = true;
+    }
+    void EquipPropeller()
+    { 
+        Propeller propeller = Instantiate(EggGameManager.Inst.ItemData[ItemIDCode.Propeller].modelPrefab, transform).GetComponent<Propeller>();
+        UI_Propellar propellerButton = Instantiate(EggGameManager.Inst.ItemData[ItemIDCode.Propeller].buttonPrefab, controller.transform.GetChild(slotIndex), false).GetComponent<UI_Propellar>();
+        propellerButton.propeller = propeller;
+        button = propellerButton.gameObject;
+        itemValue = EggGameManager.Inst.ItemData[ItemIDCode.Propeller].value;
+        propeller.transform.position = new Vector3(propeller.transform.position.x, propeller.transform.position.y, -0.5f);
+        isSlotUsed = true;
     }
 
 }

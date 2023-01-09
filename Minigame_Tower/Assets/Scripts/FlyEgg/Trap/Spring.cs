@@ -62,13 +62,16 @@ public class Spring : MonoBehaviour, ITrap
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Rigidbody2D targetRigid = collision.GetComponent<Rigidbody2D>();
-        if (targetRigid != null)
+        if (collision.CompareTag("Egg"))
         {
-            if (!rotatioonSequence.IsPlaying())
+            Rigidbody2D targetRigid = collision.GetComponent<Rigidbody2D>();
+            if (targetRigid != null)
             {
-                rotatioonSequence.Play();
-                ThrowTarget(targetRigid);
+                if (!rotatioonSequence.IsPlaying())
+                {
+                    rotatioonSequence.Play();
+                    ThrowTarget(targetRigid);
+                }
             }
         }
     }
@@ -85,8 +88,8 @@ public class Spring : MonoBehaviour, ITrap
     void ThrowTarget(Rigidbody2D rigid)
     {
         rigid.AddTorque(1.0f, ForceMode2D.Impulse);
-        rigid.AddForce(Vector2.up * 10.0f, ForceMode2D.Impulse);
-        rigid.AddForce(Vector2.left * 20.0f, ForceMode2D.Impulse);
+        rigid.AddForce(Vector2.up * 20.0f, ForceMode2D.Impulse);
+        rigid.AddForce(Vector2.left * 50.0f, ForceMode2D.Impulse);
     }
 
     public void Visualize()

@@ -23,15 +23,14 @@ public class Trash : MonoBehaviour
         {
             EggGameManager.Inst.onModeChange += ModeChange;
         }
+        
     }
 
 
     private void ModeChange(EggGameManager.Mode obj)
     {
-        if (obj == EggGameManager.Mode.Play)
-        {
-            gameObject.SetActive(false);
-        }
+
+        gameObject.SetActive(false);
         if (obj == EggGameManager.Mode.ReadyToPlay)
         {
             gameObject.SetActive(true);
@@ -43,7 +42,7 @@ public class Trash : MonoBehaviour
     }
     private void OnEnable()
     {
-      
+
     }
 
     private void OnDestroy()

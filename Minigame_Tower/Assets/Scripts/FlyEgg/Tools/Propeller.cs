@@ -134,7 +134,6 @@ public class Propeller : MonoBehaviour
         
         if (collision.transform.CompareTag("Trash"))
         {
-            Debug.Log("in");
              if (toolSlot != null)
             {
                 toolSlot.DestroyItem();

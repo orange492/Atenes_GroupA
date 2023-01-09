@@ -32,12 +32,12 @@ public class UI_Propellar : MonoBehaviour
         if (toggleOn&&!egg.IsDead)
         {
             propeller.MachineOn = true;
-            fuel.EnergyCost += 100.0f;
+            fuel.EnergyCost += 10.0f;
         }
         else
         {
             propeller.MachineOn = false;
-            fuel.EnergyCost -= 100.0f;
+            fuel.EnergyCost -= 10.0f;
         }
 
         if (fuel.CurrentFuel < 0.00025f)

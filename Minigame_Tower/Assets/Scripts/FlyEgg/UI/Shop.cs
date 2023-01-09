@@ -54,6 +54,12 @@ public class Shop : MonoBehaviour
 
     GameObject lastItem;
 
+    int item = -1;
+    public int Item
+    {
+        get => item;
+        set => item = value;
+    }
     public GameObject LastItem
     {
      get=> lastItem;
@@ -165,7 +171,8 @@ public class Shop : MonoBehaviour
         {
             EggGameManager.Inst.onModeChange += ModeChange;
         }
-        
+
+        MoneyRemain = EggGameManager.Inst.Money;
         mouseFollow = FindObjectOfType<MouseFollow>();
 
         tools = FindObjectOfType<Tools>();
@@ -210,25 +217,37 @@ public class Shop : MonoBehaviour
 
         if (EggGameManager.Inst.isDetection)
         {
-            moneyRemain += EggGameManager.Inst.ItemData[ItemIDCode.Radar].value;
+            MoneyRemain += EggGameManager.Inst.ItemData[ItemIDCode.Radar].value;
             PurchaseDetection();
         }
         if (EggGameManager.Inst.isSlingShot)
         {
-            moneyRemain += EggGameManager.Inst.ItemData[ItemIDCode.SlingShot].value;
+            MoneyRemain += EggGameManager.Inst.ItemData[ItemIDCode.SlingShot].value;
             PurchaseSlingShot();
         }
 
         if (EggGameManager.Inst.isParachute)
         {
-            moneyRemain += EggGameManager.Inst.ItemData[ItemIDCode.Parachute].value;
+            MoneyRemain += EggGameManager.Inst.ItemData[ItemIDCode.Parachute].value;
             PurchaseParachute();
         }
+
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Intro)
+        {
+            shopOpenButton.gameObject.SetActive(false); 
+            transform.GetChild(3).gameObject.SetActive(false);
+        }
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.ReadyToPlay)
+        {
+            shopOpenButton.gameObject.SetActive(true);
+        }
+       
+       
     }
 
     private void ModeChange(EggGameManager.Mode obj)
     {
-        if (obj == EggGameManager.Mode.Play)
+        if (obj == EggGameManager.Mode.Play||obj==EggGameManager.Mode.Clear|| obj == EggGameManager.Mode.Intro)
         {
             ShopClose();
             shopOpenButton.gameObject.SetActive(false);
@@ -239,6 +258,7 @@ public class Shop : MonoBehaviour
             shopOpenButton.gameObject.SetActive(true);
             transform.GetChild(3).gameObject.SetActive(true);
         }
+        
     }
 
     public void PurchaseSlingShot()
@@ -303,7 +323,7 @@ public class Shop : MonoBehaviour
                 warningTextOn("모든 슬롯이 사용중입니다!");
                 return;
             }
-
+            Item = 1;
             IsOnChangeMode = true;
             GameObject propeller = Instantiate(items[(int)ItemIDCode.Propeller].modelPrefab, mouseFollow.transform);
             
@@ -333,6 +353,7 @@ public class Shop : MonoBehaviour
                 warningTextOn("모든 슬롯이 사용중입니다!");
                 return;
             }
+            Item = 2;
             IsOnChangeMode = true;
             GameObject rocket = Instantiate(items[(int)ItemIDCode.Rocket].modelPrefab, mouseFollow.transform);
             GameObject rocketButton = Instantiate(items[(int)ItemIDCode.Rocket].buttonPrefab, canvas.transform.GetChild(0).transform);

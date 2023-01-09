@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,8 +11,8 @@ public class Fuel : MonoBehaviour
     TextMeshProUGUI fuelText;
 
     
-    float maxFuel=500.0f;
-    public float currentFuel = 500.0f;
+    float maxFuel=1500.0f;
+    public float currentFuel = 1500.0f;
 
     public float CurrentFuel
     {
@@ -46,7 +47,34 @@ public class Fuel : MonoBehaviour
         currentFuel = maxFuel;
         fuelText.text = $"{currentFuel:f0}/{maxFuel:f0}";
         fuelSlider.maxValue = maxFuel;
-        fuelSlider.value = CurrentFuel;
+        fuelSlider.value = CurrentFuel; 
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange += ModeChange;
+        }
+        if (EggGameManager.Inst.mode == EggGameManager.Mode.Intro)
+        {
+            transform.gameObject.SetActive(false);
+        }
+    }
+    private void OnDestroy()
+    {
+        if (EggGameManager.Inst != null)
+        {
+            EggGameManager.Inst.onModeChange -= ModeChange;
+        }
+    }
+
+    private void ModeChange(EggGameManager.Mode obj)
+    {
+        if (obj == EggGameManager.Mode.Intro)
+        {
+            transform.gameObject.SetActive(false);
+        }
+        else
+        {
+            transform.gameObject.SetActive(true);
+        }
     }
 
     private void Update()
