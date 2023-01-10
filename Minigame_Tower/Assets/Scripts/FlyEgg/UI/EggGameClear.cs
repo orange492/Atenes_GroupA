@@ -58,12 +58,14 @@ public class EggGameClear : MonoBehaviour
              isGameClear = true;
             
             canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
 
         }
         else
         {
           canvasGroup.alpha = 0.0f;
             canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
         }
     }
 

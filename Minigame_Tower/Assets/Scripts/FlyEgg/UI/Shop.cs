@@ -42,7 +42,7 @@ public class Shop : MonoBehaviour
     int radarCount = 0;
     int parachuteCount = 0;
 
-    Canvas canvas;
+    GameObject canvas;
 
     Tools tools;
     ToolSlot[] toolSlots;
@@ -182,7 +182,7 @@ public class Shop : MonoBehaviour
             toolSlots[i] = tools.transform.GetChild(i).GetComponent<ToolSlot>();
             toolSlots[i].SlotIndex = i;
         }
-        canvas = FindObjectOfType<Canvas>();
+        canvas = GameObject.FindGameObjectWithTag("EggGameCanvas");
 
 
         items = new ItemData[5];

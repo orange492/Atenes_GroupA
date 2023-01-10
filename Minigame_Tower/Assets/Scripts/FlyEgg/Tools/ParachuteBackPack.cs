@@ -31,17 +31,12 @@ public class ParachuteBackPack : MonoBehaviour
         {
             if (isOnParachute)
             {
-                //if (transform.position.y > -4)
-                //{
-                //    transform.position -= moveSpeed * Time.deltaTime * Vector3.up;
-                //    transform.Rotate(Vector3.forward, 1.0f);
-                //}
-                if (!isDeadOn)
+               if (transform.position.y > -4)
                 {
-                    transform.GetComponent<CapsuleCollider2D>().isTrigger = false;
-                    transform.GetComponent<Rigidbody2D>().isKinematic = false;
-                    isDeadOn = true;
+                    transform.position -= moveSpeed * Time.deltaTime * Vector3.up;
+                    transform.Rotate(Vector3.forward, 1.0f);
                 }
+              
             }
         }
         else

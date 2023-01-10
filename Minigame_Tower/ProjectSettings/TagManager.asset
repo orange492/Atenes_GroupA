@@ -18,6 +18,7 @@ TagManager:
   - Enemy
   - Meteorite
   - Boss
+  - EggGameCanvas
   layers:
   - Default
   - TransparentFX

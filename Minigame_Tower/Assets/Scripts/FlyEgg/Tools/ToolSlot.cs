@@ -34,7 +34,7 @@ public class ToolSlot : MonoBehaviour
 
     public GameObject button;
 
-    Canvas canvas;
+    GameObject canvas;
     Transform controller;
     public int SlotIndex
     {
@@ -45,7 +45,7 @@ public class ToolSlot : MonoBehaviour
     {
         mouseFollow = FindObjectOfType<MouseFollow>();
         tools = FindObjectOfType<Tools>();
-        canvas = FindObjectOfType<Canvas>();
+        canvas = GameObject.FindGameObjectWithTag("EggGameCanvas");
         controller = canvas.transform.GetChild(0).transform;
         shop = FindObjectOfType<Shop>();
         switch (EggGameManager.Inst.SlotItems[slotIndex])

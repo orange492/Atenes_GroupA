@@ -1176,6 +1176,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 97110c9f5b849b04185ed2470ff3afc1, type: 3}
   - {fileID: 21300000, guid: 1b781770ca9ba3b46b7f3036bf865732, type: 3}
   - {fileID: 21300000, guid: f37186c404703f247b0f98e56cdcf4fa, type: 3}
+  - {fileID: 21300000, guid: 20f391012908acc4694225dc597d82e7, type: 3}
+  - {fileID: 21300000, guid: 20f391012908acc4694225dc597d82e7, type: 3}
+  - {fileID: 21300000, guid: 20f391012908acc4694225dc597d82e7, type: 3}
   oImage: {fileID: 1173010002}
   oPopup: {fileID: 1927888074}
   oGameOver: {fileID: 1148122612}
