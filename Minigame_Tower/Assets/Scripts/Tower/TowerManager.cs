@@ -63,6 +63,8 @@ public class TowerManager : SingletonPuzzle<TowerManager>
     GameObject oGameOver;
     [SerializeField]
     GameObject oCloseBtn;
+    [SerializeField]
+    GameObject oCloseBtn2;
     CanvasScaler canvasScaler;
     bool init = false;
 
@@ -116,10 +118,15 @@ public class TowerManager : SingletonPuzzle<TowerManager>
     public void OpenPopup(bool open)
     {
         oPopup.SetActive(open);
+        if(SceneManager.GetActiveScene().name == "EggLevel1" || SceneManager.GetActiveScene().name == "EggLevel2" || SceneManager.GetActiveScene().name == "EggLevel3")
+        {
+            oCloseBtn2.SetActive(true);
+        }
         if(!open)
         {
             oGameOver.SetActive(false);
             oCloseBtn.SetActive(false);
+            oCloseBtn2.SetActive(false);
         }
     }
 
@@ -189,6 +196,10 @@ public class TowerManager : SingletonPuzzle<TowerManager>
     {
         MoveScene(0);
 
+        if(PlayerPrefs.GetInt(PlayerPrefs.GetInt("currentFloor").ToString() + "clear") == 1)
+        {
+            return;
+        }
         PlayerPrefs.SetInt(PlayerPrefs.GetInt("currentFloor").ToString() + "clear", 1);
         if (PlayerPrefs.GetInt("height") < floor.Count)
         {
