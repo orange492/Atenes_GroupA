@@ -22,7 +22,7 @@ public class BlackjackManager : Singletons<BlackjackManager>
     public Button standBtn; // 스탠드, 카드를 뽑지 않고 차례 마치기 ->턴쉰다
     public Button betBtn; // 배팅, 칩을 더 건다는 버튼 ->칩걸기 ->> 항상 고정적으로 배팅될수 있게 변경 필요
 
-    CanvasGroup canvasGroup;
+  
 
 
 

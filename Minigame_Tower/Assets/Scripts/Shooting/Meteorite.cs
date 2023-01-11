@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class Meteorite : MonoBehaviour
 {
 	[SerializeField]
-	private	int			damage = 5;			// 운석 공격력
+	private	int			damage = 1;			// 운석 공격력
 	[SerializeField]
 	private	GameObject	explosionPrefab;	// 폭발 효과
 

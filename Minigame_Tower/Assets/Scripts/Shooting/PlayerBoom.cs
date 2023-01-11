@@ -13,10 +13,12 @@ public class PlayerBoom : MonoBehaviour
 	private	Animator		animator;
    
 	public GameObject BoomEffect;
+    private PlayerController playerController; // 플레이어 점수 접근 위해서
+    private int scorePoint = 100;		// 적 처치시 획득 점수
     private void Awake()
 	{
 		animator	= GetComponent<Animator>();
-        
+        playerController = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         //StartCoroutine("MoveToCenter");
     }
 
@@ -48,7 +50,7 @@ public class PlayerBoom : MonoBehaviour
 
     IEnumerator boomCoroutine()
     {
-        yield return new WaitForSeconds(4.0f);
+        yield return new WaitForSeconds(3.0f);
         BoomEffect.SetActive(false);
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -61,13 +63,14 @@ public class PlayerBoom : MonoBehaviour
             //collision.gameObject.SetActive(false);
 
             // 적들 총알 찾아서 폭탄에 닫으면 없애버리기
-           // GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy"); 
-            
+            // GameObject[] enemys = GameObject.FindGameObjectsWithTag("Enemy"); 
+
             //for (int i = 0; i < enemys.Length; i++)
             //{
             //    enemys[i].gameObject.SetActive(false);
 
             //}
+            playerController.Score += scorePoint;
             Destroy(collision.gameObject); // 충돌하는 모든 물체 삭제 -> 애니메이션까지 정지시킴
             StartCoroutine(boomCoroutine());
 

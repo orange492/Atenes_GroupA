@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Minigame_Tower/Assets/Scenes/Shooting/Test_ShootingHard.unity.meta
+guid: ea7c8e2a70eb5604498395367366a45d
+========
 guid: 1546ca44a4378cc4a954ce05fc80f9d2
+>>>>>>>> main:Minigame_Tower/Assets/Scenes/demoscene.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

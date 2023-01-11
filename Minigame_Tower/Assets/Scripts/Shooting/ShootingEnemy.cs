@@ -47,20 +47,17 @@ public class ShootingEnemy : MonoBehaviour
 
 	private void SpawnItem()
 	{
-		// 파워업(40%), 폭탄+1(20%), 체력회복(40%)
+		// 파워업(50%), 폭탄+1(50%), 
 		int spawnItem = Random.Range(0, 100);
-		if ( spawnItem < 40 )
+		if ( spawnItem < 50 )
 		{
 			Instantiate(itemPrefabs[0], transform.position, Quaternion.identity);
 		}
-		else if ( spawnItem < 60 )
+		else if ( spawnItem < 100 )
 		{
 			Instantiate(itemPrefabs[1], transform.position, Quaternion.identity);
 		}
-		else if ( spawnItem < 100 )
-		{
-			Instantiate(itemPrefabs[2], transform.position, Quaternion.identity);
-		}
+		
 	}
 }
 

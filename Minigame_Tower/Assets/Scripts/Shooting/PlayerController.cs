@@ -120,15 +120,17 @@ public class PlayerController : MonoBehaviour
 		Destroy(GetComponent<CircleCollider2D>());
 		// 사망 시 키 플레이어 조작 등을 하지 못하게 하는 변수
 		isDie = true;
-	}
+        GameObject.Find("ShootingResult").GetComponent<ResultPannel>().Open();
+    }
 
 	public void OnDieEvent()
 	{
 		// 디바이스에 획득한 점수 score 저장
 		PlayerPrefs.SetInt("Score", score);
-		// 플레이어 사망 시 nextSceneName 씬으로 이동
-		//SceneManager.LoadScene(nextSceneName);
-	}
+        // 플레이어 사망 시 nextSceneName 씬으로 이동
+        //SceneManager.LoadScene(nextSceneName);
+        
+    }
 }
 
 
