@@ -15,15 +15,15 @@ GameObject:
   - component: {fileID: 199905738009694899}
   - component: {fileID: 310816437826231939}
   - component: {fileID: 5159234992859894308}
-  - component: {fileID: 6287746231160891450}
   - component: {fileID: 7838503350969750244}
+  - component: {fileID: 1897005699}
   m_Layer: 0
   m_Name: Boss
-  m_TagString: ShootingEnemy
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5136135615764146865
 Transform:
   m_ObjectHideFlags: 0
@@ -137,8 +137,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageData: {fileID: 11400000, guid: 1eae7205c07fb544b8f57096dd4ea7d3, type: 2}
-  explosionPrefab: {fileID: 2061869762299600598, guid: 0003e81eb2177fe4880ef5c6dd5de49f, type: 3}
-  playerController: {fileID: 2597091502854936703, guid: 532ee56de3e639148a408f319f87873e, type: 3}
+  explosionPrefab: {fileID: 3484955856206876662, guid: 6ad44d207e0c962439d794fea7c9c12b, type: 3}
+  playerController: {fileID: 0}
   nextSceneName: GameClear
   bossAppearPoint: 2.5
 --- !u!114 &310816437826231939
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bd32c6f9b80da14587515298c499170, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHP: 1000
+  maxHP: 15
 --- !u!114 &5159234992859894308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,22 +168,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   moveDirection: {x: 0, y: 0, z: 0}
---- !u!70 &6287746231160891450
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8286810885672056041}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 2.7, y: 1.5}
-  m_Direction: 1
 --- !u!50 &7838503350969750244
 Rigidbody2D:
   serializedVersion: 4
@@ -205,3 +189,52 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!60 &1897005699
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8286810885672056041}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.75, y: 2.75}
+    newSize: {x: 2.75, y: 2.75}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.375, y: 0.625}
+      - {x: 1.2083334, y: 1.0416667}
+      - {x: 0.9166667, y: 1.375}
+      - {x: -0.9166667, y: 1.375}
+      - {x: -1.2083334, y: 1.0416667}
+      - {x: -1.375, y: 0.4166667}
+      - {x: -1.375, y: -0.625}
+      - {x: -1.2083334, y: -1}
+      - {x: -1.0833334, y: -1.1666667}
+      - {x: -0.875, y: -1.2916667}
+      - {x: -0.5416667, y: -1.375}
+      - {x: 0.9166667, y: -1.375}
+      - {x: 1.3333334, y: -0.8333334}
+      - {x: 1.375, y: -0.6666667}
+    - - {x: -0.875, y: -0.25}
+      - {x: -0.875, y: -0.2916667}
+      - {x: -0.7916667, y: -0.375}
+      - {x: -0.6666667, y: -0.375}
+      - {x: -0.5416667, y: -0.25}
+    - - {x: 0.5416667, y: -0.25}
+      - {x: 0.6666667, y: -0.375}
+      - {x: 0.7916667, y: -0.375}
+      - {x: 0.9166667, y: -0.25}
+      - {x: 0.9166667, y: -0.20833334}

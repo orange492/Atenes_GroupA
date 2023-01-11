@@ -67,8 +67,7 @@ public class Weapon : MonoBehaviour
 		{
 			// 공격 레벨에 따라 발사체 생성
 			AttackByLevel();
-			// 공격 사운드 재생
-			audioSource.Play();
+			
 			
 			// attackRate 시간만큼 대기
 			yield return new WaitForSeconds(attackRate);

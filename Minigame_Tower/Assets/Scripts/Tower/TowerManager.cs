@@ -24,7 +24,10 @@ public class TowerManager : SingletonPuzzle<TowerManager>
      {5, "Rhythm"},
      {6, "EggLevel1" },
      {7, "EggLevel2" },
-     {8, "EggLevel3" }
+     {8, "EggLevel3" },
+     {9, "Test_Shooting" },
+     {10, "Test_ShootingHard" }
+
     };
     Dictionary<int, string> gameName = new Dictionary<int, string>()
     {
@@ -36,7 +39,9 @@ public class TowerManager : SingletonPuzzle<TowerManager>
      {5, "리듬 게임"},
      {6, "에그 게임 lv1" },
      {7, "에그 게임 lv2" },
-     {8, "에그 게임 lv3" }
+     {8, "에그 게임 lv3" },
+     {9, "슈팅 게임(노멀)" },
+     {10, "슈팅 게임(하드)" }
     };
     Dictionary<int, bool> isVertical = new Dictionary<int, bool>()
     {
@@ -108,6 +113,8 @@ public class TowerManager : SingletonPuzzle<TowerManager>
             floor.Add(new sFloor(6, 0, "1레벨", isVertical));
             floor.Add(new sFloor(7, 1, "2레벨", isVertical));
             floor.Add(new sFloor(8, 2, "3레벨", isVertical));
+            floor.Add(new sFloor(9, 0, "라이프 10", isVertical));  // 슈팅게임 노말모드
+            floor.Add(new sFloor(10, 0, "라이프 5", isVertical));  // 슈팅게임 하드모드
             SetSave();
             init = true;
         }

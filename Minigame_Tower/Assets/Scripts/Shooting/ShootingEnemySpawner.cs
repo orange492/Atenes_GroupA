@@ -50,9 +50,7 @@ public class ShootingEnemySpawner : MonoBehaviour
 			Vector3	position  = new Vector3(positionX, stageData.LimitMax.y+1.0f, 0.0f);
 			// 적 캐릭터 생성
 			GameObject enemyClone = Instantiate(enemyPrefab, position, Quaternion.identity);
-			// 적 체력을 나타내는 Slider UI 생성 및 설정
-			SpawnEnemyHPSlider(enemyClone);
-
+			
 			// 적 생성 숫자 증가
 			currentEnemyCount ++;
 			// 적을 최대 숫자까지 생성하면 적 생성 코루틴 중지, 보스 생성 코루틴 실행
