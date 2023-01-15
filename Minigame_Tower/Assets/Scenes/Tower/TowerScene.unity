@@ -1176,11 +1176,11 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 97110c9f5b849b04185ed2470ff3afc1, type: 3}
   - {fileID: 21300000, guid: 1b781770ca9ba3b46b7f3036bf865732, type: 3}
   - {fileID: 21300000, guid: f37186c404703f247b0f98e56cdcf4fa, type: 3}
-  - {fileID: 21300000, guid: 20f391012908acc4694225dc597d82e7, type: 3}
-  - {fileID: 21300000, guid: 20f391012908acc4694225dc597d82e7, type: 3}
-  - {fileID: 21300000, guid: 20f391012908acc4694225dc597d82e7, type: 3}
-  - {fileID: 21300000, guid: 20f391012908acc4694225dc597d82e7, type: 3}
-  - {fileID: 21300000, guid: 20f391012908acc4694225dc597d82e7, type: 3}
+  - {fileID: 21300000, guid: c734eab8602c23748874544e51cdf081, type: 3}
+  - {fileID: 21300000, guid: c734eab8602c23748874544e51cdf081, type: 3}
+  - {fileID: 21300000, guid: c734eab8602c23748874544e51cdf081, type: 3}
+  - {fileID: 21300000, guid: 2a14f2e6dc552b645adfaae7c762e67e, type: 3}
+  - {fileID: 21300000, guid: 2a14f2e6dc552b645adfaae7c762e67e, type: 3}
   oImage: {fileID: 1173010002}
   oPopup: {fileID: 1927888074}
   oGameOver: {fileID: 1148122612}
@@ -1910,7 +1910,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -200.00006}
+  m_AnchoredPosition: {x: 0, y: -200}
   m_SizeDelta: {x: 0, y: 399.99988}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1927888076

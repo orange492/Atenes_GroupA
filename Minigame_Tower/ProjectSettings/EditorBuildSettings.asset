@@ -35,4 +35,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FlyEgg/EggLevel3.unity
     guid: f2e305aad1622424ea1fa2eb98102acb
+  - enabled: 1
+    path: Assets/Scenes/Shooting/Test_Shooting.unity
+    guid: cc2a77dbe9ecabb44a30872a581059a6
+  - enabled: 1
+    path: Assets/Scenes/Shooting/Test_ShootingHard.unity
+    guid: 3a2bff97928b996458972e9903a742d3
   m_configObjects: {}
