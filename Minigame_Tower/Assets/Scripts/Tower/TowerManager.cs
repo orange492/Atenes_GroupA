@@ -35,13 +35,13 @@ public class TowerManager : SingletonPuzzle<TowerManager>
      {1, "디펜스 게임"},
      {2, "블랙잭 게임"},
      {3, "퍼즐 게임"},
-     {4, "블랙잭 게임(하드)"},
+     {4, "블랙잭 게임"},
      {5, "리듬 게임"},
-     {6, "에그 게임 lv1" },
-     {7, "에그 게임 lv2" },
-     {8, "에그 게임 lv3" },
-     {9, "슈팅 게임(노멀)" },
-     {10, "슈팅 게임(하드)" }
+     {6, "에그 게임" },
+     {7, "에그 게임" },
+     {8, "에그 게임" },
+     {9, "슈팅 게임" },
+     {10, "슈팅 게임" }
     };
     Dictionary<int, bool> isVertical = new Dictionary<int, bool>()
     {
@@ -53,7 +53,9 @@ public class TowerManager : SingletonPuzzle<TowerManager>
      {5, false},
      {6, false},
      {7, false},
-     {8, false}
+     {8, false},
+     {9, false},
+     {10, false}
 
     };
     [SerializeField]
@@ -106,15 +108,20 @@ public class TowerManager : SingletonPuzzle<TowerManager>
             floor.Add(new sFloor(1, 0, "10웨이브", isVertical));
             floor.Add(new sFloor(2, 0, "500라이프", isVertical)); //블랙잭 노멀모드
             floor.Add(new sFloor(3, 0, "500점", isVertical));
-            floor.Add(new sFloor(5, 0, "신나는 음악", isVertical));
+            floor.Add(new sFloor(5, 0, "사건의 지평선", isVertical));
+            floor.Add(new sFloor(6, 0, "1레벨", isVertical));
+            floor.Add(new sFloor(9, 0, "라이프 10", isVertical));  // 슈팅게임 노말모드
+
             floor.Add(new sFloor(1, 1, "20웨이브", isVertical));
             floor.Add(new sFloor(4, 0, "300라이프", isVertical)); //블랙잭 하드모드
             floor.Add(new sFloor(3, 0, "1000점", isVertical));
-            floor.Add(new sFloor(6, 0, "1레벨", isVertical));
+            floor.Add(new sFloor(5, 1, "보물찾기", isVertical));
             floor.Add(new sFloor(7, 1, "2레벨", isVertical));
-            floor.Add(new sFloor(8, 2, "3레벨", isVertical));
-            floor.Add(new sFloor(9, 0, "라이프 10", isVertical));  // 슈팅게임 노말모드
             floor.Add(new sFloor(10, 0, "라이프 5", isVertical));  // 슈팅게임 하드모드
+
+            floor.Add(new sFloor(5, 2, "나만 알면 돼", isVertical));
+            floor.Add(new sFloor(8, 2, "3레벨", isVertical));
+
             SetSave();
             init = true;
         }

@@ -24,7 +24,20 @@ public class Sound_Rhythum : SingletonPuzzle<Sound_Rhythum>
     {
         audioSource = this.GetComponent<AudioSource>();
         ClipNote = Resources.Load<AudioClip>("Rhythm/DM-CGS-21");
-        ClipMusic = Resources.Load<AudioClip>("Rhythm/Younha");
+        if(TowerManager.Inst.GetDifficulty() == 0)
+        {
+            ClipMusic = Resources.Load<AudioClip>("Rhythm/Younha");
+        }
+        else if(TowerManager.Inst.GetDifficulty() == 1)
+        {
+            ClipMusic = Resources.Load<AudioClip>("Rhythm/OneCoin");
+        }
+        else if (TowerManager.Inst.GetDifficulty() == 2)
+        {
+            ClipMusic = Resources.Load<AudioClip>("Rhythm/Apink");
+        }
+
+        Clear();
 
         if (SceneManager.GetActiveScene().name != "Rhythm")
         {

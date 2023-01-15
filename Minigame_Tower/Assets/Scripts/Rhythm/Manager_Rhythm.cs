@@ -89,17 +89,26 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
 
     void ChangeMapToTime()
     {
+        float startTime = 0;
+        if (Sound_Rhythum.Inst.ClipName() == "OneCoin")
+        {
+            startTime += 5;
+        }
+        else if(Sound_Rhythum.Inst.ClipName() == "Apink")
+        {
+            startTime += -0.5f;
+        }
         editor_Rhythm.LoadGameData();
         NoteDic = editor_Rhythm.NoteDic;
         noteList[0] = new List<float>();
         noteList[1] = new List<float>();
         foreach (var item in NoteDic[0])
         {
-            noteList[0].Add(-0.464f + ((item.Key - 4) * 0.149333f));
+            noteList[0].Add(Sound_Rhythum.Inst.startTime - 5.4f +  -0.464f + startTime + ((item.Key - 4) * 0.149333f));
         }
         foreach (var item in NoteDic[1])
         {
-            noteList[1].Add(-0.464f + ((item.Key - 4) * 0.149333f));
+            noteList[1].Add(Sound_Rhythum.Inst.startTime - 5.4f + -0.464f + startTime + ((item.Key - 4) * 0.149333f));
         }
         noteList[0].Sort();
         noteList[1].Sort();
