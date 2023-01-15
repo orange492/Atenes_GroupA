@@ -66,6 +66,7 @@ public class Line : MonoBehaviour
         }
         shop = FindObjectOfType<Shop>();
         DontDestroyOnLoad(this.gameObject);
+
     }
 
     private void Update()
@@ -88,16 +89,20 @@ public class Line : MonoBehaviour
 
     void ModeChange(EggGameManager.Mode obj)
     {
+        if (obj == EggGameManager.Mode.ToMain)
+        {
+            Destroy(this.gameObject);
+        }
         if (obj != EggGameManager.Mode.Play)
         {
             rigid.isKinematic = true;
             rigid.velocity = Vector3.zero;
             rigid.angularVelocity = 0.0f;
         }
-        else
+        
+        if(obj==EggGameManager.Mode.Play)
         {
             rigid.isKinematic = false;
-            
         }
     }
 

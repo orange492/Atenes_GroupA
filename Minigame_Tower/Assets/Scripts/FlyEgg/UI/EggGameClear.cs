@@ -36,7 +36,9 @@ public class EggGameClear : MonoBehaviour
 
     private void OnToMain()
     {
+        EggGameManager.Inst.mode = EggGameManager.Mode.ToMain;
         TowerManager.Inst.Clear();
+        
     }
 
     private void OnDestroy()
