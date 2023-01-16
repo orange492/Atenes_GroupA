@@ -74,7 +74,7 @@ public class TowerManager : SingletonPuzzle<TowerManager>
     GameObject oCloseBtn2;
     CanvasScaler canvasScaler;
     bool init = false;
-
+    Button resetButton;
     public struct sFloor
     {
         public int game;
@@ -97,7 +97,7 @@ public class TowerManager : SingletonPuzzle<TowerManager>
         canvasScaler = gameObject.GetComponent<CanvasScaler>();
         canvasScaler.matchWidthOrHeight = 0f;
         oPopup.GetComponent<RectTransform>().offsetMin = new Vector3(0, 0, 0);
-
+    
         if (SceneManager.GetActiveScene().name != scene[0])
         {
             return;
@@ -105,17 +105,17 @@ public class TowerManager : SingletonPuzzle<TowerManager>
 
         if (!init)
         {
-            floor.Add(new sFloor(1, 0, "10웨이브", isVertical));
-            floor.Add(new sFloor(2, 0, "500라이프", isVertical)); //블랙잭 노멀모드
-            floor.Add(new sFloor(3, 0, "500점", isVertical));
-            floor.Add(new sFloor(5, 0, "사건의 지평선", isVertical));
+            //floor.Add(new sFloor(1, 0, "10웨이브", isVertical));
+            //floor.Add(new sFloor(2, 0, "500라이프", isVertical)); //블랙잭 노멀모드
+            //floor.Add(new sFloor(3, 0, "500점", isVertical));
+            //floor.Add(new sFloor(5, 0, "사건의 지평선", isVertical));
             floor.Add(new sFloor(6, 0, "1레벨", isVertical));
-            floor.Add(new sFloor(9, 0, "라이프 10", isVertical));  // 슈팅게임 노말모드
+            //floor.Add(new sFloor(9, 0, "라이프 10", isVertical));  // 슈팅게임 노말모드
 
-            floor.Add(new sFloor(1, 1, "20웨이브", isVertical));
-            floor.Add(new sFloor(4, 0, "300라이프", isVertical)); //블랙잭 하드모드
-            floor.Add(new sFloor(3, 0, "1000점", isVertical));
-            floor.Add(new sFloor(5, 1, "보물찾기", isVertical));
+            //floor.Add(new sFloor(1, 1, "20웨이브", isVertical));
+            //floor.Add(new sFloor(4, 0, "300라이프", isVertical)); //블랙잭 하드모드
+            //floor.Add(new sFloor(3, 0, "1000점", isVertical));
+            //floor.Add(new sFloor(5, 1, "보물찾기", isVertical));
             floor.Add(new sFloor(7, 1, "2레벨", isVertical));
             floor.Add(new sFloor(10, 0, "라이프 5", isVertical));  // 슈팅게임 하드모드
 
@@ -125,18 +125,22 @@ public class TowerManager : SingletonPuzzle<TowerManager>
             SetSave();
             init = true;
         }
+       
+        
 
         PrintFloor();
     }
 
+
+
     public void OpenPopup(bool open)
     {
         oPopup.SetActive(open);
-        if(SceneManager.GetActiveScene().name == "EggLevel1" || SceneManager.GetActiveScene().name == "EggLevel2" || SceneManager.GetActiveScene().name == "EggLevel3")
+        if (SceneManager.GetActiveScene().name == "EggLevel1" || SceneManager.GetActiveScene().name == "EggLevel2" || SceneManager.GetActiveScene().name == "EggLevel3")
         {
             oCloseBtn2.SetActive(true);
         }
-        if(!open)
+        if (!open)
         {
             oGameOver.SetActive(false);
             oCloseBtn.SetActive(false);
@@ -146,10 +150,10 @@ public class TowerManager : SingletonPuzzle<TowerManager>
 
     public void GameOver()
     {
-        if(PlayerPrefs.GetInt("isVertical")==0)
+        if (PlayerPrefs.GetInt("isVertical") == 0)
         {
             canvasScaler.matchWidthOrHeight = 0.5f;
-            oPopup.GetComponent<RectTransform>().offsetMin = new Vector3(0,-400,0);
+            oPopup.GetComponent<RectTransform>().offsetMin = new Vector3(0, -400, 0);
         }
         oGameOver.SetActive(true);
         oCloseBtn.SetActive(true);
@@ -199,6 +203,7 @@ public class TowerManager : SingletonPuzzle<TowerManager>
             OptionBtn(true);
         }
         OpenPopup(false);
+       
     }
 
     public void OptionBtn(bool act)
@@ -210,7 +215,7 @@ public class TowerManager : SingletonPuzzle<TowerManager>
     {
         MoveScene(0);
 
-        if(PlayerPrefs.GetInt(PlayerPrefs.GetInt("currentFloor").ToString() + "clear") == 1)
+        if (PlayerPrefs.GetInt(PlayerPrefs.GetInt("currentFloor").ToString() + "clear") == 1)
         {
             return;
         }

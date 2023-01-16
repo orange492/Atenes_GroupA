@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7825335534492040279}
   - component: {fileID: 7825335534492040281}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: EggGameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

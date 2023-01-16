@@ -123,4 +123,9 @@ public class EggGameManager : SingletonPuzzle<EggGameManager>
             }
         }
     }
+    
+    public void ResetEggGameManager()
+    {
+        mode = Mode.Intro;
+    }
 }
