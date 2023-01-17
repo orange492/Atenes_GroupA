@@ -265,17 +265,17 @@ public class Shop : MonoBehaviour
     {
         if (!isOnChangeMode)
         {
+            if (slingShotCount > 0)
+            {
+                SellSlingShot();
+                return;
+            }
             if (moneyRemain < EggGameManager.Inst.ItemData[(uint)0].value)
             {
                 MoneyLack();
                 return;
             }
 
-            if (slingShotCount > 0)
-            {
-                SellSlingShot();
-                return;
-            }
 
             GameObject slingshot = Instantiate(EggGameManager.Inst.ItemData[(uint)0].modelPrefab);
             slingshot.transform.position = new Vector3(0, -1.0f, 0);
@@ -370,11 +370,6 @@ public class Shop : MonoBehaviour
 
    public void PurchaseDetection()
     {
-        if (moneyRemain < EggGameManager.Inst.ItemData[ItemIDCode.Radar].value)
-        {
-            MoneyLack();
-            return;
-        }
         if (radarCount > 0)
         {
             radarCount--;
@@ -383,6 +378,11 @@ public class Shop : MonoBehaviour
             tools.SlotUse(0, false);
             purchaseButtons[4].transform.GetComponent<Image>().color = defaultColor;
             EggGameManager.Inst.isDetection = false;
+            return;
+        }
+        if (moneyRemain < EggGameManager.Inst.ItemData[ItemIDCode.Radar].value)
+        {
+            MoneyLack();
             return;
         }
 
@@ -404,11 +404,6 @@ public class Shop : MonoBehaviour
 
     public void PurchaseParachute()
     {
-        if (moneyRemain < items[1].value)
-        {
-            MoneyLack();
-            return;
-        }
         if (parachuteCount > 0)
         {
             parachuteCount--;
@@ -417,6 +412,11 @@ public class Shop : MonoBehaviour
             tools.SlotUse(2,false);
             purchaseButtons[1].transform.GetComponent<Image>().color = defaultColor;
             EggGameManager.Inst.isParachute = false;
+            return;
+        }
+        if (moneyRemain < items[1].value)
+        {
+            MoneyLack();
             return;
         }
         if (toolSlots[2].IsSlotUsed)
