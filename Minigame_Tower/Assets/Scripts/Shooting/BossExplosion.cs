@@ -31,7 +31,7 @@ public class BossExplosion : MonoBehaviour
         //PlayerPrefs.SetInt("Score", playerController.Score);
         // 게임 클리어 or 게임 오버
         //GameObject.Find("ShootingResult").GetComponent<ResultPannel>().Open();
-        GameObject.Find("Player").GetComponent<PlayerController>().OnDie();
+        //GameObject.Find("Player").GetComponent<PlayerController>().OnDie();
 
     }
 }

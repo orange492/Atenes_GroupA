@@ -5,18 +5,18 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
 
-public class ResultPannel : MonoBehaviour
+public class ShootingReplayResult : MonoBehaviour
 {
     ResultPannel resultPannel;
     Button nextButton;
     CanvasGroup canvasGroup;
-    
- 
+    public String SceanName;
+
 
     private void Start()
     {
-        Close();
-       
+        Open();
+
         //BlackjackManager.Inst.Player.onDead += open(); // 이코드 왜안되는지 확인 필요!
     }
     private void Awake()
@@ -25,7 +25,7 @@ public class ResultPannel : MonoBehaviour
 
         resultPannel = GetComponent<ResultPannel>();
         nextButton = GetComponent<Button>();
-       
+
     }
     public void Close()
     {
@@ -37,19 +37,28 @@ public class ResultPannel : MonoBehaviour
     //{
     //    StartCoroutine(OpenDelay());
     //}
-   public void Open()
+    public void Open()
     {
         canvasGroup.alpha = 1.0f;
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
     }
 
-   public void OnClick_Next()
+    public void OnClick_Next()
     {
 
         {
-            TowerManager.Inst.Clear(); //클리어시 타워씬으로 복구
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);   //    // 현재 열린 씬을 새로 열기
+            
+            SceneManager.LoadScene(SceanName);   //    // 현재 열린 씬을 새로 열기
+            Close();
+        }
+    }
+    public void OnClick_Next2()
+    {
+
+        {
+
+            SceneManager.LoadScene("Test_ShootingHard");   //    // 현재 열린 씬을 새로 열기
             Close();
         }
     }
@@ -62,6 +71,4 @@ public class ResultPannel : MonoBehaviour
     //    canvasGroup.interactable = true;
     //    canvasGroup.blocksRaycasts = true;
     //}
-
-
 }

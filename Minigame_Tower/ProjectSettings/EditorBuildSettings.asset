@@ -29,16 +29,22 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FlyEgg/EggLevel1.unity
     guid: e5a7f534e3ba5214f9743302297b43db
-  - enabled: 1
-    path: Assets/Scenes/FlyEgg/EggLevel2.unity
-    guid: 99640e6052e3e694e86bc89509acc435
-  - enabled: 1
-    path: Assets/Scenes/FlyEgg/EggLevel3.unity
-    guid: f2e305aad1622424ea1fa2eb98102acb
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/Shooting/Test_Shooting.unity
     guid: cc2a77dbe9ecabb44a30872a581059a6
   - enabled: 1
     path: Assets/Scenes/Shooting/Test_ShootingHard.unity
     guid: 3a2bff97928b996458972e9903a742d3
+  - enabled: 1
+    path: Assets/Scenes/Shooting/ReplayScean.unity
+    guid: b54b626df8f533b4a8f5b6d9b95e14a2
+  - enabled: 1
+    path: Assets/Scenes/Shooting/ReplayScean_hard.unity
+    guid: 8abc602712add0e4a82916dee0cff00c
   m_configObjects: {}

@@ -1234,6 +1234,10 @@ PrefabInstance:
       propertyPath: maxHP
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3785140521785894076, guid: 532ee56de3e639148a408f319f87873e, type: 3}
+      propertyPath: IsHard
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5764694720051855749, guid: 532ee56de3e639148a408f319f87873e, type: 3}
       propertyPath: boomPrefab
       value: 
