@@ -116,7 +116,7 @@ public class EggGameManager : SingletonPuzzle<EggGameManager>
                 }
                 if (TowerManager.Inst.GetDifficulty() == 2)
                 {
-                    moneyDefault = 500.0f;
+                    moneyDefault = 10.0f;
                 }
                 shop.MoneyRemain = moneyDefault;
                 Money = moneyDefault;
