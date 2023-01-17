@@ -88,8 +88,8 @@ public class Spring : MonoBehaviour, ITrap
     void ThrowTarget(Rigidbody2D rigid)
     {
         rigid.AddTorque(1.0f, ForceMode2D.Impulse);
-        rigid.AddForce(Vector2.up * 20.0f, ForceMode2D.Impulse);
-        rigid.AddForce(Vector2.left * 50.0f, ForceMode2D.Impulse);
+        rigid.AddForce(transform.up * 20.0f, ForceMode2D.Impulse);
+        rigid.AddForce(-transform.right * 50.0f, ForceMode2D.Impulse);
     }
 
     public void Visualize()
