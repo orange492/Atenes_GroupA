@@ -733,7 +733,7 @@ PrefabInstance:
       objectReference: {fileID: 1401109174}
     - target: {fileID: 7707072621623157682, guid: 79162600a4c368642a2f124b8eff7653, type: 3}
       propertyPath: maxEnemyCount
-      value: 10
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 7707072621623157682, guid: 79162600a4c368642a2f124b8eff7653, type: 3}
       propertyPath: textBossWarning
