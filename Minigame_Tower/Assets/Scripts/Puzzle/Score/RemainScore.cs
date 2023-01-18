@@ -25,7 +25,7 @@ public class RemainScore : MonoBehaviour
         }
 
     }
-    float clearScore=0;
+    float clearScore=4000;
 
 
 
@@ -48,7 +48,7 @@ public class RemainScore : MonoBehaviour
         }
         if (TowerManager.Inst.GetDifficulty() == 2)
         {
-            clearScore = 10000;
+            clearScore = 7000;
         }
         slider.maxValue = clearScore; 
     }
