@@ -162,7 +162,10 @@ public class Manager_Rhythm : SingletonPuzzle<Manager_Rhythm>
                 down++;
             }
         }
-
+        if(Sound_Rhythum.Inst.MusicTime() >= Sound_Rhythum.Inst.MusicLength())
+        {
+            TowerManager.Inst.Clear();
+        }
 
     }
 
