@@ -28,10 +28,10 @@ public class BossExplosion : MonoBehaviour
 		// 보스 처치 +10000
 		playerController.Score += 10000;
         // 플레이어 획득 점수를 "Score" 키에 저장
-        //PlayerPrefs.SetInt("Score", playerController.Score);
+        PlayerPrefs.SetInt("Score", playerController.Score);
         // 게임 클리어 or 게임 오버
-        //GameObject.Find("ShootingResult").GetComponent<ResultPannel>().Open();
-        GameObject.Find("Player").GetComponent<PlayerController>().OnDie();
+        GameObject.Find("ShootingResult").GetComponent<ResultPannel>().Open();
+        //GameObject.Find("Player").GetComponent<PlayerController>().OnDie();
 
     }
 }

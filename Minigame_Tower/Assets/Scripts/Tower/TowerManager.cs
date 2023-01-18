@@ -105,18 +105,19 @@ public class TowerManager : SingletonPuzzle<TowerManager>
 
         if (!init)
         {
-            //floor.Add(new sFloor(1, 0, "10웨이브", isVertical));
-            //floor.Add(new sFloor(2, 0, "500라이프", isVertical)); //블랙잭 노멀모드
-            //floor.Add(new sFloor(3, 0, "500점", isVertical));
-            //floor.Add(new sFloor(5, 0, "사건의 지평선", isVertical));
+            floor.Add(new sFloor(1, 0, "10웨이브", isVertical));
+            floor.Add(new sFloor(2, 0, "500라이프", isVertical)); //블랙잭 노멀모드
+            floor.Add(new sFloor(3, 0, "500점", isVertical));
+            floor.Add(new sFloor(5, 0, "사건의 지평선", isVertical));
             floor.Add(new sFloor(6, 0, "1레벨", isVertical));
-            //floor.Add(new sFloor(9, 0, "라이프 10", isVertical));  // 슈팅게임 노말모드
+            floor.Add(new sFloor(9, 0, "라이프 10", isVertical));  // 슈팅게임 노말모드
 
-            //floor.Add(new sFloor(1, 1, "20웨이브", isVertical));
-            //floor.Add(new sFloor(4, 0, "300라이프", isVertical)); //블랙잭 하드모드
-            //floor.Add(new sFloor(3, 0, "1000점", isVertical));
-            //floor.Add(new sFloor(5, 1, "보물찾기", isVertical));
+            floor.Add(new sFloor(1, 1, "20웨이브", isVertical));
+            floor.Add(new sFloor(4, 0, "300라이프", isVertical)); //블랙잭 하드모드
+            floor.Add(new sFloor(3, 1, "1000점", isVertical));
+            floor.Add(new sFloor(5, 1, "보물찾기", isVertical));
             floor.Add(new sFloor(7, 1, "2레벨", isVertical));
+            floor.Add(new sFloor(3, 2, "2000점", isVertical));
             floor.Add(new sFloor(10, 0, "라이프 5", isVertical));  // 슈팅게임 하드모드
 
             floor.Add(new sFloor(5, 2, "나만 알면 돼", isVertical));

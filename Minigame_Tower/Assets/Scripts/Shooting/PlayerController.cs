@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -114,13 +115,33 @@ public class PlayerController : MonoBehaviour
 		weapon.StopFiring();
 		// 이동 방향 초기화
 		movement2D.MoveTo(Vector3.zero);
-		// 사망 애니메이션 재생
-		animator.SetTrigger("onDie");
+		// 사망 애니메이션 재생 -> 어차피 씬 변환 바로되니까 필요없음
+		//animator.SetTrigger("onDie");
 		// 적들과 충돌하지 않도록 충돌 박스 삭제
 		Destroy(GetComponent<CircleCollider2D>());
 		// 사망 시 키 플레이어 조작 등을 하지 못하게 하는 변수
 		isDie = true;
-        GameObject.Find("ShootingResult").GetComponent<ResultPannel>().Open();
+		// 플레이어 사망시 다시시작 결과창 출력
+		
+	    SceneManager.LoadScene(10);
+		
+    }
+
+	public void OnDie_Hard() 
+	{
+        // 공격 중지
+        weapon.StopFiring();
+        // 이동 방향 초기화
+        movement2D.MoveTo(Vector3.zero);
+        // 사망 애니메이션 재생
+        //animator.SetTrigger("onDie");
+        // 적들과 충돌하지 않도록 충돌 박스 삭제
+        Destroy(GetComponent<CircleCollider2D>());
+        // 사망 시 키 플레이어 조작 등을 하지 못하게 하는 변수
+        isDie = true;
+        // 플레이어 사망시 다시시작 결과창 출력
+
+        SceneManager.LoadScene(11);
     }
 
 	public void OnDieEvent()

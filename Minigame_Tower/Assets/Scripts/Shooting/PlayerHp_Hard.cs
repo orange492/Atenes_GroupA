@@ -1,19 +1,16 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class PlayerHP : MonoBehaviour
+public class PlayerHp_Hard : MonoBehaviour
 {
     [SerializeField]
-    private float            maxHP = 10;        // 최대 체력
-    private float            currentHP;         // 현재 체력
-    private SpriteRenderer   spriteRenderer;
+    private float maxHP = 10;        // 최대 체력
+    private float currentHP;         // 현재 체력
+    private SpriteRenderer spriteRenderer;
     private PlayerController playerController;
-   
 
-    
-    public  float MaxHP => maxHP;               // maxHP 변수에 접근할 수 있는 프로퍼티 (Get만 가능)
-    public  float CurrentHP                     // currentHP 변수에 접근할 수 있는 프로퍼티 (Set, Get 가능)
+    public float MaxHP => maxHP;               // maxHP 변수에 접근할 수 있는 프로퍼티 (Get만 가능)
+    public float CurrentHP                     // currentHP 변수에 접근할 수 있는 프로퍼티 (Set, Get 가능)
     {
         set => currentHP = Mathf.Clamp(value, 0, maxHP);
         get => currentHP;
@@ -21,9 +18,8 @@ public class PlayerHP : MonoBehaviour
 
     private void Awake()
     {
-        
-        currentHP        = maxHP;            // 현재 체력을 최대 체력과 같게 설정
-        spriteRenderer   = GetComponent<SpriteRenderer>();
+        currentHP = maxHP;            // 현재 체력을 최대 체력과 같게 설정
+        spriteRenderer = GetComponent<SpriteRenderer>();
         playerController = GetComponent<PlayerController>();
     }
 
@@ -36,12 +32,7 @@ public class PlayerHP : MonoBehaviour
         StartCoroutine("HitColorAnimation");
 
         // 체력이 0이하 = 플레이어 캐릭터 사망
-        if ( currentHP <= 0 && SceneManager.GetActiveScene().name == "Test_Shooting")
-        {
-            // 체력이 0이면 OnDie() 함수를 호출해서 죽었을 때 처리를 한다
-            playerController.OnDie();
-        }
-        else if(currentHP <= 0 && SceneManager.GetActiveScene().name == "Test_ShootingHard")
+        if (currentHP <= 0)
         {
             // 체력이 0이면 OnDie() 함수를 호출해서 죽었을 때 처리를 한다
             playerController.OnDie_Hard();

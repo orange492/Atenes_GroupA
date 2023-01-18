@@ -881,7 +881,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 247
 --- !u!114 &249029124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3938,7 +3938,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uACB0\uACFC\uCC3D"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5fb4dcd841e94e942a1433e6ea74a23b, type: 2}
   m_sharedMaterial: {fileID: -6256734965839464617, guid: 5fb4dcd841e94e942a1433e6ea74a23b, type: 2}

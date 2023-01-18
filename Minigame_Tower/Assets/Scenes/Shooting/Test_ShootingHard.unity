@@ -733,7 +733,7 @@ PrefabInstance:
       objectReference: {fileID: 1401109174}
     - target: {fileID: 7707072621623157682, guid: 79162600a4c368642a2f124b8eff7653, type: 3}
       propertyPath: maxEnemyCount
-      value: 10
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 7707072621623157682, guid: 79162600a4c368642a2f124b8eff7653, type: 3}
       propertyPath: textBossWarning
@@ -1233,6 +1233,10 @@ PrefabInstance:
     - target: {fileID: 3785140521785894076, guid: 532ee56de3e639148a408f319f87873e, type: 3}
       propertyPath: maxHP
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3785140521785894076, guid: 532ee56de3e639148a408f319f87873e, type: 3}
+      propertyPath: IsHard
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5764694720051855749, guid: 532ee56de3e639148a408f319f87873e, type: 3}
       propertyPath: boomPrefab
